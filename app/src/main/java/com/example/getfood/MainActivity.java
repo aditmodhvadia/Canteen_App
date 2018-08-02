@@ -31,14 +31,19 @@ public class MainActivity extends AppCompatActivity {
         progressDialog.show();
 
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        rootFood = FirebaseDatabase.getInstance().getReference().child("Food");
+        rootFood = FirebaseDatabase.getInstance().getReference().child("Food").child("Chinese");
 
         rootFood.keepSynced(true);
 
         rootFood.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                test.setText(dataSnapshot.child("Chinese").getKey().toString());
+                test.setText("");
+                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                    test.setText(test.getText() +" \n"+dsp.getKey().toString()
+                            +" " +dsp.child("Price").getValue().toString());
+
+                }
 
                 progressDialog.hide();
             }
