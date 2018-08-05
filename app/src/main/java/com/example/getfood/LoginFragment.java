@@ -51,7 +51,6 @@ public class LoginFragment extends Fragment {
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -63,19 +62,16 @@ public class LoginFragment extends Fragment {
 
         auth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(getContext());
-        userLoginEmailEditText = (EditText) v.findViewById(R.id.userLoginEmailEditText);
+        userLoginEmailEditText = v.findViewById(R.id.userLoginEmailEditText);
         userLoginPasswordEditText = (EditText) v.findViewById(R.id.userLoginPasswordEditText);
         showPasswordCheckBox = (CheckBox) v.findViewById(R.id.showPasswordCheckBox);
 
         showPasswordCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (isChecked)
-                {
+                if (isChecked) {
                     userLoginPasswordEditText.setTransformationMethod(null);
-                }
-                else
-                {
+                } else {
                     userLoginPasswordEditText.setTransformationMethod(new PasswordTransformationMethod());
                 }
             }
@@ -122,6 +118,12 @@ public class LoginFragment extends Fragment {
             return;
         }
 
+        if (!officerEmail.contains("nirmauni.ac.in")) {
+            userLoginEmailEditText.setError("Enter valid Nirma University Domain Email Address");
+            userLoginEmailEditText.requestFocus();
+            return;
+        }
+
         if (officerPassword.isEmpty()) {
             userLoginPasswordEditText.setError("Password is required");
             userLoginPasswordEditText.requestFocus();
@@ -145,62 +147,15 @@ public class LoginFragment extends Fragment {
                 if (task.isSuccessful()) {
                     //officer is email verified, hence can proceed further
                     if (auth.getCurrentUser().isEmailVerified()) {
-                        //checking if password is same as aadhaar no.
-//                        fbdb = FirebaseDatabase.getInstance().getReference().child("User");
-//                        fbdb.addListenerForSingleValueEvent(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(DataSnapshot dataSnapshot) {
-//                                if (dataSnapshot.child(officerPassword).exists()) {
-//                                    //password equals to the aadhaar number... so password reset email sent
-//                                    auth.sendPasswordResetEmail(auth.getCurrentUser().getEmail()).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                        @Override
-//                                        public void onComplete(@NonNull Task<Void> task) {
-//                                            progressDialog.hide();
-//                                            if (task.isSuccessful()) {
-//                                                final AlertDialog.Builder builder2 = new AlertDialog.Builder(getContext());
-//                                                builder2.setTitle("Email Sent!");
-//                                                builder2.setMessage("Reset Password Email sent to your account. Check your Email");
-//                                                builder2.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-//                                                    @Override
-//                                                    public void onClick(DialogInterface dialogInterface, int i) {
-//                                                        Toast.makeText(getContext(), "Login again after resetting your password", Toast.LENGTH_LONG).show();
-//                                                        userLoginPasswordEditText.setText("");
-//                                                        userLoginEmailEditText.requestFocus();
-//                                                        auth.getInstance().signOut();
-//                                                    }
-//                                                });
-//                                                builder2.show();
-//                                                Toast.makeText(getContext(), "Password cannot be your Aadhaar No. Reset Email sent successfully", Toast.LENGTH_SHORT).show();
-//                                                userLoginPasswordEditText.setText("");
-//                                                userLoginEmailEditText.requestFocus();
-//                                                auth.signOut();
-//
-//                                            } else {
-//                                                if (task.getException() instanceof FirebaseNetworkException) {
-//                                                    Toast.makeText(getContext(), "Internet connectivity required", Toast.LENGTH_SHORT).show();
-//                                                } else {
-//                                                    Toast.makeText(getContext(), "Some error occurred. Try again", Toast.LENGTH_SHORT).show();
-//                                                }
-//                                            }
-//                                        }
-//                                    });
-//                                } else {
-//                                    //password is not equal to aadhaar no, so officer can enter into the officer function activity
-//                                    progressDialog.hide();
-//                                    userLoginEmailEditText.setText("");
-//                                    userLoginPasswordEditText.setText("");
-////                                    Intent i = new Intent(getContext(), OfficerFunctionActivity.class);
-////                                    startActivity(i);
-////                                    getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-//
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(DatabaseError databaseError) {
-//
-//                            }
-//                        });
+//                        login successful
+                        progressDialog.hide();
+                        userLoginEmailEditText.setText("");
+                        userLoginPasswordEditText.setText("");
+//                        new activity will be opened which will display the food items
+//                        Intent i = new Intent(getContext(), OfficerFunctionActivity.class);
+//                        startActivity(i);
+//                        getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+
 
                     }
                     //officer is not email verified, so verification email will be sent
@@ -213,14 +168,13 @@ public class LoginFragment extends Fragment {
                                 //verification email sent successfully
                                 if (task.isSuccessful()) {
                                     final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                                    builder.setTitle("Email Sent!");
+                                    builder.setTitle("Verify your Email first!");
                                     builder.setMessage("Verification Email sent to your account. Check your Email");
                                     builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
                                             Toast.makeText(getContext(), "Login again after verification", Toast.LENGTH_LONG).show();
                                             userLoginEmailEditText.setText("");
-                                            userLoginPasswordEditText.setText("");
                                             auth.getInstance().signOut();
                                         }
                                     });
@@ -231,7 +185,11 @@ public class LoginFragment extends Fragment {
                                 else {
                                     if (task.getException() instanceof FirebaseNetworkException) {
                                         Toast.makeText(getContext(), "Internet connectivity required", Toast.LENGTH_SHORT).show();
-                                    } else {
+                                    }
+                                    else if (task.getException() instanceof FirebaseAuthInvalidUserException) {
+                                        Toast.makeText(getContext(), "Email ID not Registered", Toast.LENGTH_SHORT).show();
+                                    }
+                                    else {
                                         Toast.makeText(getContext(), "Some error occurred. Try again", Toast.LENGTH_SHORT).show();
                                     }
                                 }
@@ -262,21 +220,20 @@ public class LoginFragment extends Fragment {
         });
     }
 
-    private void forgotPassword()
-    {
+    private void forgotPassword() {
         String userEmail = userLoginEmailEditText.getText().toString().trim().toLowerCase();
 
-        if (userEmail.isEmpty())
-        {
+        if (userEmail.isEmpty()) {
             userLoginEmailEditText.setError("Enter Email ID");
             userLoginEmailEditText.requestFocus();
             return;
         }
-        if(!Patterns.EMAIL_ADDRESS.matcher(userEmail).matches() || userEmail.equals("adit.modhvadia@gmail.com")) {
+        if (!Patterns.EMAIL_ADDRESS.matcher(userEmail).matches() || !userEmail.contains("nirmauni.ac.in")) {
             userLoginEmailEditText.setError("Enter valid Email Address");
             userLoginEmailEditText.requestFocus();
             return;
         }
+
         progressDialog.setMessage("Sending recovery Email to the Email ID");
         progressDialog.show();
         progressDialog.setCanceledOnTouchOutside(false);
@@ -284,25 +241,17 @@ public class LoginFragment extends Fragment {
         auth.sendPasswordResetEmail(userEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful())
-                {
+                if (task.isSuccessful()) {
                     progressDialog.hide();
-                    Toast.makeText(getContext(),"Recovery Email sent",Toast.LENGTH_LONG).show();
-                }
-                else
-                {
+                    Toast.makeText(getContext(), "Recovery Email sent", Toast.LENGTH_LONG).show();
+                } else {
                     progressDialog.hide();
-                    if (task.getException() instanceof FirebaseNetworkException)
-                    {
-                        Toast.makeText(getContext(), "Internet connectivity required", Toast.LENGTH_SHORT).show();
-                    }
-                    else if (task.getException() instanceof FirebaseAuthInvalidUserException)
-                    {
+                    if (task.getException() instanceof FirebaseNetworkException) {
+                        Toast.makeText(getContext(), "Internet connectivity required", Toast.LENGTH_LONG).show();
+                    } else if (task.getException() instanceof FirebaseAuthInvalidUserException) {
                         userLoginEmailEditText.setError("Email ID not registered");
                         userLoginEmailEditText.requestFocus();
-                    }
-                    else
-                    {
+                    } else {
                         Toast.makeText(getContext(), "Some error occurred. Try again", Toast.LENGTH_SHORT).show();
                     }
                 }
