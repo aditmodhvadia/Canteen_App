@@ -21,29 +21,29 @@
             android:textColor="#fff" />
 
         <EditText
-            android:id="@+id/officerFNameEditText"
+            android:id="@+id/userFNameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:textColor="#fff"
             android:background="@drawable/edittextstyle"
-            android:padding="15dp"
-            android:textColorHint="#fff"
             android:hint="First Name"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:padding="15dp"
+            android:textColor="#fff"
+            android:textColorHint="#fff" />
 
         <EditText
-            android:id="@+id/officerLNameEditText"
-            android:textColor="#fff"
-            android:background="@drawable/edittextstyle"
-            android:padding="15dp"
-            android:textColorHint="#fff"
+            android:id="@+id/userLNameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
+            android:background="@drawable/edittextstyle"
             android:ems="10"
             android:hint="Last Name"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:padding="15dp"
+            android:textColor="#fff"
+            android:textColorHint="#fff" />
 
         <EditText
             android:id="@+id/userRollNoEditText"
@@ -59,68 +59,68 @@
             android:textColorHint="#fff" />
 
         <EditText
-            android:id="@+id/officerPhoneNoEditText"
+            android:id="@+id/userPhoneNoEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:ems="10"
-            android:textColor="#fff"
             android:background="@drawable/edittextstyle"
-            android:padding="15dp"
-            android:textColorHint="#fff"
+            android:ems="10"
             android:hint="Phone Number"
-            android:inputType="phone" />
+            android:inputType="phone"
+            android:padding="15dp"
+            android:textColor="#fff"
+            android:textColorHint="#fff" />
 
         <EditText
-            android:id="@+id/officerLoginEmailEditText"
+            android:id="@+id/userLoginEmailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
+            android:background="@drawable/edittextstyle"
             android:ems="10"
-            android:textColor="#fff"
-            android:background="@drawable/edittextstyle"
-            android:padding="15dp"
-            android:textColorHint="#fff"
             android:hint="Email Address"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:padding="15dp"
+            android:textColor="#fff"
+            android:textColorHint="#fff" />
 
         <EditText
-            android:id="@+id/officerDOBEditText"
+            android:id="@+id/userDOBEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:textColor="#fff"
             android:background="@drawable/edittextstyle"
-            android:padding="15dp"
-            android:textColorHint="#fff"
             android:ems="10"
             android:hint="DOB(DD/MM/YYYY)"
-            android:inputType="date" />
+            android:inputType="date"
+            android:padding="15dp"
+            android:textColor="#fff"
+            android:textColorHint="#fff" />
 
         <EditText
-            android:id="@+id/officerAddressEditText"
+            android:id="@+id/userAddressEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
+            android:background="@drawable/edittextstyle"
             android:ems="10"
             android:hint="Address"
-            android:textColor="#fff"
-            android:background="@drawable/edittextstyle"
+            android:inputType="textPostalAddress"
             android:padding="15dp"
-            android:textColorHint="#fff"
-            android:inputType="textPostalAddress" />
+            android:textColor="#fff"
+            android:textColorHint="#fff" />
 
         <Button
-            android:id="@+id/officerAddButton"
+            android:id="@+id/userAddButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="15dp"
             android:background="@drawable/buttonstyleselector"
+            android:gravity="center"
             android:paddingLeft="40dp"
             android:paddingRight="40dp"
-            android:gravity="center"
-            android:textColor="#ffffff"
-            android:layout_gravity="center"
-            android:text="Add Officer" />
+            android:text="Add Officer"
+            android:textColor="#ffffff" />
     </LinearLayout>
 </ScrollView>
