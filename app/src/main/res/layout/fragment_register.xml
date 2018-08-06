@@ -85,19 +85,6 @@
             android:textColorHint="#fff" />
 
         <EditText
-            android:id="@+id/userDOBEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/edittextstyle"
-            android:ems="10"
-            android:hint="DOB(DD/MM/YYYY)"
-            android:inputType="date"
-            android:padding="15dp"
-            android:textColor="#fff"
-            android:textColorHint="#fff" />
-
-        <EditText
             android:id="@+id/userAddressEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -120,7 +107,7 @@
             android:gravity="center"
             android:paddingLeft="40dp"
             android:paddingRight="40dp"
-            android:text="Add Officer"
+            android:text="Get Registered"
             android:textColor="#ffffff" />
     </LinearLayout>
 </ScrollView>
