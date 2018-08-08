@@ -1,10 +1,12 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.getfood.RegisterFragment">
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,57 +23,6 @@
             android:textColor="#fff" />
 
         <EditText
-            android:id="@+id/userFNameEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/edittextstyle"
-            android:hint="First Name"
-            android:inputType="textPersonName"
-            android:padding="15dp"
-            android:textColor="#fff"
-            android:textColorHint="#fff" />
-
-        <EditText
-            android:id="@+id/userLNameEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/edittextstyle"
-            android:ems="10"
-            android:hint="Last Name"
-            android:inputType="textPersonName"
-            android:padding="15dp"
-            android:textColor="#fff"
-            android:textColorHint="#fff" />
-
-        <EditText
-            android:id="@+id/userRollNoEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/edittextstyle"
-            android:ems="10"
-            android:hint="Roll Number"
-            android:inputType="number"
-            android:padding="15dp"
-            android:textColor="#fff"
-            android:textColorHint="#fff" />
-
-        <EditText
-            android:id="@+id/userPhoneNoEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/edittextstyle"
-            android:ems="10"
-            android:hint="Phone Number"
-            android:inputType="phone"
-            android:padding="15dp"
-            android:textColor="#fff"
-            android:textColorHint="#fff" />
-
-        <EditText
             android:id="@+id/userLoginEmailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -85,14 +36,27 @@
             android:textColorHint="#fff" />
 
         <EditText
-            android:id="@+id/userAddressEditText"
+            android:id="@+id/userPasswordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:background="@drawable/edittextstyle"
             android:ems="10"
-            android:hint="Address"
-            android:inputType="textPostalAddress"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:padding="15dp"
+            android:textColor="#fff"
+            android:textColorHint="#fff" />
+
+        <EditText
+            android:id="@+id/userConPasswordEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/edittextstyle"
+            android:ems="10"
+            android:hint="Confirm Password"
+            android:inputType="textPassword"
             android:padding="15dp"
             android:textColor="#fff"
             android:textColorHint="#fff" />
@@ -110,4 +74,5 @@
             android:text="Get Registered"
             android:textColor="#ffffff" />
     </LinearLayout>
-</ScrollView>
+    </ScrollView>
+</LinearLayout>
