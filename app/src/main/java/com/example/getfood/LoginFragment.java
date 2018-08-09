@@ -152,6 +152,7 @@ public class LoginFragment extends Fragment {
                         userLoginEmailEditText.setText("");
                         userLoginPasswordEditText.setText("");
 //                        new activity will be opened which will display the food items
+                        Toast.makeText(getContext(),"Successful",Toast.LENGTH_LONG).show();
 //                        Intent i = new Intent(getContext(), OfficerFunctionActivity.class);
 //                        startActivity(i);
 //                        getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -174,7 +175,7 @@ public class LoginFragment extends Fragment {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
                                             Toast.makeText(getContext(), "Login again after verification", Toast.LENGTH_LONG).show();
-                                            userLoginEmailEditText.setText("");
+                                            userLoginPasswordEditText.setText("");
                                             auth.getInstance().signOut();
                                         }
                                     });
