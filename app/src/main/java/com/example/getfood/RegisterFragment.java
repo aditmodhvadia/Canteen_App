@@ -118,13 +118,13 @@ public class RegisterFragment extends Fragment {
         }
 
 //        add pattern matcher for roll no
-        if (userPass.length() < 8 ) {
+        if (userPass.length() < 8) {
             userPasswordEditText.setError("Password should be of 10 digits");
             userPasswordEditText.requestFocus();
             return;
         }
 
-        if (userConPass.length() < 8 ) {
+        if (userConPass.length() < 8) {
             userConPasswordEditText.setError("Password should be of 10 digits");
             userConPasswordEditText.requestFocus();
             return;
@@ -160,41 +160,54 @@ public class RegisterFragment extends Fragment {
 
 //        now register user with createuserwithemailpassword method call of firebase auth and the toast the message
 
-        auth.createUserWithEmailAndPassword(userEmail,userPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        auth.createUserWithEmailAndPassword(userEmail, userPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     progressDialog.hide();
-                    auth.getCurrentUser().sendEmailVerification();
-//                    Toast.makeText(getContext(),"Email sent for Verification",Toast.LENGTH_LONG).show();
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                    builder.setTitle("Email Sent!");
-                    builder.setMessage("Verification Email sent to your account. Check your Email");
-                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    auth.signInWithEmailAndPassword(userEmail, userPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Toast.makeText(getContext(),"Login again after verification",Toast.LENGTH_LONG).show();
-                            userEmailEditText.setText("");
-                            userPasswordEditText.setText("");
-                            userConPasswordEditText.setText("");
-                            auth.getInstance().signOut();
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                auth.getCurrentUser().sendEmailVerification();
+//                    Toast.makeText(getContext(),"Email sent for Verification",Toast.LENGTH_LONG).show();
+                                final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                                builder.setTitle("Email Sent!");
+                                builder.setMessage("Verification Email sent to your account. Check your Email");
+                                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        Toast.makeText(getContext(), "Login again after verification", Toast.LENGTH_LONG).show();
+                                        userEmailEditText.setText("");
+                                        userPasswordEditText.setText("");
+                                        userConPasswordEditText.setText("");
+                                        auth.getInstance().signOut();
+                                    }
+                                });
+                                builder.show();
+
+                            }
+                            else{
+                                if (task.getException() instanceof FirebaseNetworkException) {
+                                    Toast.makeText(getContext(), "Internet connectivity required", Toast.LENGTH_SHORT).show();
+                                } else if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                                    userEmailEditText.setError("Email ID is already in use");
+                                    userEmailEditText.requestFocus();
+                                } else {
+                                    Toast.makeText(getContext(), "Some error occurred. Try again", Toast.LENGTH_SHORT).show();
+                                }
+                            }
                         }
                     });
-                    builder.show();
-                }
-                else{
+
+                } else {
                     progressDialog.hide();
-                    if (task.getException() instanceof FirebaseNetworkException)
-                    {
+                    if (task.getException() instanceof FirebaseNetworkException) {
                         Toast.makeText(getContext(), "Internet connectivity required", Toast.LENGTH_SHORT).show();
-                    }
-                    else if (task.getException() instanceof FirebaseAuthUserCollisionException)
-                    {
+                    } else if (task.getException() instanceof FirebaseAuthUserCollisionException) {
                         userEmailEditText.setError("Email ID is already in use");
                         userEmailEditText.requestFocus();
-                    }
-                    else
-                    {
+                    } else {
                         Toast.makeText(getContext(), "Some error occurred. Try again", Toast.LENGTH_SHORT).show();
                     }
                 }
