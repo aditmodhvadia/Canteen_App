@@ -55,16 +55,16 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-        View v = inflater.inflate(R.layout.fragment_login_curr_user, container, false);
-
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
         auth = FirebaseAuth.getInstance();
         if(auth.getCurrentUser()!=null){
             Intent i = new Intent(getContext(), FoodMenuDisplayActivity.class);
             startActivity(i);
         }
+        View v = inflater.inflate(R.layout.fragment_login_curr_user, container, false);
+
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+
         progressDialog = new ProgressDialog(getContext());
         userLoginEmailEditText = v.findViewById(R.id.userLoginEmailEditText);
         userLoginPasswordEditText = (EditText) v.findViewById(R.id.userLoginPasswordEditText);

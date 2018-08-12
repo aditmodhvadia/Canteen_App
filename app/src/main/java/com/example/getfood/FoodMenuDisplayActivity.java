@@ -123,7 +123,7 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
                     return new ChineseFragment();
 
                 case 1:
-                    return new ChineseFragment();
+                    return new SouthIndianFragment();
 
                 case 2:
                     return new ChineseFragment();
