@@ -100,6 +100,7 @@ public class LoginFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
+
     private void loginUser() {
         final String officerEmail, officerPassword;
 
@@ -153,8 +154,8 @@ public class LoginFragment extends Fragment {
                         userLoginPasswordEditText.setText("");
 //                        new activity will be opened which will display the food items
                         Toast.makeText(getContext(),"Successful",Toast.LENGTH_LONG).show();
-//                        Intent i = new Intent(getContext(), OfficerFunctionActivity.class);
-//                        startActivity(i);
+                        Intent i = new Intent(getContext(), FoodMenuDisplayActivity.class);
+                        startActivity(i);
 //                        getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
 
