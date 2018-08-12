@@ -1,5 +1,6 @@
 package com.example.getfood;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,9 +10,26 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class ChineseFragment extends Fragment {
 
+    private DatabaseReference rootFood;
+    ProgressDialog progressDialog;
+//    remove this after testing
+
+    TextView test;
+    private String CATEGORY = "Chinese";
+    ArrayList<String> itemName, itemPrice;
 
     private OnFragmentInteractionListener mListener;
 
@@ -24,6 +42,43 @@ public class ChineseFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_chinese, container, false);
+
+
+//        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        progressDialog = new ProgressDialog(getContext());
+        itemName = new ArrayList<String>();
+        itemPrice = new ArrayList<String>();
+//        delete this after testing
+        test = v.findViewById(R.id.test);
+
+//        display progress dialog till data is fetched
+        progressDialog.setTitle("Please Wait..");
+        progressDialog.setMessage("Fetching data");
+        progressDialog.show();
+//    create instance of database and keep it synced locally as well
+        rootFood = FirebaseDatabase.getInstance().getReference().child("Food").child(CATEGORY);
+
+        rootFood.keepSynced(true);
+
+        rootFood.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                itemName.clear();
+                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+
+                    itemName.add(dsp.getKey());
+                    itemPrice.add(dsp.child("Price").getValue().toString());
+
+                }
+                test.setText(itemName+"\n\n"+itemPrice);
+                progressDialog.hide();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(getContext(),databaseError.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
 
 
 

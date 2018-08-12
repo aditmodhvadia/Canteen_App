@@ -61,6 +61,10 @@ public class LoginFragment extends Fragment {
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         auth = FirebaseAuth.getInstance();
+        if(auth.getCurrentUser()!=null){
+            Intent i = new Intent(getContext(), FoodMenuDisplayActivity.class);
+            startActivity(i);
+        }
         progressDialog = new ProgressDialog(getContext());
         userLoginEmailEditText = v.findViewById(R.id.userLoginEmailEditText);
         userLoginPasswordEditText = (EditText) v.findViewById(R.id.userLoginPasswordEditText);
@@ -153,7 +157,6 @@ public class LoginFragment extends Fragment {
                         userLoginEmailEditText.setText("");
                         userLoginPasswordEditText.setText("");
 //                        new activity will be opened which will display the food items
-                        Toast.makeText(getContext(),"Successful",Toast.LENGTH_LONG).show();
                         Intent i = new Intent(getContext(), FoodMenuDisplayActivity.class);
                         startActivity(i);
 //                        getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);

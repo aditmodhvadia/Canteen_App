@@ -52,8 +52,6 @@ public class RegisterFragment extends Fragment {
     int flag;
 
     private FirebaseAuth auth;
-    private FirebaseUser newOfficer;
-    private DatabaseReference dbnewofficer;
 
     public RegisterFragment() {
         // Required empty public constructor
