@@ -126,7 +126,7 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
                     return new SouthIndianFragment();
 
                 case 2:
-                    return new ChineseFragment();
+                    return new PizzaSandwichFragment();
 
                 case 3:
                     return new ChineseFragment();
