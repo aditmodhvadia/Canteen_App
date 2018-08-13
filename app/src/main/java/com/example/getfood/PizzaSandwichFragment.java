@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +30,9 @@ public class PizzaSandwichFragment extends Fragment {
     private String CATEGORY = "Pizza Sandwich";
     ArrayList<String> itemName, itemPrice;
 
+    ListView pizzaSandwichDisplayListView;
+    MenuDisplayAdapter displayAdapter;
+
     private OnFragmentInteractionListener mListener;
 
     public PizzaSandwichFragment() {
@@ -47,7 +51,7 @@ public class PizzaSandwichFragment extends Fragment {
         itemPrice = new ArrayList<String>();
 //       TODO: delete this after testing
         test = v.findViewById(R.id.test);
-
+        pizzaSandwichDisplayListView = v.findViewById(R.id.pizzaSandwichDisplayListView);
 //        display progress dialog till data is fetched
         progressDialog.setTitle("Please Wait..");
         progressDialog.setMessage("Fetching data");
@@ -69,6 +73,8 @@ public class PizzaSandwichFragment extends Fragment {
 
                 }
                 test.setText(itemName+"\n\n"+itemPrice);
+                displayAdapter = new MenuDisplayAdapter(itemName,itemPrice,getContext());
+                pizzaSandwichDisplayListView.setAdapter(displayAdapter);
                 progressDialog.hide();
             }
 

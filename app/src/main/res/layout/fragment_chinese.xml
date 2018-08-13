@@ -10,7 +10,12 @@
     <TextView
         android:id="@+id/test"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:text="Works" />
+
+    <ListView
+        android:id="@+id/chineseDisplayListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +31,9 @@ public class ChineseFragment extends Fragment {
     private String CATEGORY = "Chinese";
     ArrayList<String> itemName, itemPrice;
 
+    ListView chineseDisplayListView;
+    MenuDisplayAdapter displayAdapter;
+
     private OnFragmentInteractionListener mListener;
 
     public ChineseFragment() {
@@ -45,9 +49,10 @@ public class ChineseFragment extends Fragment {
         progressDialog = new ProgressDialog(getContext());
         itemName = new ArrayList<String>();
         itemPrice = new ArrayList<String>();
+
 //       TODO: delete this after testing
         test = v.findViewById(R.id.test);
-
+        chineseDisplayListView = v.findViewById(R.id.chineseDisplayListView);
 //        display progress dialog till data is fetched
         progressDialog.setTitle("Please Wait..");
         progressDialog.setMessage("Fetching data");
@@ -69,6 +74,9 @@ public class ChineseFragment extends Fragment {
 
                 }
                 test.setText(itemName+"\n\n"+itemPrice);
+                displayAdapter = new MenuDisplayAdapter(itemName,itemPrice,getContext());
+                chineseDisplayListView.setAdapter(displayAdapter);
+
                 progressDialog.hide();
             }
 
