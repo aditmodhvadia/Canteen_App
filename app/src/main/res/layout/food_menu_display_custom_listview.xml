@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/itemNameTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:layout_weight="1"
@@ -15,7 +15,7 @@
 
     <TextView
         android:id="@+id/itemPriceTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:layout_weight="1"
