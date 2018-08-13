@@ -19,10 +19,14 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class FoodMenuDisplayActivity extends AppCompatActivity {
 
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
+    FloatingActionButton floatingActionButton;
+    FirebaseAuth auth;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -47,6 +51,16 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+//        TODO: add an alert box which gives users option to confirm before logging out
+        floatingActionButton = findViewById(R.id.floatingActionButton);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                auth = FirebaseAuth.getInstance();
+                auth.signOut();
+                finish();
+            }
+        });
 
     }
 

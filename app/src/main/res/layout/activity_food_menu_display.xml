@@ -18,7 +18,7 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways"
@@ -77,5 +77,16 @@
         android:layout_gravity="center"
         app:layout_anchorGravity="center"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    <!--TODO:improve the look of FAB-->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="350dp"
+        android:background="#000"
+        android:clickable="true"
+        app:srcCompat="@android:drawable/ic_lock_lock" />
 
 </android.support.design.widget.CoordinatorLayout>
