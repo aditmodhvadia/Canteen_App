@@ -3,11 +3,13 @@ package com.example.getfood;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -20,6 +22,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
@@ -43,15 +46,12 @@ public class RegisterFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    EditText userFNameEditText, userLNameEditText, userPhoneNoEditText, userEmailEditText, userAddressEditText;
-    EditText userRollNoEditText;
+    EditText userConPasswordEditText, userPasswordEditText, userEmailEditText;
     Button userAddButton;
     ProgressDialog progressDialog;
     int flag;
 
     private FirebaseAuth auth;
-    private FirebaseUser newOfficer;
-    private DatabaseReference dbnewofficer;
 
     public RegisterFragment() {
         // Required empty public constructor
@@ -62,10 +62,8 @@ public class RegisterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_register, container, false);
 
-
-        return v;
+        return inflater.inflate(R.layout.fragment_register, container, false);
     }
 
     @Override
@@ -80,64 +78,61 @@ public class RegisterFragment extends Fragment {
 
         progressDialog = new ProgressDialog(getContext());
 
-        userFNameEditText = (EditText) view.findViewById(R.id.userFNameEditText);
-        userLNameEditText = (EditText) view.findViewById(R.id.userLNameEditText);
-        userPhoneNoEditText = (EditText) view.findViewById(R.id.userPhoneNoEditText);
+        userConPasswordEditText = (EditText) view.findViewById(R.id.userConPasswordEditText);
+        userPasswordEditText = (EditText) view.findViewById(R.id.userPasswordEditText);
         userEmailEditText = (EditText) view.findViewById(R.id.userLoginEmailEditText);
-        userAddressEditText = (EditText) view.findViewById(R.id.userAddressEditText);
-        userRollNoEditText = (EditText) view.findViewById(R.id.userRollNoEditText);
 
 
         userAddButton = (Button) view.findViewById(R.id.userAddButton);
 //        verify all fields on button press
-//        userAddButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                checkValues();
-//            }
-//        });
+        userAddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkValues();
+            }
+        });
     }
 
     private void checkValues() {
-        final String userFName, userLName, userPhoneNo, userEmail, userAddress, userRollNo;
+        final String userPass, userConPass, userEmail;
 
-        userFName = userFNameEditText.getText().toString().trim();
-        userLName = userLNameEditText.getText().toString().trim();
-        userPhoneNo = userPhoneNoEditText.getText().toString().trim();
+        userPass = userPasswordEditText.getText().toString().trim();
+        userConPass = userConPasswordEditText.getText().toString().trim();
         userEmail = userEmailEditText.getText().toString().trim().toLowerCase();
-        userAddress = userAddressEditText.getText().toString().trim();
-        userRollNo = userRollNoEditText.getText().toString().trim();
 
         //Validating all entries First
 
-        if (userFName.isEmpty()) {
-            userFNameEditText.setError("First Name Required");
-            userFNameEditText.requestFocus();
+        if (userPass.isEmpty()) {
+            userPasswordEditText.setError("Password Required");
+            userPasswordEditText.requestFocus();
             return;
         }
-        if (userLName.isEmpty()) {
-            userLNameEditText.setError("Last Name Required");
-            userLNameEditText.requestFocus();
-            return;
-        }
-        if (userRollNo.isEmpty()) {
-            userRollNoEditText.setError("Aadhaar Number Required");
-            userRollNoEditText.requestFocus();
+        if (userConPass.isEmpty()) {
+            userConPasswordEditText.setError("Password Confirmation Required");
+            userConPasswordEditText.requestFocus();
             return;
         }
 
 //        add pattern matcher for roll no
+        if (userPass.length() < 8) {
+            userPasswordEditText.setError("Password should be of 10 digits");
+            userPasswordEditText.requestFocus();
+            return;
+        }
 
-        if (userPhoneNo.isEmpty()) {
-            userPhoneNoEditText.setError("Phone Number Required");
-            userPhoneNoEditText.requestFocus();
+        if (userConPass.length() < 8) {
+            userConPasswordEditText.setError("Password should be of 10 digits");
+            userConPasswordEditText.requestFocus();
             return;
         }
-        if (userPhoneNo.length() != 10) {
-            userPhoneNoEditText.setError("Phone Number should be of 10 digits");
-            userPhoneNoEditText.requestFocus();
+        if (!userConPass.equals(userPass)) {
+            userPasswordEditText.setError("Password do not match");
+            userPasswordEditText.requestFocus();
+            userPasswordEditText.setText("");
+            userConPasswordEditText.setText("");
             return;
         }
+
         if (userEmail.isEmpty()) {
             userEmailEditText.setError("Email ID Required");
             userEmailEditText.requestFocus();
@@ -155,24 +150,70 @@ public class RegisterFragment extends Fragment {
             return;
         }
 
-        if (userAddress.isEmpty()) {
-            userAddressEditText.setError("Address Required");
-            userAddressEditText.requestFocus();
-            return;
-        }
-
-        progressDialog.setMessage("Adding Officer");
+        progressDialog.setMessage("Registering");
         progressDialog.show();
         progressDialog.setCanceledOnTouchOutside(false);
 
-        //now register user with createuserwithemailpassword method call of firebase auth and the toast the message
+//        now register user with createuserwithemailpassword method call of firebase auth and the toast the message
 
-        flag = 1;
+        auth.createUserWithEmailAndPassword(userEmail, userPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    progressDialog.hide();
+                    auth.signInWithEmailAndPassword(userEmail, userPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                auth.getCurrentUser().sendEmailVerification();
+//                    Toast.makeText(getContext(),"Email sent for Verification",Toast.LENGTH_LONG).show();
+                                final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                                builder.setTitle("Email Sent!");
+                                builder.setMessage("Verification Email sent to your account. Check your Email");
+                                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        Toast.makeText(getContext(), "Login again after verification", Toast.LENGTH_LONG).show();
+                                        userEmailEditText.setText("");
+                                        userPasswordEditText.setText("");
+                                        userConPasswordEditText.setText("");
+                                        auth.getInstance().signOut();
+                                    }
+                                });
+                                builder.show();
 
-        if (flag == 0) {
-            return;
-        }
+                            }
+                            else{
+                                if (task.getException() instanceof FirebaseNetworkException) {
+                                    Toast.makeText(getContext(), "Internet connectivity required", Toast.LENGTH_SHORT).show();
+                                } else if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                                    userEmailEditText.setError("Email ID is already in use");
+                                    userEmailEditText.requestFocus();
+                                } else {
+                                    Toast.makeText(getContext(), "Some error occurred. Try again", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+                    });
 
+                } else {
+                    progressDialog.hide();
+                    if (task.getException() instanceof FirebaseNetworkException) {
+                        Toast.makeText(getContext(), "Internet connectivity required", Toast.LENGTH_SHORT).show();
+                    } else if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                        userEmailEditText.setError("Email ID is already in use");
+                        userEmailEditText.requestFocus();
+                    } else {
+                        Toast.makeText(getContext(), "Some error occurred. Try again", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
     }
 
     public interface OnFragmentInteractionListener {

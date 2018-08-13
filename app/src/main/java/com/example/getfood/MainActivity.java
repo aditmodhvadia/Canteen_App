@@ -30,10 +30,10 @@ public class MainActivity extends AppCompatActivity {
         progressDialog.setMessage("Fetching data");
         progressDialog.show();
 
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+//        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         rootFood = FirebaseDatabase.getInstance().getReference().child("Food").child("Chinese");
 
-        rootFood.keepSynced(true);
+//        rootFood.keepSynced(true);
 
         rootFood.addValueEventListener(new ValueEventListener() {
             @Override
