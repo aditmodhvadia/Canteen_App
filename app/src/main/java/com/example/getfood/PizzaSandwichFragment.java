@@ -25,8 +25,6 @@ public class PizzaSandwichFragment extends Fragment {
 
     private DatabaseReference rootFood;
     ProgressDialog progressDialog;
-    //    TODO:remove this after testing
-    TextView test;
     private String CATEGORY = "Pizza Sandwich";
     ArrayList<String> itemName, itemPrice;
 
@@ -49,8 +47,6 @@ public class PizzaSandwichFragment extends Fragment {
         progressDialog = new ProgressDialog(getContext());
         itemName = new ArrayList<String>();
         itemPrice = new ArrayList<String>();
-//       TODO: delete this after testing
-        test = v.findViewById(R.id.test);
         pizzaSandwichDisplayListView = v.findViewById(R.id.pizzaSandwichDisplayListView);
 //        display progress dialog till data is fetched
         progressDialog.setTitle("Please Wait..");
@@ -72,7 +68,6 @@ public class PizzaSandwichFragment extends Fragment {
                     itemPrice.add(dsp.child("Price").getValue().toString());
 
                 }
-                test.setText(itemName+"\n\n"+itemPrice);
                 displayAdapter = new MenuDisplayAdapter(itemName,itemPrice,getContext());
                 pizzaSandwichDisplayListView.setAdapter(displayAdapter);
                 progressDialog.hide();
