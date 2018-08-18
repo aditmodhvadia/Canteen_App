@@ -1,8 +1,12 @@
 package com.example.getfood;
 
+import android.content.DialogInterface;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -18,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -27,6 +32,8 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
     private SectionsPagerAdapter mSectionsPagerAdapter;
     FloatingActionButton floatingActionButton;
     FirebaseAuth auth;
+    int exitCount;
+    long currTime, prevTime;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -56,9 +63,7 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                auth = FirebaseAuth.getInstance();
-                auth.signOut();
-                finish();
+                logout();
             }
         });
 
@@ -158,5 +163,54 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
             // Show 3 total pages.
             return 5;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        exitCount++;
+        if (exitCount == 1) {
+            Toast.makeText(getApplicationContext(), "Press back once more to logout", Toast.LENGTH_SHORT).show();
+            prevTime = System.currentTimeMillis();
+        }
+        if (exitCount == 2) {
+            currTime = System.currentTimeMillis();
+            if (currTime - prevTime > 2000) {
+                Toast.makeText(getApplicationContext(), "Press back once more to logout", Toast.LENGTH_SHORT).show();
+                prevTime = System.currentTimeMillis();
+                exitCount = 1;
+            } else {
+                FirebaseAuth.getInstance().signOut();
+                finish();/*
+                Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+                homeIntent.addCategory( Intent.CATEGORY_HOME );
+                homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(homeIntent);
+                finish();*/
+            }
+        }
+    }
+
+    private void logout() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Logout");
+        builder.setMessage("Are you sure you want to Logout?");
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                auth = FirebaseAuth.getInstance();
+                auth.signOut();
+                finish();
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        AlertDialog dialog = builder.show();
     }
 }

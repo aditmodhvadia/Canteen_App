@@ -15,9 +15,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
 
+    int exitCount;
+    long currTime, prevTime;
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
@@ -130,6 +135,31 @@ public class LoginActivity extends AppCompatActivity {
         public int getCount() {
             // Show 3 total pages.
             return 2;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        exitCount++;
+        if (exitCount == 1) {
+            Toast.makeText(getApplicationContext(), "Press back once more to exit", Toast.LENGTH_SHORT).show();
+            prevTime = System.currentTimeMillis();
+        }
+        if (exitCount == 2) {
+            currTime = System.currentTimeMillis();
+            if (currTime - prevTime > 2000) {
+                Toast.makeText(getApplicationContext(), "Press back once more to exit", Toast.LENGTH_SHORT).show();
+                prevTime = System.currentTimeMillis();
+                exitCount = 1;
+            } else {
+                FirebaseAuth.getInstance().signOut();
+                finish();/*
+                Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+                homeIntent.addCategory( Intent.CATEGORY_HOME );
+                homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(homeIntent);
+                finish();*/
+            }
         }
     }
 }
