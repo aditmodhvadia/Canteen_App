@@ -56,6 +56,8 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
 
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 //        TODO: add an alert box which gives users option to confirm before logging out

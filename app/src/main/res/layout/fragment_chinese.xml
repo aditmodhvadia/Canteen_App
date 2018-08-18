@@ -6,7 +6,6 @@
     android:orientation="vertical"
     tools:context=".ChineseFragment">
 
-
     <ListView
         android:id="@+id/chineseDisplayListView"
         android:layout_width="match_parent"
