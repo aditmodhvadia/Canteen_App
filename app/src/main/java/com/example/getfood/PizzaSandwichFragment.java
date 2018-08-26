@@ -44,14 +44,14 @@ public class PizzaSandwichFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_pizza_sandwich, container, false);
 
-        progressDialog = new ProgressDialog(getContext());
+//        progressDialog = new ProgressDialog(getContext());
         itemName = new ArrayList<String>();
         itemPrice = new ArrayList<String>();
         pizzaSandwichDisplayListView = v.findViewById(R.id.pizzaSandwichDisplayListView);
 //        display progress dialog till data is fetched
-        progressDialog.setTitle("Please Wait..");
-        progressDialog.setMessage("Fetching data");
-        progressDialog.show();
+//        progressDialog.setTitle("Please Wait..");
+//        progressDialog.setMessage("Fetching data");
+//        progressDialog.show();
 //    create instance of database and keep it synced locally as well
         rootFood = FirebaseDatabase.getInstance().getReference().child("Food").child(CATEGORY);
 
@@ -70,7 +70,7 @@ public class PizzaSandwichFragment extends Fragment {
                 }
                 displayAdapter = new MenuDisplayAdapter(itemName,itemPrice,getContext());
                 pizzaSandwichDisplayListView.setAdapter(displayAdapter);
-                progressDialog.hide();
+//                progressDialog.hide();
             }
 
             @Override
