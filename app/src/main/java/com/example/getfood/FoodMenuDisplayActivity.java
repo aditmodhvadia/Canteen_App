@@ -1,6 +1,7 @@
 package com.example.getfood;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +38,7 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
     FirebaseAuth auth;
     int exitCount;
     long currTime, prevTime;
+    Button cartButton;
 
     public static ArrayList<String> cartItemName;
     public static ArrayList<Integer> cartItemQuantity, cartItemPrice;
@@ -53,6 +56,7 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
         cartItemName = new ArrayList<String>();
         cartItemPrice = new ArrayList<Integer>();
         cartItemQuantity = new ArrayList<Integer>();
+        cartButton = findViewById(R.id.cartButton);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -68,12 +72,19 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-//        TODO: add an alert box which gives users option to confirm before logging out
+
         floatingActionButton = findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 logout();
+            }
+        });
+
+        cartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showCart();
             }
         });
 
@@ -221,5 +232,13 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
         });
 
         AlertDialog dialog = builder.show();
+    }
+
+    private void showCart(){
+        Intent i = new Intent(this,CartActivity.class);
+        i.putExtra("name",cartItemName);
+        i.putExtra("price",cartItemPrice);
+        i.putExtra("quantity",cartItemQuantity);
+        startActivity(i);
     }
 }
