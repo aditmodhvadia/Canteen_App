@@ -69,23 +69,23 @@
         android:id="@+id/container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="95dp"
         android:layout_gravity="center"
-        app:layout_anchorGravity="center"
-        app:tabMode="scrollable"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_marginBottom="95dp"
         android:isScrollContainer="true"
-        android:nestedScrollingEnabled="true"/>
+        android:nestedScrollingEnabled="true"
+        app:layout_anchorGravity="center"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:tabMode="scrollable" />
     <!--TODO:improve the look of FAB-->
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floatingActionButton"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="20dp"
-        android:layout_marginLeft="295dp"
-        android:background="#000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="@dimen/fab_margin"
         android:clickable="true"
+        android:padding="3dp"
         app:srcCompat="@android:drawable/ic_lock_lock" />
 
 </android.support.design.widget.CoordinatorLayout>

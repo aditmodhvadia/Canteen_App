@@ -3,8 +3,8 @@
     package="com.example.getfood">
 
     <application
+        android:name=".FirebasePersistance"
         android:allowBackup="true"
-        android:name="com.example.getfood.FirebasePersistance"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -30,7 +30,8 @@
         <activity
             android:name=".FoodMenuDisplayActivity"
             android:label="@string/title_activity_food_menu_display"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 
 </manifest>
