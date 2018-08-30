@@ -38,6 +38,7 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
     long currTime, prevTime;
 
     public static ArrayList<String> cartItemName;
+    public static ArrayList<Integer> cartItemQuantity, cartItemPrice;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -50,6 +51,9 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_food_menu_display);
 
         cartItemName = new ArrayList<String>();
+        cartItemPrice = new ArrayList<Integer>();
+        cartItemQuantity = new ArrayList<Integer>();
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());

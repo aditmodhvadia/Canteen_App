@@ -82,10 +82,19 @@ public class PizzaSandwichFragment extends Fragment {
         pizzaSandwichDisplayListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                TODO: check for the item if it already exists and then add the item or increase its quantity
 //                TODO: AlertDialog which confirms to add the item to cart
-                FoodMenuDisplayActivity.cartItemName.add(itemName.get(i));
-                Toast.makeText(getContext(),FoodMenuDisplayActivity.cartItemName.toString(),Toast.LENGTH_LONG).show();
+                if(FoodMenuDisplayActivity.cartItemName.contains(itemName.get(i))){
+                    int pos = FoodMenuDisplayActivity.cartItemName.indexOf(itemName.get(i));
+                    FoodMenuDisplayActivity.cartItemQuantity.set(pos, FoodMenuDisplayActivity.cartItemQuantity.get(pos)+1);
+                }
+                else{
+                    FoodMenuDisplayActivity.cartItemName.add(itemName.get(i));
+                    FoodMenuDisplayActivity.cartItemQuantity.add(1);
+                    FoodMenuDisplayActivity.cartItemPrice.add(Integer.parseInt(itemPrice.get(i)));
+                }
+
+                Toast.makeText(getContext(),FoodMenuDisplayActivity.cartItemName.toString() + "\n"
+                        +FoodMenuDisplayActivity.cartItemQuantity.toString(),Toast.LENGTH_LONG).show();
             }
         });
 
