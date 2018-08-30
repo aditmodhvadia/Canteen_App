@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -75,6 +76,16 @@ public class PizzaSandwichFragment extends Fragment {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+        pizzaSandwichDisplayListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                TODO: check for the item if it already exists and then add the item or increase its quantity
+//                TODO: AlertDialog which confirms to add the item to cart
+                FoodMenuDisplayActivity.cartItemName.add(itemName.get(i));
+                Toast.makeText(getContext(),FoodMenuDisplayActivity.cartItemName.toString(),Toast.LENGTH_LONG).show();
             }
         });
 

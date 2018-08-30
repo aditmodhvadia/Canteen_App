@@ -26,6 +26,8 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
+
 public class FoodMenuDisplayActivity extends AppCompatActivity {
 
 
@@ -34,6 +36,8 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
     FirebaseAuth auth;
     int exitCount;
     long currTime, prevTime;
+
+    public static ArrayList<String> cartItemName;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -45,7 +49,7 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_menu_display);
 
-
+        cartItemName = new ArrayList<String>();
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
