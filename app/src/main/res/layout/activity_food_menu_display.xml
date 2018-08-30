@@ -40,7 +40,9 @@
                 android:id="@+id/cartButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"
                 android:layout_marginRight="7dp"
+                android:drawableLeft="@drawable/ic_cart"
                 android:layout_marginTop="6dp"
                 android:text="Cart" />
 
