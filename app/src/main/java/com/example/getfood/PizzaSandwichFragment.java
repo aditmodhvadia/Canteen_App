@@ -2,6 +2,7 @@ package com.example.getfood;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -81,20 +82,39 @@ public class PizzaSandwichFragment extends Fragment {
 
         pizzaSandwichDisplayListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
 //                TODO: AlertDialog which confirms to add the item to cart
-                if(FoodMenuDisplayActivity.cartItemName.contains(itemName.get(i))){
-                    int pos = FoodMenuDisplayActivity.cartItemName.indexOf(itemName.get(i));
-                    FoodMenuDisplayActivity.cartItemQuantity.set(pos, FoodMenuDisplayActivity.cartItemQuantity.get(pos)+1);
-                }
-                else{
-                    FoodMenuDisplayActivity.cartItemName.add(itemName.get(i));
-                    FoodMenuDisplayActivity.cartItemQuantity.add(1);
-                    FoodMenuDisplayActivity.cartItemPrice.add(Integer.parseInt(itemPrice.get(i)));
-                }
+                android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getContext());
+                builder.setTitle("Select Quantity");
+//                builder.setMessage("Are you sure you want to Logout?");
+//                builder.setView(R.layout.adjust_quantity_display);
+                builder.setPositiveButton("Add to Cart", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i1) {
+                        if(FoodMenuDisplayActivity.cartItemName.contains(itemName.get(i))){
+                            int pos = FoodMenuDisplayActivity.cartItemName.indexOf(itemName.get(i));
+                            FoodMenuDisplayActivity.cartItemQuantity.set(pos, FoodMenuDisplayActivity.cartItemQuantity.get(pos)+1);
+                        }
+                        else{
+                            FoodMenuDisplayActivity.cartItemName.add(itemName.get(i));
+                            FoodMenuDisplayActivity.cartItemQuantity.add(1);
+                            FoodMenuDisplayActivity.cartItemPrice.add(Integer.parseInt(itemPrice.get(i)));
+                        }
 
-                Toast.makeText(getContext(),FoodMenuDisplayActivity.cartItemName.toString() + "\n"
-                        +FoodMenuDisplayActivity.cartItemQuantity.toString(),Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getContext(),FoodMenuDisplayActivity.cartItemName.toString() + "\n"
+//                                +FoodMenuDisplayActivity.cartItemQuantity.toString(),Toast.LENGTH_LONG).show();
+                    }
+                });
+
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+
+                android.support.v7.app.AlertDialog dialog = builder.show();
+
             }
         });
 
