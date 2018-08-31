@@ -12,24 +12,24 @@
         android:layout_weight="0.35" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/alertMinus"
         android:layout_width="45dp"
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/btn_clear" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/quantitySetTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:layout_marginTop="7dp"
         android:text="1"
         android:textAlignment="center"
         android:textSize="28sp" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/alertPlus"
         android:layout_width="45dp"
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/ic_lock_black_24dp" />

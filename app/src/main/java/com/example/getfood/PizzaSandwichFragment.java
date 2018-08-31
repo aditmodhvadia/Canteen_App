@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +30,9 @@ public class PizzaSandwichFragment extends Fragment {
     ProgressDialog progressDialog;
     private String CATEGORY = "Pizza Sandwich";
     ArrayList<String> itemName, itemPrice;
+
+    Button alertPlus, alertMinus;
+    TextView quantitySetTV;
 
     ListView pizzaSandwichDisplayListView;
     MenuDisplayAdapter displayAdapter;
@@ -85,28 +89,49 @@ public class PizzaSandwichFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
 //                TODO: AlertDialog which confirms to add the item to cart
                 android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getContext());
-                builder.setTitle("Select Quantity");
-//                builder.setMessage("Are you sure you want to Logout?");
-//                builder.setView(R.layout.adjust_quantity_display);
-                builder.setPositiveButton("Add to Cart", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i1) {
-                        if(FoodMenuDisplayActivity.cartItemName.contains(itemName.get(i))){
-                            int pos = FoodMenuDisplayActivity.cartItemName.indexOf(itemName.get(i));
-                            FoodMenuDisplayActivity.cartItemQuantity.set(pos, FoodMenuDisplayActivity.cartItemQuantity.get(pos)+1);
-                        }
-                        else{
-                            FoodMenuDisplayActivity.cartItemName.add(itemName.get(i));
-                            FoodMenuDisplayActivity.cartItemQuantity.add(1);
-                            FoodMenuDisplayActivity.cartItemPrice.add(Integer.parseInt(itemPrice.get(i)));
-                        }
 
-//                        Toast.makeText(getContext(),FoodMenuDisplayActivity.cartItemName.toString() + "\n"
-//                                +FoodMenuDisplayActivity.cartItemQuantity.toString(),Toast.LENGTH_LONG).show();
+                View quantityAlert = getLayoutInflater().inflate(R.layout.adjust_quantity_display, null);
+                alertPlus = quantityAlert.findViewById(R.id.alertPlus);
+                alertMinus = quantityAlert.findViewById(R.id.alertMinus);
+                quantitySetTV = quantityAlert.findViewById(R.id.quantitySetTextView);
+                alertPlus.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(Integer.parseInt(quantitySetTV.getText().toString())<5){
+                            quantitySetTV.setText(String.valueOf(Integer.valueOf(quantitySetTV.getText().toString())+1));
+                        }
+                    }
+                });
+                alertMinus.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(Integer.parseInt(quantitySetTV.getText().toString())>0){
+                            quantitySetTV.setText(String.valueOf(Integer.valueOf(quantitySetTV.getText().toString())-1));
+                        }
                     }
                 });
 
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                builder.setTitle("Select Quantity");
+                builder.setView(quantityAlert);
+                builder.setPositiveButton("Add to Cart", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i1) {
+                        int quant = Integer.valueOf(quantitySetTV.getText().toString());
+                        if(quant!=0){
+                            if(FoodMenuDisplayActivity.cartItemName.contains(itemName.get(i))){
+                                int pos = FoodMenuDisplayActivity.cartItemName.indexOf(itemName.get(i));
+                                FoodMenuDisplayActivity.cartItemQuantity.set(pos, FoodMenuDisplayActivity.cartItemQuantity.get(pos)+quant);
+                            }
+                            else{
+                                FoodMenuDisplayActivity.cartItemName.add(itemName.get(i));
+                                FoodMenuDisplayActivity.cartItemQuantity.add(quant);
+                                FoodMenuDisplayActivity.cartItemPrice.add(Integer.parseInt(itemPrice.get(i)));
+                            }
+                        }
+                    }
+                });
+
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
