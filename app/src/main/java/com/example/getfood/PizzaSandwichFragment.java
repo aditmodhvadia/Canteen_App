@@ -112,6 +112,7 @@ public class PizzaSandwichFragment extends Fragment {
                 });
 
                 builder.setTitle("Select Quantity");
+                builder.setMessage(itemName.get(i));
                 builder.setView(quantityAlert);
                 builder.setPositiveButton("Add to Cart", new DialogInterface.OnClickListener() {
                     @Override

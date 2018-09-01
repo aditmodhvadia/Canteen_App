@@ -53,9 +53,9 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_menu_display);
 
-        cartItemName = new ArrayList<String>();
-        cartItemPrice = new ArrayList<Integer>();
-        cartItemQuantity = new ArrayList<Integer>();
+        cartItemName = new ArrayList<>();
+        cartItemPrice = new ArrayList<>();
+        cartItemQuantity = new ArrayList<>();
         cartButton = findViewById(R.id.cartButton);
 
         // Create the adapter that will return a fragment for each of the three
