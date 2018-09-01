@@ -29,14 +29,17 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/totalPriceTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginBottom="30dp"
-                android:text="Total: Rs. "
+                android:layout_marginEnd="15dp"
+                android:padding="5dp"
                 android:textSize="24sp" />
 
             <Button
+                android:id="@+id/orderButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -44,6 +47,7 @@
                 android:paddingBottom="20dp"
                 android:paddingLeft="40dp"
                 android:paddingRight="40dp"
+                android:elevation="2.0dp"
                 android:paddingTop="20dp"
                 android:text="Place Order"
                 android:textColor="#fff"
