@@ -84,7 +84,10 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
         cartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showCart();
+                if(cartItemName.isEmpty())
+                    Toast.makeText(getApplicationContext(),"Cart is Empty", Toast.LENGTH_LONG).show();
+                else
+                    showCart();
             }
         });
 
