@@ -92,7 +92,6 @@ public class ChineseFragment extends Fragment {
         chineseDisplayListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
-//                TODO: AlertDialog which confirms to add the item to cart
 
                 android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getContext());
 
@@ -134,6 +133,7 @@ public class ChineseFragment extends Fragment {
                                 FoodMenuDisplayActivity.cartItemQuantity.add(quant);
                                 FoodMenuDisplayActivity.cartItemPrice.add(Integer.parseInt(itemPrice.get(i)));
                             }
+                            Toast.makeText(getContext(),"Added to Cart",Toast.LENGTH_LONG).show();
                         }
                     }
                 });
