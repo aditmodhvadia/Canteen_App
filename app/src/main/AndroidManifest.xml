@@ -31,7 +31,7 @@
             android:name=".FoodMenuDisplayActivity"
             android:label="@string/title_activity_food_menu_display"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".CartActivity"></activity>
+        <activity android:name=".CartActivity"/>
     </application>
 
 </manifest>

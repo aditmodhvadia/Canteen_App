@@ -239,9 +239,6 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
 
     private void showCart(){
         Intent i = new Intent(this,CartActivity.class);
-        i.putExtra("name",cartItemName);
-        i.putExtra("price",cartItemPrice);
-        i.putExtra("quantity",cartItemQuantity);
         startActivity(i);
     }
 }
