@@ -40,10 +40,10 @@
                 android:id="@+id/cartButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?attr/colorPrimary"
                 android:layout_marginRight="7dp"
-                android:drawableLeft="@drawable/ic_cart"
                 android:layout_marginTop="6dp"
+                android:background="?attr/colorPrimary"
+                android:drawableLeft="@drawable/ic_cart"
                 android:text="Cart" />
 
         </LinearLayout>
@@ -86,28 +86,38 @@
         </android.support.design.widget.TabLayout>
     </android.support.design.widget.AppBarLayout>
 
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/container"
+    <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="95dp"
-        android:isScrollContainer="true"
-        android:nestedScrollingEnabled="true"
-        app:layout_anchorGravity="center"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:tabMode="scrollable" />
-    <!--TODO:improve the look of FAB-->
+        android:layout_marginTop="100dp"
+        android:layout_height="wrap_content">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="@dimen/fab_margin"
-        android:clickable="true"
-        android:padding="3dp"
-        app:srcCompat="@android:drawable/ic_lock_lock" />
+        <android.support.v4.view.ViewPager
+            android:id="@+id/container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="95dp"
+            android:isScrollContainer="true"
+            android:nestedScrollingEnabled="true"
+            app:layout_anchorGravity="center"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:tabMode="scrollable" />
+        <!--TODO:improve the look of FAB-->
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="@dimen/fab_margin"
+            android:clickable="true"
+            android:focusable="true"
+            android:backgroundTint="#fff"
+            app:fabSize="normal"
+            android:focusableInTouchMode="true"
+            android:padding="3dp"
+            app:srcCompat="@android:drawable/ic_lock_lock" />
+
+    </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>
