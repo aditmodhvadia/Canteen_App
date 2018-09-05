@@ -86,7 +86,7 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(cartItemName.isEmpty())
-                    Toast.makeText(getApplicationContext(),"Cart is Empty", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"Cart is Empty", Toast.LENGTH_SHORT).show();
                 else
                     showCart();
             }
@@ -204,12 +204,7 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
                 exitCount = 1;
             } else {
                 FirebaseAuth.getInstance().signOut();
-                finish();/*
-                Intent homeIntent = new Intent(Intent.ACTION_MAIN);
-                homeIntent.addCategory( Intent.CATEGORY_HOME );
-                homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(homeIntent);
-                finish();*/
+                finish();
             }
         }
     }

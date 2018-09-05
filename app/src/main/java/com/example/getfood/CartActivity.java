@@ -2,7 +2,6 @@ package com.example.getfood;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AlertDialog;
@@ -15,30 +14,27 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class CartActivity extends AppCompatActivity implements View.OnClickListener{
+public class CartActivity extends AppCompatActivity implements View.OnClickListener {
 
     ListView cartListView;
     CartDisplayAdapter cartDisplayAdapter;
 
     TextView totalPriceTV;
     Button orderButton;
-//  alertdialog views
+    //  alertdialog views
     Button alertPlus, alertMinus;
     TextView quantitySetTV;
     AlertDialog chooseTimeDialog;
 
-//    choose time views
+    //    choose time views
     Button firstBreakButton, secondBreakButton, lastBreakButton, nowButton;
 
     private int total;
@@ -72,16 +68,16 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 alertPlus.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(Integer.parseInt(quantitySetTV.getText().toString())<20){
-                            quantitySetTV.setText(String.valueOf(Integer.valueOf(quantitySetTV.getText().toString())+1));
+                        if (Integer.parseInt(quantitySetTV.getText().toString()) < 20) {
+                            quantitySetTV.setText(String.valueOf(Integer.valueOf(quantitySetTV.getText().toString()) + 1));
                         }
                     }
                 });
                 alertMinus.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(Integer.parseInt(quantitySetTV.getText().toString())>0){
-                            quantitySetTV.setText(String.valueOf(Integer.valueOf(quantitySetTV.getText().toString())-1));
+                        if (Integer.parseInt(quantitySetTV.getText().toString()) > 0) {
+                            quantitySetTV.setText(String.valueOf(Integer.valueOf(quantitySetTV.getText().toString()) - 1));
                         }
                     }
                 });
@@ -95,13 +91,12 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                     public void onClick(DialogInterface dialogInterface, int i) {
 
                         int quant = Integer.valueOf(quantitySetTV.getText().toString());
-                        if(quant!=0){
-                            FoodMenuDisplayActivity.cartItemQuantity.set(position,quant);
+                        if (quant != 0) {
+                            FoodMenuDisplayActivity.cartItemQuantity.set(position, quant);
                             cartDisplayAdapter.notifyDataSetChanged();
-                            totalPriceTV.setText("Total: Rs. " +String.valueOf(calcTotal()));
-                            Toast.makeText(getApplicationContext(),"Cart adjusted",Toast.LENGTH_SHORT).show();
-                        }
-                        else{
+                            totalPriceTV.setText("Total: Rs. " + String.valueOf(calcTotal()));
+                            Toast.makeText(getApplicationContext(), "Cart adjusted", Toast.LENGTH_SHORT).show();
+                        } else {
 //                            quantity is set to 0, hence confirm before removing the item
                             AlertDialog.Builder confirmRemoveItemBuilder = new AlertDialog.Builder(CartActivity.this);
                             confirmRemoveItemBuilder.setTitle("Are you sure you want to remove item?");
@@ -113,13 +108,13 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                                     FoodMenuDisplayActivity.cartItemPrice.remove(position);
                                     FoodMenuDisplayActivity.cartItemName.remove(position);
                                     FoodMenuDisplayActivity.cartItemCategory.remove(position);
-                                    if(FoodMenuDisplayActivity.cartItemName.isEmpty()){
-                                        Toast.makeText(getBaseContext(),"Cart is Empty",Toast.LENGTH_LONG).show();
+                                    if (FoodMenuDisplayActivity.cartItemName.isEmpty()) {
+                                        Toast.makeText(getBaseContext(), "Cart is Empty", Toast.LENGTH_LONG).show();
                                         finish();
                                     }
                                     cartDisplayAdapter.notifyDataSetChanged();
-                                    totalPriceTV.setText("Total: Rs. " +String.valueOf(calcTotal()));
-                                    Toast.makeText(getApplicationContext(),"Cart adjusted",Toast.LENGTH_SHORT).show();
+                                    totalPriceTV.setText("Total: Rs. " + String.valueOf(calcTotal()));
+                                    Toast.makeText(getApplicationContext(), "Cart adjusted", Toast.LENGTH_SHORT).show();
                                 }
                             });
 
@@ -149,7 +144,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         orderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 chooseTime();
+                chooseTime();
             }
         });
 
@@ -159,19 +154,45 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         AlertDialog.Builder chooseTimeBuilder = new AlertDialog.Builder(CartActivity.this);
         chooseTimeBuilder.setTitle("Choose a Time!");
         View chooseTimeView = getLayoutInflater().inflate(R.layout.choose_time_order, null);
-
         firstBreakButton = chooseTimeView.findViewById(R.id.firstBreakButton);
         secondBreakButton = chooseTimeView.findViewById(R.id.secondBreakButton);
         lastBreakButton = chooseTimeView.findViewById(R.id.lastBreakButton);
         nowButton = chooseTimeView.findViewById(R.id.nowButton);
+
+//        TODO: Confirm timings with Canteen
+        Calendar currTime;
+        currTime = Calendar.getInstance();
+        int hour = currTime.get(Calendar.HOUR_OF_DAY);
+        int mins = currTime.get(Calendar.MINUTE);
+        if (hour <= 8 && mins <= 20) {
+            Log.d("Debug", "Before Ordering time");
+            nowButton.setEnabled(false);
+        } else if (hour <= 10 && mins <= 50) {
+            Log.d("Debug", "Before first break");
+        } else if (hour <= 13 && mins < 15) {
+            Log.d("Debug", "Before second break");
+            firstBreakButton.setEnabled(false);
+        } else if (hour <= 16 && mins < 15) {
+            Log.d("Debug", " time");
+            firstBreakButton.setEnabled(false);
+            secondBreakButton.setEnabled(false);
+        } else if (hour <= 17 && mins <= 45) {
+            Log.d("Debug", "after 4:15");
+            firstBreakButton.setEnabled(false);
+            secondBreakButton.setEnabled(false);
+            lastBreakButton.setEnabled(false);
+
+        } else {
+            Toast.makeText(getApplicationContext(), "Cannot place order now, Order tomorrow", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         firstBreakButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
-
-
         chooseTimeBuilder.setView(chooseTimeView);
         firstBreakButton.setOnClickListener(this);
         secondBreakButton.setOnClickListener(this);
@@ -194,14 +215,14 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 FoodMenuDisplayActivity.cartItemPrice, getApplicationContext());
         cartListView.setAdapter(cartDisplayAdapter);
 //        calculate total of all the items in cart and display it
-        totalPriceTV.setText("Total: Rs. " +String.valueOf(calcTotal()));
+        totalPriceTV.setText("Total: Rs. " + String.valueOf(calcTotal()));
     }
 
     private int calcTotal() {
-        int i=0;
-        total=0;
+        int i = 0;
+        total = 0;
         for (Integer price : FoodMenuDisplayActivity.cartItemPrice) {
-            total = total + price*FoodMenuDisplayActivity.cartItemQuantity.get(i++);
+            total = total + price * FoodMenuDisplayActivity.cartItemQuantity.get(i++);
         }
         return total;
     }
@@ -212,11 +233,11 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         auth = FirebaseAuth.getInstance();
         orderRoot = FirebaseDatabase.getInstance().getReference().child("Order");
         String email = auth.getCurrentUser().getEmail();
-        String rollNo = email.substring(0,email.indexOf("@"));
+        String rollNo = email.substring(0, email.indexOf("@"));
         String orderTime = null;
 
 
-        switch(v.getId()){
+        switch (v.getId()) {
             case R.id.firstBreakButton:
                 orderTime = firstBreakButton.getText().toString();
                 break;
@@ -234,12 +255,12 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
 
-        Log.d("debug",rollNo);
-        Log.d("debug",FoodMenuDisplayActivity.cartItemCategory.get(0));
-        Log.d("debug",FoodMenuDisplayActivity.cartItemName.get(0));
-        Log.d("debug",FoodMenuDisplayActivity.cartItemPrice.get(0).toString());
-        Log.d("debug",FoodMenuDisplayActivity.cartItemQuantity.get(0).toString());
-        Log.d("debug",orderTime);
+        Log.d("debug", rollNo);
+        Log.d("debug", FoodMenuDisplayActivity.cartItemCategory.get(0));
+        Log.d("debug", FoodMenuDisplayActivity.cartItemName.get(0));
+        Log.d("debug", FoodMenuDisplayActivity.cartItemPrice.get(0).toString());
+        Log.d("debug", FoodMenuDisplayActivity.cartItemQuantity.get(0).toString());
+        Log.d("debug", orderTime);
 
         orderRoot.keepSynced(true);
 
@@ -247,14 +268,14 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
 //        check for network connectivity and proceed with order
         ConnectivityManager cm =
-                (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
 
-        if(isConnected){
-            for(int pos = 0; pos < FoodMenuDisplayActivity.cartItemName.size(); pos++){
+        if (isConnected) {
+            for (int pos = 0; pos < FoodMenuDisplayActivity.cartItemName.size(); pos++) {
                 orderRoot.child(rollNo).child(FoodMenuDisplayActivity.cartItemCategory.get(pos)).child(FoodMenuDisplayActivity.cartItemName.get(pos))
                         .child("Quantity").setValue(FoodMenuDisplayActivity.cartItemQuantity.get(pos));
             }
@@ -263,12 +284,10 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
             chooseTimeDialog.hide();
 
-            Toast.makeText(getApplicationContext(),"Order Placed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Order Placed", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "No Internet", Toast.LENGTH_SHORT).show();
         }
-        else{
-            Toast.makeText(getApplicationContext(),"No Internet", Toast.LENGTH_SHORT).show();
-        }
-
 
 
     }
