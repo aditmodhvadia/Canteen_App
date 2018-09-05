@@ -40,7 +40,7 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
     long currTime, prevTime;
     Button cartButton;
 
-    public static ArrayList<String> cartItemName;
+    public static ArrayList<String> cartItemName, cartItemCategory;
     public static ArrayList<Integer> cartItemQuantity, cartItemPrice;
 
     /**
@@ -54,6 +54,7 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_food_menu_display);
 
         cartItemName = new ArrayList<>();
+        cartItemCategory = new ArrayList<>();
         cartItemPrice = new ArrayList<>();
         cartItemQuantity = new ArrayList<>();
         cartButton = findViewById(R.id.cartButton);

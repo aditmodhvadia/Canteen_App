@@ -127,6 +127,7 @@ public class SouthIndianFragment extends Fragment {
                                 FoodMenuDisplayActivity.cartItemName.add(itemName.get(i));
                                 FoodMenuDisplayActivity.cartItemQuantity.add(quant);
                                 FoodMenuDisplayActivity.cartItemPrice.add(Integer.parseInt(itemPrice.get(i)));
+                                FoodMenuDisplayActivity.cartItemCategory.add(CATEGORY);
                             }
                             Toast.makeText(getContext(),"Added to Cart",Toast.LENGTH_LONG).show();
                         }

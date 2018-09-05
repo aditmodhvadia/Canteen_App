@@ -57,12 +57,7 @@ public class ChineseFragment extends Fragment {
         itemPrice = new ArrayList<>();
 
         chineseDisplayListView = v.findViewById(R.id.chineseDisplayListView);
-//        display progress dialog till data is fetched
-//        progressDialog.setTitle("Please Wait..");
-//        progressDialog.setMessage("Fetching data");
-//        progressDialog.show();
-//    create instance of database and keep it synced locally as well
-        String CATEGORY = "Chinese";
+        final String CATEGORY = "Chinese";
         rootFood = FirebaseDatabase.getInstance().getReference().child("Food").child(CATEGORY);
 
         rootFood.keepSynced(true);
@@ -132,6 +127,7 @@ public class ChineseFragment extends Fragment {
                                 FoodMenuDisplayActivity.cartItemName.add(itemName.get(i));
                                 FoodMenuDisplayActivity.cartItemQuantity.add(quant);
                                 FoodMenuDisplayActivity.cartItemPrice.add(Integer.parseInt(itemPrice.get(i)));
+                                FoodMenuDisplayActivity.cartItemCategory.add(CATEGORY);
                             }
                             Toast.makeText(getContext(),"Added to Cart",Toast.LENGTH_LONG).show();
                         }
