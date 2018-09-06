@@ -86,7 +86,7 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(cartItemName.isEmpty())
-                    Toast.makeText(getApplicationContext(),"Cart is Empty", Toast.LENGTH_SHORT).show();
+                makeText("Cart is Empty");
                 else
                     showCart();
             }
@@ -193,13 +193,13 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
     public void onBackPressed() {
         exitCount++;
         if (exitCount == 1) {
-            Toast.makeText(getApplicationContext(), "Press back once more to logout", Toast.LENGTH_SHORT).show();
+            makeText("Press back once more to logout");
             prevTime = System.currentTimeMillis();
         }
         if (exitCount == 2) {
             currTime = System.currentTimeMillis();
             if (currTime - prevTime > 2000) {
-                Toast.makeText(getApplicationContext(), "Press back once more to logout", Toast.LENGTH_SHORT).show();
+                makeText("Press back once more to logout");
                 prevTime = System.currentTimeMillis();
                 exitCount = 1;
             } else {
@@ -236,5 +236,9 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
     private void showCart(){
         Intent i = new Intent(this,CartActivity.class);
         startActivity(i);
+    }
+
+    public void makeText(String msg){
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 }

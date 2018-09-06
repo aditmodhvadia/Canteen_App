@@ -95,7 +95,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                             FoodMenuDisplayActivity.cartItemQuantity.set(position, quant);
                             cartDisplayAdapter.notifyDataSetChanged();
                             totalPriceTV.setText("Total: Rs. " + String.valueOf(calcTotal()));
-                            Toast.makeText(getApplicationContext(), "Cart adjusted", Toast.LENGTH_SHORT).show();
+                            makeText("Cart Adjusted");
                         } else {
 //                            quantity is set to 0, hence confirm before removing the item
                             AlertDialog.Builder confirmRemoveItemBuilder = new AlertDialog.Builder(CartActivity.this);
@@ -109,12 +109,12 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                                     FoodMenuDisplayActivity.cartItemName.remove(position);
                                     FoodMenuDisplayActivity.cartItemCategory.remove(position);
                                     if (FoodMenuDisplayActivity.cartItemName.isEmpty()) {
-                                        Toast.makeText(getBaseContext(), "Cart is Empty", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getBaseContext(),"Cart is Empty",Toast.LENGTH_SHORT).show();
                                         finish();
                                     }
                                     cartDisplayAdapter.notifyDataSetChanged();
                                     totalPriceTV.setText("Total: Rs. " + String.valueOf(calcTotal()));
-                                    Toast.makeText(getApplicationContext(), "Cart adjusted", Toast.LENGTH_SHORT).show();
+                                    makeText("Cart Adjusted");
                                 }
                             });
 
@@ -166,7 +166,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         int mins = currTime.get(Calendar.MINUTE);
         if (hour< 8 || (hour == 8 && mins <= 20)) {
             Log.d("Debug", "Before Ordering time");
-            Toast.makeText(getApplicationContext(), "Cannot place order now, Order after 08:20 AM", Toast.LENGTH_SHORT).show();
+            makeText("Cannot place order now, Order after 08:20 AM");
             return;
         } else if(hour< 8 || (hour == 8 && mins <= 45)){
             Log.d("Debug", "Between 8:20 and 8:45");
@@ -188,7 +188,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             lastBreakButton.setEnabled(false);
 
         } else {
-            Toast.makeText(getApplicationContext(), "Cannot place order now, Order tomorrow", Toast.LENGTH_SHORT).show();
+            makeText("Cannot place order now, Order tomorrow");
             return;
         }
 
@@ -289,11 +289,15 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
             chooseTimeDialog.hide();
 
-            Toast.makeText(getApplicationContext(), "Order Placed", Toast.LENGTH_SHORT).show();
+            makeText("Order Placed");
         } else {
-            Toast.makeText(getApplicationContext(), "No Internet", Toast.LENGTH_SHORT).show();
+            makeText("No Internet");
         }
 
 
+    }
+
+    public void makeText(String msg){
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 }

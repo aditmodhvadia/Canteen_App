@@ -133,7 +133,7 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
+            // Show 2 total pages.
             return 2;
         }
     }
@@ -142,13 +142,13 @@ public class LoginActivity extends AppCompatActivity {
     public void onBackPressed() {
         exitCount++;
         if (exitCount == 1) {
-            Toast.makeText(getApplicationContext(), "Press back once more to exit", Toast.LENGTH_SHORT).show();
+            makeText("Press back once more to exit");
             prevTime = System.currentTimeMillis();
         }
         if (exitCount == 2) {
             currTime = System.currentTimeMillis();
             if (currTime - prevTime > 2000) {
-                Toast.makeText(getApplicationContext(), "Press back once more to exit", Toast.LENGTH_SHORT).show();
+                makeText("Press back once more to exit");
                 prevTime = System.currentTimeMillis();
                 exitCount = 1;
             } else {
@@ -161,5 +161,9 @@ public class LoginActivity extends AppCompatActivity {
                 finish();*/
             }
         }
+    }
+
+    public void makeText(String msg){
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 }
