@@ -164,19 +164,24 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         currTime = Calendar.getInstance();
         int hour = currTime.get(Calendar.HOUR_OF_DAY);
         int mins = currTime.get(Calendar.MINUTE);
-        if (hour <= 8 && mins <= 20) {
+        if (hour< 8 || (hour == 8 && mins <= 20)) {
             Log.d("Debug", "Before Ordering time");
+            Toast.makeText(getApplicationContext(), "Cannot place order now, Order after 08:20 AM", Toast.LENGTH_SHORT).show();
+            return;
+        } else if(hour< 8 || (hour == 8 && mins <= 45)){
+            Log.d("Debug", "Between 8:20 and 8:45");
             nowButton.setEnabled(false);
-        } else if (hour <= 10 && mins <= 50) {
+        }
+        else if (hour < 10 || (hour == 10 && mins <= 50)) {
             Log.d("Debug", "Before first break");
-        } else if (hour <= 13 && mins < 15) {
+        } else if (hour < 13 || (hour == 13 && mins < 15)) {
             Log.d("Debug", "Before second break");
             firstBreakButton.setEnabled(false);
-        } else if (hour <= 16 && mins < 15) {
+        } else if (hour < 16 || (hour == 16 && mins < 15)) {
             Log.d("Debug", " time");
             firstBreakButton.setEnabled(false);
             secondBreakButton.setEnabled(false);
-        } else if (hour <= 17 && mins <= 45) {
+        } else if (hour < 17 || (hour == 17 && mins <= 45)) {
             Log.d("Debug", "after 4:15");
             firstBreakButton.setEnabled(false);
             secondBreakButton.setEnabled(false);

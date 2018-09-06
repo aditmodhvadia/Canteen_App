@@ -96,7 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="95dp"
+            android:layout_marginTop="3dp"
             android:isScrollContainer="true"
             android:nestedScrollingEnabled="true"
             app:layout_anchorGravity="center"
