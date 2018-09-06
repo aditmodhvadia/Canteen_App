@@ -2,8 +2,11 @@ package com.example.getfood;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,8 +18,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Transaction;
+import com.google.firebase.database.ValueEventListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -39,8 +46,10 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
     private int total;
 
-    DatabaseReference orderRoot;
+    DatabaseReference orderRoot, root;
     FirebaseAuth auth;
+    String rollNo;
+    String orderTime = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +118,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                                     FoodMenuDisplayActivity.cartItemName.remove(position);
                                     FoodMenuDisplayActivity.cartItemCategory.remove(position);
                                     if (FoodMenuDisplayActivity.cartItemName.isEmpty()) {
-                                        Toast.makeText(getBaseContext(),"Cart is Empty",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getBaseContext(), "Cart is Empty", Toast.LENGTH_SHORT).show();
                                         finish();
                                     }
                                     cartDisplayAdapter.notifyDataSetChanged();
@@ -164,15 +173,15 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         currTime = Calendar.getInstance();
         int hour = currTime.get(Calendar.HOUR_OF_DAY);
         int mins = currTime.get(Calendar.MINUTE);
-        if (hour< 8 || (hour == 8 && mins <= 20)) {
+
+        if (hour < 8 || (hour == 8 && mins <= 20)) {
             Log.d("Debug", "Before Ordering time");
             makeText("Cannot place order now, Order after 08:20 AM");
             return;
-        } else if(hour< 8 || (hour == 8 && mins <= 45)){
+        } else if (hour < 8 || (hour == 8 && mins <= 45)) {
             Log.d("Debug", "Between 8:20 and 8:45");
             nowButton.setEnabled(false);
-        }
-        else if (hour < 10 || (hour == 10 && mins <= 50)) {
+        } else if (hour < 10 || (hour == 10 && mins <= 50)) {
             Log.d("Debug", "Before first break");
         } else if (hour < 13 || (hour == 13 && mins < 15)) {
             Log.d("Debug", "Before second break");
@@ -191,13 +200,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             makeText("Cannot place order now, Order tomorrow");
             return;
         }
-
-        firstBreakButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
         chooseTimeBuilder.setView(chooseTimeView);
         firstBreakButton.setOnClickListener(this);
         secondBreakButton.setOnClickListener(this);
@@ -233,14 +235,28 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        if(FoodMenuDisplayActivity.cartItemName.isEmpty()){
+            finish();
+        }
+    }
+
+    @Override
     public void onClick(View v) {
-//        TODO:check whether the times listed have passed with respect to the current time and disable those button/options
+
+        //Before placing the order, PayTM Gateway will be called and the code will be shifted into it's method
+
+        placeOrder(v);
+
+    }
+
+    private void placeOrder(View v) {
+
         auth = FirebaseAuth.getInstance();
         orderRoot = FirebaseDatabase.getInstance().getReference().child("Order");
         String email = auth.getCurrentUser().getEmail();
-        String rollNo = email.substring(0, email.indexOf("@"));
-        String orderTime = null;
-
+        rollNo = email.substring(0, email.indexOf("@"));
 
         switch (v.getId()) {
             case R.id.firstBreakButton:
@@ -260,13 +276,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
 
-        Log.d("debug", rollNo);
-        Log.d("debug", FoodMenuDisplayActivity.cartItemCategory.get(0));
-        Log.d("debug", FoodMenuDisplayActivity.cartItemName.get(0));
-        Log.d("debug", FoodMenuDisplayActivity.cartItemPrice.get(0).toString());
-        Log.d("debug", FoodMenuDisplayActivity.cartItemQuantity.get(0).toString());
-        Log.d("debug", orderTime);
-
         orderRoot.keepSynced(true);
 
 //        TODO: generate unique Order ID and redirect user to Order Activity, before that accept the payment.
@@ -278,26 +287,57 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
-
         if (isConnected) {
-            for (int pos = 0; pos < FoodMenuDisplayActivity.cartItemName.size(); pos++) {
-                orderRoot.child(rollNo).child(FoodMenuDisplayActivity.cartItemCategory.get(pos)).child(FoodMenuDisplayActivity.cartItemName.get(pos))
-                        .child("Quantity").setValue(FoodMenuDisplayActivity.cartItemQuantity.get(pos));
-            }
-            orderRoot.child(rollNo).child("Total Amount").setValue(String.valueOf(calcTotal()));
-            orderRoot.child(rollNo).child("Time to deliver").setValue(orderTime);
+            orderRoot.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    long orderID = dataSnapshot.getChildrenCount();
+                    generateOrder(++orderID);
 
-            chooseTimeDialog.hide();
+                }
 
-            makeText("Order Placed");
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
         } else {
             makeText("No Internet");
         }
-
-
     }
 
-    public void makeText(String msg){
+    private void generateOrder(long orderID) {
+
+        for (int pos = 0; pos < FoodMenuDisplayActivity.cartItemName.size(); pos++) {
+            orderRoot.child(String.valueOf(orderID)).child(rollNo).child(FoodMenuDisplayActivity.cartItemCategory.get(pos)).child(FoodMenuDisplayActivity.cartItemName.get(pos))
+                    .child("Quantity").setValue(FoodMenuDisplayActivity.cartItemQuantity.get(pos));
+        }
+        orderRoot.child(String.valueOf(orderID)).child(rollNo).child("Total Amount").setValue(String.valueOf(calcTotal()));
+        orderRoot.child(String.valueOf(orderID)).child(rollNo).child("Time to deliver").setValue(orderTime);
+
+//        store value of orderID for future reference
+        root = FirebaseDatabase.getInstance().getReference().child("OrderData");
+
+        root.child(rollNo).child(String.valueOf(orderID)).child("Status").setValue("Ordered");
+        chooseTimeDialog.hide();
+
+        Intent orderIntent = new Intent(CartActivity.this, OrderActivity.class);
+        orderIntent.putExtra("OrderID", orderID);
+        orderIntent.putExtra("RollNo", rollNo);
+
+
+//        reseting the cart
+        FoodMenuDisplayActivity.cartItemName.clear();
+        FoodMenuDisplayActivity.cartItemCategory.clear();
+        FoodMenuDisplayActivity.cartItemQuantity.clear();
+        FoodMenuDisplayActivity.cartItemPrice.clear();
+
+        startActivity(orderIntent);
+//        launched order activity
+    }
+
+    public void makeText(String msg) {
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 }
