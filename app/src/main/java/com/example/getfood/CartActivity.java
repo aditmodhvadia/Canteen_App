@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -22,7 +21,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -323,8 +321,21 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         chooseTimeDialog.hide();
 
         Intent orderIntent = new Intent(CartActivity.this, OrderActivity.class);
-        orderIntent.putExtra("OrderID", orderID);
+        orderIntent.putExtra("OrderID", String.valueOf(orderID));
         orderIntent.putExtra("RollNo", rollNo);
+        Bundle args = new Bundle();
+        args.putStringArrayList("ItemName", FoodMenuDisplayActivity.cartItemName);
+        args.putIntegerArrayList("ItemPrice", FoodMenuDisplayActivity.cartItemPrice);
+        args.putIntegerArrayList("ItemQuantity", FoodMenuDisplayActivity.cartItemQuantity);
+//        orderIntent.putExtra("BUNDLE", args);
+        orderIntent.putExtras(args);
+//        orderIntent.putExtra("ItemName",FoodMenuDisplayActivity.cartItemName);.
+
+//        orderIntent.putStringArrayListExtra("ItemName",FoodMenuDisplayActivity.cartItemName);
+//        orderIntent.putIntegerArrayListExtra("ItemPrice",FoodMenuDisplayActivity.cartItemPrice);
+//        orderIntent.putIntegerArrayListExtra("ItemQuantity",FoodMenuDisplayActivity.cartItemQuantity);
+//        orderIntent.putStringArrayListExtra("ItemName",FoodMenuDisplayActivity.cartItemCategory);
+        orderIntent.putExtra("Total",calcTotal());
 
 
 //        reseting the cart

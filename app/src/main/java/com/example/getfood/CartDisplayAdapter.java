@@ -53,8 +53,12 @@ public class CartDisplayAdapter extends BaseAdapter {
 
         itemNameTextView.setText(cartItemName.get(i));
         itemQuantityTextView.setText(cartItemQuantity.get(i).toString());
-        itemPriceTextView.setText("Price: Rs. "+cartItemPrice.get(i).toString());
-
+        if(cartItemPrice == null){
+            itemPriceTextView.setText("");
+        }
+        else{
+            itemPriceTextView.setText("Price: Rs. "+cartItemPrice.get(i).toString());
+        }
         return vi;
     }
 }

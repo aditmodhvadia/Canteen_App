@@ -11,8 +11,12 @@
         android:id="@+id/testTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="28sp"
         android:layout_gravity="center"
-        />
+        android:textSize="28sp" />
+
+    <ListView
+        android:id="@+id/orderListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>
