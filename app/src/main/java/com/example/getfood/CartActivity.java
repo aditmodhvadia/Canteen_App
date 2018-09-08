@@ -1,11 +1,18 @@
 package com.example.getfood;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,12 +23,14 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -170,9 +179,9 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         Calendar currTime;
         currTime = Calendar.getInstance();
 //        check if it is a sunday, then ordering is closed TODO: confirm with docs for the value of Sunday in Calendar
-        currTime.set(Calendar.DAY_OF_WEEK,currTime.get(Calendar.DAY_OF_WEEK)-1);
-        if(currTime.get(Calendar.DAY_OF_WEEK) == 7){
-            makeText("Cannot order on Sunday, Order Tomorrow" +currTime.get(Calendar.DAY_OF_WEEK));
+        currTime.set(Calendar.DAY_OF_WEEK, currTime.get(Calendar.DAY_OF_WEEK) - 1);
+        if (currTime.get(Calendar.DAY_OF_WEEK) == 7) {
+            makeText("Cannot order on Sunday, Order Tomorrow" + currTime.get(Calendar.DAY_OF_WEEK));
             return;
         }
         int hour = currTime.get(Calendar.HOUR_OF_DAY);
@@ -241,7 +250,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        if(FoodMenuDisplayActivity.cartItemName.isEmpty()){
+        if (FoodMenuDisplayActivity.cartItemName.isEmpty()) {
             finish();
         }
     }
@@ -329,19 +338,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         Intent orderIntent = new Intent(CartActivity.this, OrderActivity.class);
         orderIntent.putExtra("OrderID", String.valueOf(orderID));
         orderIntent.putExtra("RollNo", rollNo);
-        Bundle args = new Bundle();
-        args.putStringArrayList("ItemName", FoodMenuDisplayActivity.cartItemName);
-        args.putIntegerArrayList("ItemPrice", FoodMenuDisplayActivity.cartItemPrice);
-        args.putIntegerArrayList("ItemQuantity", FoodMenuDisplayActivity.cartItemQuantity);
-//        orderIntent.putExtra("BUNDLE", args);
-        orderIntent.putExtras(args);
-//        orderIntent.putExtra("ItemName",FoodMenuDisplayActivity.cartItemName);.
-
-//        orderIntent.putStringArrayListExtra("ItemName",FoodMenuDisplayActivity.cartItemName);
-//        orderIntent.putIntegerArrayListExtra("ItemPrice",FoodMenuDisplayActivity.cartItemPrice);
-//        orderIntent.putIntegerArrayListExtra("ItemQuantity",FoodMenuDisplayActivity.cartItemQuantity);
-//        orderIntent.putStringArrayListExtra("ItemName",FoodMenuDisplayActivity.cartItemCategory);
-        orderIntent.putExtra("Total",calcTotal());
+        orderIntent.putExtra("Total", calcTotal());
 
 
 //        reseting the cart
@@ -350,9 +347,12 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         FoodMenuDisplayActivity.cartItemQuantity.clear();
         FoodMenuDisplayActivity.cartItemPrice.clear();
 
+
         startActivity(orderIntent);
 //        launched order activity
     }
+
+
 
     public void makeText(String msg) {
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();

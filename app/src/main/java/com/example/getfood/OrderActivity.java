@@ -1,7 +1,13 @@
 package com.example.getfood;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
@@ -26,6 +32,7 @@ public class OrderActivity extends AppCompatActivity {
     ArrayList<Integer> orderItemPrice, orderItemQuantity;
     int orderTotal;
     String orderID, rollNo, orderTime, orderTotalPrice;
+    Intent orderData;
 
 
     DatabaseReference root;
@@ -43,22 +50,16 @@ public class OrderActivity extends AppCompatActivity {
         orderItemPrice = new ArrayList<>();
         orderItemCategory = new ArrayList<>();
 
-        Intent orderData = getIntent();
+        orderData = getIntent();
         if(orderData.getExtras().isEmpty()){
             Toast.makeText(getApplicationContext(), "No Data Received", Toast.LENGTH_SHORT).show();
             return;
         }
+        createNotificationChannel();
+
         orderID = orderData.getExtras().getString("OrderID");
         orderTotal = orderData.getExtras().getInt("Total");
         rollNo = orderData.getExtras().getString("RollNo");
-//        Arraylist returns null from the cart Activity
-//        orderItemName = (ArrayList<String>) orderData.getExtras().get("ItemName");
-//        orderItemPrice = (ArrayList<Integer>) orderData.getIntegerArrayListExtra("ItemPrice").clone();
-//        orderItemQuantity = (ArrayList<Integer>) orderData.getIntegerArrayListExtra("ItemQuantity").clone();
-//        Toast.makeText(getApplicationContext(), orderItemName.toString(), Toast.LENGTH_SHORT).show();
-//        Bundle args = orderData.getBundleExtra("BUNDLE");
-//        Bundle args = orderData.getExtras();
-//        orderItemName = args.getStringArrayList("ItemName");
 
         root = FirebaseDatabase.getInstance().getReference().child("Order").child(orderID).child(rollNo);
         root.addValueEventListener(new ValueEventListener() {
@@ -92,6 +93,78 @@ public class OrderActivity extends AppCompatActivity {
 
 
         testTV.setText("Order ID is " +orderID);
+    }
 
+    public void customNotification() {
+        createNotificationChannel();
+
+        Intent i = new Intent(this, OrderActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        i.putExtra("OrderID",orderID);
+        i.putExtra("Total", orderTotal);
+        i.putExtra("RollNo",rollNo);
+        PendingIntent pi = PendingIntent.getActivity(this, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "default")
+                .setSmallIcon(R.drawable.btn_clear)
+                .setContentTitle("Your Order")
+                .setContentText("Order is being cooked")
+                .setVibrate(new long[]{0, 400, 200, 400})
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText("Much longer text that cannot fit one line..."))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setAutoCancel(true)
+                .addAction(R.drawable.ic_person_add_black_48dp, "Open", pi)
+                .setContentIntent(pi);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+        notificationManager.notify(0, mBuilder.build());
+
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        customNotification();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        customNotification();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        customNotification();
+    }
+
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        customNotification();
+//    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        orderData = intent;
+    }
+
+    private void createNotificationChannel() {
+//        create notification channel only for Builds greater than Oreo(8.0)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Order Channel";
+            String description = "Primary display";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("default", name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 }
