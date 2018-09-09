@@ -1,42 +1,58 @@
 package com.example.getfood;
 
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.paytm.pgsdk.PaytmOrder;
+import com.paytm.pgsdk.PaytmPGService;
+import com.paytm.pgsdk.PaytmPaymentTransactionCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.zip.Checksum;
 
-public class CartActivity extends AppCompatActivity implements View.OnClickListener {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+public class CartActivity extends AppCompatActivity implements View.OnClickListener, PaytmPaymentTransactionCallback {
 
     ListView cartListView;
     CartDisplayAdapter cartDisplayAdapter;
@@ -47,6 +63,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     Button alertPlus, alertMinus;
     TextView quantitySetTV;
     AlertDialog chooseTimeDialog;
+    Intent orderIntent;
 
     //    choose time views
     Button firstBreakButton, secondBreakButton, lastBreakButton, nowButton;
@@ -62,6 +79,8 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         cartListView = findViewById(R.id.cartListView);
 
@@ -248,6 +267,12 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+    }
+
+    @Override
     protected void onPostResume() {
         super.onPostResume();
         if (FoodMenuDisplayActivity.cartItemName.isEmpty()) {
@@ -259,9 +284,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
 
         //Before placing the order, PayTM Gateway will be called and the code will be shifted into it's method
-
         placeOrder(v);
-
     }
 
     private void placeOrder(View v) {
@@ -335,7 +358,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         root.child(rollNo).child(String.valueOf(orderID)).child("Status").setValue("Ordered");
         chooseTimeDialog.hide();
 
-        Intent orderIntent = new Intent(CartActivity.this, OrderActivity.class);
+        orderIntent = new Intent(CartActivity.this, OrderActivity.class);
         orderIntent.putExtra("OrderID", String.valueOf(orderID));
         orderIntent.putExtra("RollNo", rollNo);
         orderIntent.putExtra("Total", calcTotal());
@@ -348,11 +371,132 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         FoodMenuDisplayActivity.cartItemPrice.clear();
 
 
-        startActivity(orderIntent);
+        generateCheckSumVoley();
+//        generate checksum from server and pass all details to paytm
 //        launched order activity
     }
 
 
+    private void generateCheckSumVoley() {
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("MID", "GetFoo88084336099945");
+        map.put("ORDER_ID", "voleyworks4");
+        map.put("CUST_ID", "15bce001");
+        map.put("INDUSTRY_TYPE_ID", "Retail");
+        map.put("CHANNEL_ID", "WAP");
+        map.put("TXN_AMOUNT", String.valueOf(total));
+        map.put("WEBSITE", "APPSTAGING");
+        map.put("CALLBACK_URL", "https://securegw.paytm.in/theia/paytmCallback?ORDER_ID=<voleyworks4>");
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.POST, "https://adit-canteen-alay1012.c9users.io/paytm/generateChecksum.php", new JSONObject(map), new com.android.volley.Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+//                            makeText(response.getString("CHECKSUMHASH"));
+                            Log.d("response", "Our server Checksum was " + response.getString("CHECKSUMHASH"));
+//                            call paytm activity with the checksum received
+                            initializePaytmPayment(response.getString("CHECKSUMHASH"), null);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new com.android.volley.Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        makeText("Did not work");
+//                        Log.d("newerror", error.networkResponse.toString());
+                    }
+                });
+
+        queue.add(jsonObjectRequest);
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                20000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+    }
+
+    private void initializePaytmPayment(String checksumHash, Paytm paytm) {
+
+        //getting paytm service
+        PaytmPGService Service = PaytmPGService.getStagingService();
+
+        //use this when using for production
+        //PaytmPGService Service = PaytmPGService.getProductionService();
+
+        //creating a hashmap and adding all the values required
+//        dummy values as of now for testing purposes
+        Map<String, String> paramMap = new HashMap<>();
+        paramMap.put("MID", "GetFoo88084336099945");
+        paramMap.put("ORDER_ID", "voleyworks4");
+        paramMap.put("CUST_ID", "15bce001");
+        paramMap.put("INDUSTRY_TYPE_ID", "Retail");
+        paramMap.put("CHANNEL_ID", "WAP");
+        paramMap.put("TXN_AMOUNT", String.valueOf(total));
+        paramMap.put("WEBSITE", "APPSTAGING");
+        paramMap.put("CALLBACK_URL", "https://securegw.paytm.in/theia/paytmCallback?ORDER_ID=<voleyworks4>");
+        paramMap.put("CHECKSUMHASH", checksumHash);
+
+
+        //creating a paytm order object using the hashmap
+        PaytmOrder order = new PaytmOrder(paramMap);
+
+        //intializing the paytm service
+        Service.initialize(order, null);
+
+        //finally starting the payment transaction
+        Service.startPaymentTransaction(this, true, true, this);
+
+    }
+
+    //all these overriden method is to detect the payment result accordingly
+    @Override
+    public void onTransactionResponse(Bundle bundle) {
+
+        Toast.makeText(this, bundle.toString(), Toast.LENGTH_LONG).show();
+        Log.d("PayTM", bundle.toString());
+        Log.d("response", "Checksum from Paytm server was " + bundle.getString("CHECKSUMHASH"));
+        startActivity(orderIntent);
+    }
+
+    @Override
+    public void networkNotAvailable() {
+        Toast.makeText(this, "Network error", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void clientAuthenticationFailed(String s) {
+        Toast.makeText(this, s, Toast.LENGTH_LONG).show();
+        Log.d("PayTM", s);
+    }
+
+    @Override
+    public void someUIErrorOccurred(String s) {
+        Toast.makeText(this, s, Toast.LENGTH_LONG).show();
+        Log.d("PayTM", s);
+    }
+
+    @Override
+    public void onErrorLoadingWebPage(int i, String s, String s1) {
+        Toast.makeText(this, s, Toast.LENGTH_LONG).show();
+        Log.d("PayTM", s + " " + s1);
+    }
+
+    @Override
+    public void onBackPressedCancelTransaction() {
+        Toast.makeText(this, "Back Pressed", Toast.LENGTH_LONG).show();
+
+    }
+
+    @Override
+    public void onTransactionCancel(String s, Bundle bundle) {
+        Toast.makeText(this, s + bundle.toString(), Toast.LENGTH_LONG).show();
+        Log.d("PayTM", bundle.toString());
+    }
 
     public void makeText(String msg) {
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
