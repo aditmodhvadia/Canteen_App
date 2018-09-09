@@ -44,13 +44,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.zip.Checksum;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CartActivity extends AppCompatActivity implements View.OnClickListener, PaytmPaymentTransactionCallback {
 
@@ -200,7 +193,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 //        check if it is a sunday, then ordering is closed TODO: confirm with docs for the value of Sunday in Calendar
         currTime.set(Calendar.DAY_OF_WEEK, currTime.get(Calendar.DAY_OF_WEEK) - 1);
         if (currTime.get(Calendar.DAY_OF_WEEK) == 7) {
-            makeText("Cannot order on Sunday, Order Tomorrow" + currTime.get(Calendar.DAY_OF_WEEK));
+            makeText("Cannot order on Sunday, Order Tomorrow");
             return;
         }
         int hour = currTime.get(Calendar.HOUR_OF_DAY);
@@ -363,32 +356,23 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         orderIntent.putExtra("RollNo", rollNo);
         orderIntent.putExtra("Total", calcTotal());
 
-
-//        reseting the cart
-        FoodMenuDisplayActivity.cartItemName.clear();
-        FoodMenuDisplayActivity.cartItemCategory.clear();
-        FoodMenuDisplayActivity.cartItemQuantity.clear();
-        FoodMenuDisplayActivity.cartItemPrice.clear();
-
-
         generateCheckSumVoley();
 //        generate checksum from server and pass all details to paytm
 //        launched order activity
     }
-
 
     private void generateCheckSumVoley() {
 
         RequestQueue queue = Volley.newRequestQueue(this);
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("MID", "GetFoo88084336099945");
-        map.put("ORDER_ID", "voleyworks4");
+        map.put("ORDER_ID", "voleyworks6");
         map.put("CUST_ID", "15bce001");
         map.put("INDUSTRY_TYPE_ID", "Retail");
         map.put("CHANNEL_ID", "WAP");
         map.put("TXN_AMOUNT", String.valueOf(total));
         map.put("WEBSITE", "APPSTAGING");
-        map.put("CALLBACK_URL", "https://securegw.paytm.in/theia/paytmCallback?ORDER_ID=<voleyworks4>");
+        map.put("CALLBACK_URL", "https://securegw.paytm.in/theia/paytmCallback?ORDER_ID=<voleyworks6>");
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.POST, "https://adit-canteen-alay1012.c9users.io/paytm/generateChecksum.php", new JSONObject(map), new com.android.volley.Response.Listener<JSONObject>() {
@@ -432,14 +416,15 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 //        dummy values as of now for testing purposes
         Map<String, String> paramMap = new HashMap<>();
         paramMap.put("MID", "GetFoo88084336099945");
-        paramMap.put("ORDER_ID", "voleyworks4");
+        paramMap.put("ORDER_ID", "voleyworks6");
         paramMap.put("CUST_ID", "15bce001");
         paramMap.put("INDUSTRY_TYPE_ID", "Retail");
         paramMap.put("CHANNEL_ID", "WAP");
         paramMap.put("TXN_AMOUNT", String.valueOf(total));
-        paramMap.put("WEBSITE", "APPSTAGING");
-        paramMap.put("CALLBACK_URL", "https://securegw.paytm.in/theia/paytmCallback?ORDER_ID=<voleyworks4>");
+        paramMap.put("WEBSITE", "APPSTAGING");//https://pguat.paytm.com/paytmchecksum/paytmCallback.jsp
+        paramMap.put("CALLBACK_URL", "https://securegw.paytm.in/theia/paytmCallback?ORDER_ID=<voleyworks6>");
         paramMap.put("CHECKSUMHASH", checksumHash);
+
 
 
         //creating a paytm order object using the hashmap
@@ -460,6 +445,13 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         Toast.makeText(this, bundle.toString(), Toast.LENGTH_LONG).show();
         Log.d("PayTM", bundle.toString());
         Log.d("response", "Checksum from Paytm server was " + bundle.getString("CHECKSUMHASH"));
+
+//        reseting the cart
+        FoodMenuDisplayActivity.cartItemName.clear();
+        FoodMenuDisplayActivity.cartItemCategory.clear();
+        FoodMenuDisplayActivity.cartItemQuantity.clear();
+        FoodMenuDisplayActivity.cartItemPrice.clear();
+
         startActivity(orderIntent);
     }
 
