@@ -6,11 +6,10 @@
     android:orientation="vertical"
     tools:context=".PizzaSandwichFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <ListView
         android:id="@+id/pizzaSandwichDisplayListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:listSelector="@drawable/list_selector" />
 
 </LinearLayout>
