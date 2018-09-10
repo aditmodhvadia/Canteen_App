@@ -366,13 +366,13 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         RequestQueue queue = Volley.newRequestQueue(this);
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("MID", "GetFoo88084336099945");
-        map.put("ORDER_ID", "voleyworks6");
+        map.put("ORDER_ID", "voleyworks10");
         map.put("CUST_ID", "15bce001");
         map.put("INDUSTRY_TYPE_ID", "Retail");
         map.put("CHANNEL_ID", "WAP");
         map.put("TXN_AMOUNT", String.valueOf(total));
         map.put("WEBSITE", "APPSTAGING");
-        map.put("CALLBACK_URL", "https://securegw.paytm.in/theia/paytmCallback?ORDER_ID=<voleyworks6>");
+        map.put("CALLBACK_URL", "https://securegw.paytm.in/theia/paytmCallback?ORDER_ID=<voleyworks10>");
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.POST, "https://adit-canteen-alay1012.c9users.io/paytm/generateChecksum.php", new JSONObject(map), new com.android.volley.Response.Listener<JSONObject>() {
@@ -416,13 +416,13 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 //        dummy values as of now for testing purposes
         Map<String, String> paramMap = new HashMap<>();
         paramMap.put("MID", "GetFoo88084336099945");
-        paramMap.put("ORDER_ID", "voleyworks6");
+        paramMap.put("ORDER_ID", "voleyworks10");
         paramMap.put("CUST_ID", "15bce001");
         paramMap.put("INDUSTRY_TYPE_ID", "Retail");
         paramMap.put("CHANNEL_ID", "WAP");
         paramMap.put("TXN_AMOUNT", String.valueOf(total));
-        paramMap.put("WEBSITE", "APPSTAGING");//https://pguat.paytm.com/paytmchecksum/paytmCallback.jsp
-        paramMap.put("CALLBACK_URL", "https://securegw.paytm.in/theia/paytmCallback?ORDER_ID=<voleyworks6>");
+        paramMap.put("WEBSITE", "APPSTAGING");
+        paramMap.put("CALLBACK_URL", "https://securegw.paytm.in/theia/paytmCallback?ORDER_ID=<voleyworks10>");
         paramMap.put("CHECKSUMHASH", checksumHash);
 
 
