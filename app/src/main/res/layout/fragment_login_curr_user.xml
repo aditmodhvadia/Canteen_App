@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginFragment">
+    tools:context=".LoginFragment"
+    android:background="@drawable/background_red">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,10 +17,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="60dp"
-            android:background="@color/colorPrimary"
+            android:background="#60f9cbc8"
             android:drawableStart="@drawable/ic_person_black_24dp"
             android:hint=" Email ID"
-            android:padding="7dp"
+            android:padding="8dp"
             android:textColor="#fff"
             android:textColorHint="#d3d3d3" />
 
@@ -29,11 +30,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:background="@color/colorPrimary"
+            android:background="#60f9cbc8"
             android:drawableStart="@drawable/ic_lock_black_24dp"
             android:hint=" Password"
             android:inputType="textPassword"
-            android:padding="7dp"
+            android:padding="8dp"
             android:textColor="#fff"
             android:textColorHint="#d3d3d3" />
 
@@ -47,10 +48,10 @@
             android:layout_marginTop="10dp"
             android:shadowColor="#fff"
             android:text="Show Password"
-            android:textColor="#000"
-            android:textColorHighlight="#000"
-            android:textColorHint="#000"
-            android:textColorLink="#000" />
+            android:textColor="#fec9c9"
+            android:textColorHighlight="#fec9c9"
+            android:textColorHint="#fec9c9"
+            android:textColorLink="#fec9c9" />
 
         <Button
             android:id="@+id/userLoginButton"
@@ -72,7 +73,7 @@
             android:text="Forgot Password?"
             android:layout_marginTop="5dp"
             android:layout_gravity="center"
-            android:textColor="#000" />
+            android:textColor="#fec9c9" />
 
 
     </LinearLayout>
