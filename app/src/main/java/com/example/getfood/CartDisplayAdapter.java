@@ -1,11 +1,17 @@
 package com.example.getfood;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -15,7 +21,7 @@ public class CartDisplayAdapter extends BaseAdapter {
     ArrayList<Integer> cartItemQuantity, cartItemPrice;
     Context context;
 
-    TextView itemQuantityTextView,itemNameTextView,itemPriceTextView;
+    TextView itemQuantityTextView, itemNameTextView, itemPriceTextView;
 
     public CartDisplayAdapter(ArrayList<String> cartItemName, ArrayList<Integer> cartItemQuantity, ArrayList<Integer> cartItemPrice, Context context) {
         this.cartItemName = cartItemName;
@@ -43,22 +49,84 @@ public class CartDisplayAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(final int i, View view, ViewGroup viewGroup) {
+
 
         View vi = view;
-        vi = inflater.inflate(R.layout.cart_display_customlistview, null);
-        itemNameTextView = vi.findViewById(R.id.itemNameTextView);
-        itemPriceTextView = vi.findViewById(R.id.itemPriceTextView);
-        itemQuantityTextView = vi.findViewById(R.id.itemQuantityTextView);
+        ViewHolder mainViewHolder = null;
+        if (view == null) {
+            vi = inflater.inflate(R.layout.cart_display_customlistview, null);
 
-        itemNameTextView.setText(cartItemName.get(i));
-        itemQuantityTextView.setText(cartItemQuantity.get(i).toString());
-        if(cartItemPrice == null){
-            itemPriceTextView.setText("");
+            final ViewHolder viewHolder = new ViewHolder();
+
+            viewHolder.name = vi.findViewById(R.id.itemNameTextView);
+            viewHolder.price = vi.findViewById(R.id.itemPriceTextView);
+            viewHolder.increase = vi.findViewById(R.id.increaseButton);
+            viewHolder.decrease = vi.findViewById(R.id.decreaseButton);
+            viewHolder.quantity = vi.findViewById(R.id.itemQuantityTextView);
+
+            viewHolder.increase.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int value = Integer.valueOf(viewHolder.quantity.getText().toString());
+                    if (value < 10) {
+
+                        viewHolder.quantity.setText(String.valueOf(value + 1));
+                        FoodMenuDisplayActivity.cartItemQuantity.set(i, value + 1);
+                        CartActivity.calcTotal();
+                        Toast.makeText(context, "Cart Adjusted", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+            viewHolder.decrease.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int value = FoodMenuDisplayActivity.cartItemQuantity.get(i);
+
+//                    check for the error in removing the value of item from the cart
+//                    mismatch in position
+                    if (value > 1) {
+                        value--;
+                        viewHolder.quantity.setText(String.valueOf(value));
+                        FoodMenuDisplayActivity.cartItemQuantity.set(i, value);
+                        CartActivity.cartDisplayAdapter.notifyDataSetChanged();
+                        CartActivity.calcTotal();
+                        Toast.makeText(context, "Cart Adjusted", Toast.LENGTH_SHORT).show();
+                    }
+                    else if (value == 1) {
+                        FoodMenuDisplayActivity.cartItemQuantity.remove(i);
+                        FoodMenuDisplayActivity.cartItemPrice.remove(i);
+                        FoodMenuDisplayActivity.cartItemName.remove(i);
+                        FoodMenuDisplayActivity.cartItemCategory.remove(i);
+//                        notifyDataSetChanged(); not working properly
+//                        CartActivity.cartDisplayAdapter.notifyDataSetChanged();/
+                        CartActivity.setDisplayListView(context);
+                        if(FoodMenuDisplayActivity.cartItemName.size() == 0){
+//                            finish the activity
+                            Toast.makeText(context, "Cart is Empty", Toast.LENGTH_SHORT).show();
+                            CartActivity.activity.finish();
+                        }
+                        CartActivity.calcTotal();
+                        Toast.makeText(context, "Cart Adjusted", Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+            });
+            viewHolder.name.setText(cartItemName.get(i));
+            viewHolder.price.setText("Price: Rs. " + cartItemPrice.get(i));
+            viewHolder.quantity.setText(cartItemQuantity.get(i).toString());
+
+            vi.setTag(viewHolder);
+        } else {
+            mainViewHolder = (ViewHolder) view.getTag();
         }
-        else{
-            itemPriceTextView.setText("Price: Rs. "+cartItemPrice.get(i).toString());
-        }
+
+
         return vi;
+    }
+
+    public class ViewHolder {
+        TextView name, price, quantity;
+        ImageButton increase, decrease;
     }
 }

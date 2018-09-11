@@ -1,5 +1,6 @@
 package com.example.getfood;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -47,10 +48,12 @@ import java.util.Map;
 
 public class CartActivity extends AppCompatActivity implements View.OnClickListener, PaytmPaymentTransactionCallback {
 
-    ListView cartListView;
-    CartDisplayAdapter cartDisplayAdapter;
+    static ListView cartListView;
+    static CartDisplayAdapter cartDisplayAdapter;
 
-    TextView totalPriceTV;
+    public static Activity activity = null;
+
+    static TextView totalPriceTV;
     Button orderButton;
     //  alertdialog views
     Button alertPlus, alertMinus;
@@ -61,7 +64,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     //    choose time views
     Button firstBreakButton, secondBreakButton, lastBreakButton, nowButton;
 
-    private int total;
+    public static int total;
 
     DatabaseReference orderRoot, root;
     FirebaseAuth auth;
@@ -72,6 +75,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+        activity = this;
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
@@ -80,9 +84,10 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         totalPriceTV = findViewById(R.id.totalPriceTV);
         orderButton = findViewById(R.id.orderButton);
 
-        setDisplayListView();
+        setDisplayListView(getApplicationContext());
 
 //        show dialog to adjust the quantity of items in the cart
+
         cartListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -122,38 +127,10 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                         if (quant != 0) {
                             FoodMenuDisplayActivity.cartItemQuantity.set(position, quant);
                             cartDisplayAdapter.notifyDataSetChanged();
-                            totalPriceTV.setText("Total: Rs. " + String.valueOf(calcTotal()));
+                            calcTotal();
                             makeText("Cart Adjusted");
                         } else {
-//                            quantity is set to 0, hence confirm before removing the item
-                            AlertDialog.Builder confirmRemoveItemBuilder = new AlertDialog.Builder(CartActivity.this);
-                            confirmRemoveItemBuilder.setTitle("Are you sure you want to remove item?");
-
-                            confirmRemoveItemBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    FoodMenuDisplayActivity.cartItemQuantity.remove(position);
-                                    FoodMenuDisplayActivity.cartItemPrice.remove(position);
-                                    FoodMenuDisplayActivity.cartItemName.remove(position);
-                                    FoodMenuDisplayActivity.cartItemCategory.remove(position);
-                                    if (FoodMenuDisplayActivity.cartItemName.isEmpty()) {
-                                        Toast.makeText(getBaseContext(), "Cart is Empty", Toast.LENGTH_SHORT).show();
-                                        finish();
-                                    }
-                                    cartDisplayAdapter.notifyDataSetChanged();
-                                    totalPriceTV.setText("Total: Rs. " + String.valueOf(calcTotal()));
-                                    makeText("Cart Adjusted");
-                                }
-                            });
-
-                            confirmRemoveItemBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-
-                                }
-                            });
-
-                            AlertDialog dialogConfirmQuantitySet = confirmRemoveItemBuilder.show();
+                            callConfirmDialog(position, CartActivity.this);
                         }
                     }
                 });
@@ -176,6 +153,40 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+    }
+
+    public static void callConfirmDialog(final int position, final Context context){
+//        quantity is set to 0, hence confirm before removing the item
+        AlertDialog.Builder confirmRemoveItemBuilder = new AlertDialog.Builder(context);
+        confirmRemoveItemBuilder.setTitle("Are you sure you want to remove item?");
+
+        confirmRemoveItemBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                FoodMenuDisplayActivity.cartItemQuantity.remove(position);
+                FoodMenuDisplayActivity.cartItemPrice.remove(position);
+                FoodMenuDisplayActivity.cartItemName.remove(position);
+                FoodMenuDisplayActivity.cartItemCategory.remove(position);
+                if (FoodMenuDisplayActivity.cartItemName.isEmpty()) {
+                    Toast.makeText(context, "Cart is Empty", Toast.LENGTH_SHORT).show();
+//                    finish();
+
+                }
+                cartDisplayAdapter.notifyDataSetChanged();
+                calcTotal();
+                Toast.makeText(context, "Cart Adjusted", Toast.LENGTH_SHORT).show();
+//                finish();
+            }
+        });
+
+        confirmRemoveItemBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        AlertDialog dialogConfirmQuantitySet = confirmRemoveItemBuilder.show();
     }
 
     private void chooseTime() {
@@ -242,21 +253,27 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private void setDisplayListView() {
+    public static void setDisplayListView(Context context) {
         cartDisplayAdapter = new CartDisplayAdapter(FoodMenuDisplayActivity.cartItemName, FoodMenuDisplayActivity.cartItemQuantity,
-                FoodMenuDisplayActivity.cartItemPrice, getApplicationContext());
+                FoodMenuDisplayActivity.cartItemPrice, context );
         cartListView.setAdapter(cartDisplayAdapter);
 //        calculate total of all the items in cart and display it
-        totalPriceTV.setText("Total: Rs. " + String.valueOf(calcTotal()));
+        calcTotal();
     }
 
-    private int calcTotal() {
+    public static void calcTotal() {
         int i = 0;
         total = 0;
         for (Integer price : FoodMenuDisplayActivity.cartItemPrice) {
             total = total + price * FoodMenuDisplayActivity.cartItemQuantity.get(i++);
         }
-        return total;
+
+        totalPriceTV.setText("Total: Rs. " +String.valueOf(total));
+
+    }
+
+    public void setTotalValue(int total){
+        totalPriceTV.setText(String.valueOf(total));
     }
 
     @Override
@@ -342,7 +359,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             orderRoot.child(String.valueOf(orderID)).child(rollNo).child(FoodMenuDisplayActivity.cartItemCategory.get(pos)).child(FoodMenuDisplayActivity.cartItemName.get(pos))
                     .child("Quantity").setValue(FoodMenuDisplayActivity.cartItemQuantity.get(pos));
         }
-        orderRoot.child(String.valueOf(orderID)).child(rollNo).child("Total Amount").setValue(String.valueOf(calcTotal()));
+        orderRoot.child(String.valueOf(orderID)).child(rollNo).child("Total Amount").setValue(String.valueOf(total));
         orderRoot.child(String.valueOf(orderID)).child(rollNo).child("Time to deliver").setValue(orderTime);
 
 //        store value of orderID for future reference
@@ -354,7 +371,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         orderIntent = new Intent(CartActivity.this, OrderActivity.class);
         orderIntent.putExtra("OrderID", String.valueOf(orderID));
         orderIntent.putExtra("RollNo", rollNo);
-        orderIntent.putExtra("Total", calcTotal());
+        orderIntent.putExtra("Total", total);
 
         generateCheckSumVoley();
 //        generate checksum from server and pass all details to paytm

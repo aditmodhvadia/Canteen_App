@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="?attr/colorPrimary"
+                android:background="@color/colorPrimary"
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
                 app:title="@string/app_name">
@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="7dp"
                 android:layout_marginTop="6dp"
-                android:background="?attr/colorPrimary"
+                android:background="@color/colorPrimary"
                 android:drawableLeft="@drawable/ic_cart"
                 android:text="Cart" />
 
@@ -111,7 +111,8 @@
             android:layout_gravity="end|bottom"
             android:layout_margin="@dimen/fab_margin"
             android:clickable="true"
-            app:backgroundTint="#fff"
+            android:focusable="true"
+            android:backgroundTint="#fff"
             app:fabSize="normal"
             android:focusableInTouchMode="true"
             android:padding="3dp"

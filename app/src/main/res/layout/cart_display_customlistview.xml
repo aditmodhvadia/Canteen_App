@@ -4,30 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#636e72">
+    android:background="#fff">
 
     <TextView
         android:id="@+id/itemNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:textColor="#dfe6e9"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:text="Name"
+        android:textColor="#000"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/itemQuantityTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="36dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="30dp"
-        android:textColor="#dfe6e9"
-        android:text="Quantity"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="40dp"
+        android:text="0"
+        android:textAlignment="center"
+        android:textColor="#000"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/increaseButton"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -35,12 +36,42 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
         android:text="Price"
-        android:textColor="#55efc4"
+        android:textColor="#62ce80"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/itemNameTextView" />
+
+    <ImageButton
+        android:id="@+id/increaseButton"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="23dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="24dp"
+        android:paddingEnd="4dp"
+        android:paddingStart="4dp"
+        android:scaleType="center"
+        android:src="@drawable/ic_add"
+        android:tint="#2c3e50"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/decreaseButton"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="29dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="24dp"
+        android:paddingEnd="4dp"
+        android:paddingStart="4dp"
+        android:scaleType="center"
+        android:src="@drawable/ic_remove"
+        android:tint="#2c3e50"
+        app:layout_constraintEnd_toStartOf="@+id/itemQuantityTextView"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
