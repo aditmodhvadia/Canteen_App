@@ -102,6 +102,23 @@ public class RegisterFragment extends Fragment {
 
         //Validating all entries First
 
+        if (userEmail.isEmpty()) {
+            userEmailEditText.setError("Email ID Required");
+            userEmailEditText.requestFocus();
+            return;
+        }
+        if (!Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
+            userEmailEditText.setError("Enter valid Email Address");
+            userEmailEditText.requestFocus();
+            return;
+        }
+
+        if (!userEmail.contains("nirmauni.ac.in")) {
+            userEmailEditText.setError("Enter valid Nirma University Domain Email Address");
+            userEmailEditText.requestFocus();
+            return;
+        }
+
         if (userPass.isEmpty()) {
             userPasswordEditText.setError("Password Required");
             userPasswordEditText.requestFocus();
@@ -130,23 +147,6 @@ public class RegisterFragment extends Fragment {
             userPasswordEditText.requestFocus();
             userPasswordEditText.setText("");
             userConPasswordEditText.setText("");
-            return;
-        }
-
-        if (userEmail.isEmpty()) {
-            userEmailEditText.setError("Email ID Required");
-            userEmailEditText.requestFocus();
-            return;
-        }
-        if (!Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
-            userEmailEditText.setError("Enter valid Email Address");
-            userEmailEditText.requestFocus();
-            return;
-        }
-
-        if (!userEmail.contains("nirmauni.ac.in")) {
-            userEmailEditText.setError("Enter valid Nirma University Domain Email Address");
-            userEmailEditText.requestFocus();
             return;
         }
 

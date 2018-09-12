@@ -16,7 +16,7 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="120dp"
             android:background="#60f9cbc8"
             android:drawableStart="@drawable/ic_person_black_24dp"
             android:hint=" Email ID"
@@ -66,14 +66,16 @@
         <TextView
             android:id="@+id/forgotPasswordTextView"
             android:layout_width="wrap_content"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/userLoginButton"
             android:layout_centerHorizontal="true"
             android:clickable="false"
             android:text="Forgot Password?"
-            android:layout_marginTop="5dp"
+            android:padding="7dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
             android:layout_gravity="center"
-            android:textColor="#fec9c9" />
+            android:textColor="#fff" />
 
 
     </LinearLayout>
