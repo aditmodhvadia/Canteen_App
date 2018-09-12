@@ -217,20 +217,27 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         } else if (hour < 8 || (hour == 8 && mins <= 45)) {
             Log.d("Debug", "Between 8:20 and 8:45");
             nowButton.setEnabled(false);
+            nowButton.setBackgroundResource(R.drawable.button_disabled);
         } else if (hour < 10 || (hour == 10 && mins <= 50)) {
             Log.d("Debug", "Before first break");
         } else if (hour < 13 || (hour == 13 && mins < 15)) {
             Log.d("Debug", "Before second break");
             firstBreakButton.setEnabled(false);
+            firstBreakButton.setBackgroundResource(R.drawable.button_disabled);
         } else if (hour < 16 || (hour == 16 && mins < 15)) {
             Log.d("Debug", " time");
             firstBreakButton.setEnabled(false);
             secondBreakButton.setEnabled(false);
+            firstBreakButton.setBackgroundResource(R.drawable.button_disabled);
+            secondBreakButton.setBackgroundResource(R.drawable.button_disabled);
         } else if (hour < 17 || (hour == 17 && mins <= 45)) {
             Log.d("Debug", "after 4:15");
             firstBreakButton.setEnabled(false);
             secondBreakButton.setEnabled(false);
             lastBreakButton.setEnabled(false);
+            firstBreakButton.setBackgroundResource(R.drawable.button_disabled);
+            secondBreakButton.setBackgroundResource(R.drawable.button_disabled);
+            lastBreakButton.setBackgroundResource(R.drawable.button_disabled);
 
         } else {
             makeText("Cannot place order now, Order tomorrow");
