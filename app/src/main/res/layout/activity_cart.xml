@@ -22,7 +22,8 @@
         <ListView
             android:id="@+id/cartListView"
             android:layout_width="match_parent"
-            android:layout_height="520dp" />
+            android:layout_height="520dp"
+            android:listSelector="@drawable/list_selector" />
 
         <LinearLayout
             android:layout_width="match_parent"
