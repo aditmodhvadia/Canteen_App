@@ -26,7 +26,7 @@ public class OrderActivity extends AppCompatActivity {
 
     TextView testTV;
     ListView orderListView;
-    CartDisplayAdapter cartDisplayAdapter;
+    OrderDisplayAdapter orderDisplayAdapter;
 
     ArrayList<String> orderItemName, orderItemCategory;
     ArrayList<Integer> orderItemPrice, orderItemQuantity;
@@ -80,9 +80,8 @@ public class OrderActivity extends AppCompatActivity {
                         }
                     }
                 }
-                cartDisplayAdapter = new CartDisplayAdapter(orderItemName, orderItemQuantity,
-                        null, getApplicationContext());
-                orderListView.setAdapter(cartDisplayAdapter);
+                orderDisplayAdapter = new OrderDisplayAdapter(orderItemName, orderItemQuantity, getApplicationContext());
+                orderListView.setAdapter(orderDisplayAdapter);
             }
 
             @Override

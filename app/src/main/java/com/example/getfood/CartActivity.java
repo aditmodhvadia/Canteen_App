@@ -380,7 +380,14 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         orderIntent.putExtra("RollNo", rollNo);
         orderIntent.putExtra("Total", total);
 
-        generateCheckSumVoley();
+        FoodMenuDisplayActivity.cartItemName.clear();
+        FoodMenuDisplayActivity.cartItemCategory.clear();
+        FoodMenuDisplayActivity.cartItemQuantity.clear();
+        FoodMenuDisplayActivity.cartItemPrice.clear();
+
+        startActivity(orderIntent);
+
+//        generateCheckSumVoley();
 //        generate checksum from server and pass all details to paytm
 //        launched order activity
     }
