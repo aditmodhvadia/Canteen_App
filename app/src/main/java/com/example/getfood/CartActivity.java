@@ -363,11 +363,12 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     private void generateOrder(long orderID) {
 
         for (int pos = 0; pos < FoodMenuDisplayActivity.cartItemName.size(); pos++) {
-            orderRoot.child(String.valueOf(orderID)).child(rollNo).child(FoodMenuDisplayActivity.cartItemCategory.get(pos)).child(FoodMenuDisplayActivity.cartItemName.get(pos))
+            orderRoot.child(String.valueOf(orderID)).child("Items").child(FoodMenuDisplayActivity.cartItemCategory.get(pos)).child(FoodMenuDisplayActivity.cartItemName.get(pos))
                     .child("Quantity").setValue(FoodMenuDisplayActivity.cartItemQuantity.get(pos));
         }
-        orderRoot.child(String.valueOf(orderID)).child(rollNo).child("Total Amount").setValue(String.valueOf(total));
-        orderRoot.child(String.valueOf(orderID)).child(rollNo).child("Time to deliver").setValue(orderTime);
+        orderRoot.child(String.valueOf(orderID)).child("Total Amount").setValue(String.valueOf(total));
+        orderRoot.child(String.valueOf(orderID)).child("Time to deliver").setValue(orderTime);
+        orderRoot.child(String.valueOf(orderID)).child("Roll No").setValue(rollNo);
 
 //        store value of orderID for future reference
         root = FirebaseDatabase.getInstance().getReference().child("OrderData");

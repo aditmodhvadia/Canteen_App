@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 public class OrderActivity extends AppCompatActivity {
 
-    TextView testTV;
+    TextView testTV, test;
     ListView orderListView;
     OrderDisplayAdapter orderDisplayAdapter;
 
@@ -33,7 +33,6 @@ public class OrderActivity extends AppCompatActivity {
     int orderTotal;
     String orderID, rollNo, orderTime, orderTotalPrice;
     Intent orderData;
-
 
     DatabaseReference root;
 
@@ -44,6 +43,7 @@ public class OrderActivity extends AppCompatActivity {
 
         testTV = findViewById(R.id.testTV);
         orderListView = findViewById(R.id.orderListView);
+        test = findViewById(R.id.test);
 
         orderItemName = new ArrayList<>();
         orderItemQuantity = new ArrayList<>();
@@ -61,7 +61,7 @@ public class OrderActivity extends AppCompatActivity {
         orderTotal = orderData.getExtras().getInt("Total");
         rollNo = orderData.getExtras().getString("RollNo");
 
-        root = FirebaseDatabase.getInstance().getReference().child("Order").child(orderID).child(rollNo);
+        root = FirebaseDatabase.getInstance().getReference().child("Order").child(orderID).child("Items");
         root.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -71,6 +71,9 @@ public class OrderActivity extends AppCompatActivity {
                     }
                     else if(dsp.getKey().equals("Total Amount")){
                         orderTotalPrice = dsp.getKey();
+                    }
+                    else if(dsp.getKey().equals("Roll No")){
+
                     }
                     else{
                         for (DataSnapshot dspInner : dsp.getChildren()){
