@@ -18,7 +18,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -35,10 +34,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.paytm.pgsdk.PaytmOrder;
 import com.paytm.pgsdk.PaytmPGService;
 import com.paytm.pgsdk.PaytmPaymentTransactionCallback;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -209,6 +206,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         }
         int hour = currTime.get(Calendar.HOUR_OF_DAY);
         int mins = currTime.get(Calendar.MINUTE);
+        hour = 12; mins = 15;
 
         if (hour < 8 || (hour == 8 && mins <= 20)) {
             Log.d("Debug", "Before Ordering time");
@@ -362,13 +360,16 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
     private void generateOrder(long orderID) {
 
+        orderRoot.child(String.valueOf(orderID)).child("Total Amount").setValue(String.valueOf(total));
+        orderRoot.child(String.valueOf(orderID)).child("Time to deliver").setValue(orderTime);
+        orderRoot.child(String.valueOf(orderID)).child("Roll No").setValue(rollNo);
         for (int pos = 0; pos < FoodMenuDisplayActivity.cartItemName.size(); pos++) {
             orderRoot.child(String.valueOf(orderID)).child("Items").child(FoodMenuDisplayActivity.cartItemCategory.get(pos)).child(FoodMenuDisplayActivity.cartItemName.get(pos))
                     .child("Quantity").setValue(FoodMenuDisplayActivity.cartItemQuantity.get(pos));
         }
-        orderRoot.child(String.valueOf(orderID)).child("Total Amount").setValue(String.valueOf(total));
-        orderRoot.child(String.valueOf(orderID)).child("Time to deliver").setValue(orderTime);
-        orderRoot.child(String.valueOf(orderID)).child("Roll No").setValue(rollNo);
+//        orderRoot.child(String.valueOf(orderID)).child("Total Amount").setValue(String.valueOf(total));
+//        orderRoot.child(String.valueOf(orderID)).child("Time to deliver").setValue(orderTime);
+//        orderRoot.child(String.valueOf(orderID)).child("Roll No").setValue(rollNo);
 
 //        store value of orderID for future reference
         root = FirebaseDatabase.getInstance().getReference().child("OrderData");
