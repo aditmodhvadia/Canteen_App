@@ -73,7 +73,7 @@ public class ChineseFragment extends Fragment {
                     itemPrice.add(dsp.child("Price").getValue().toString());
 
                 }
-                displayAdapter = new MenuDisplayAdapter(itemName,itemPrice,getContext());
+                displayAdapter = new MenuDisplayAdapter(itemName, itemPrice, getContext());
                 chineseDisplayListView.setAdapter(displayAdapter);
 
 //                progressDialog.hide();
@@ -88,62 +88,65 @@ public class ChineseFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
 
-                android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getContext());
+                if (FoodMenuDisplayActivity.cartItemName.contains(itemName.get(i))) {
+                    Toast.makeText(getContext(), "Item already in Cart", Toast.LENGTH_SHORT).show();
+                } else {
 
-                View quantityAlert = getLayoutInflater().inflate(R.layout.adjust_quantity_display, null);
-                alertPlus = quantityAlert.findViewById(R.id.alertPlus);
-                alertMinus = quantityAlert.findViewById(R.id.alertMinus);
-                quantitySetTV = quantityAlert.findViewById(R.id.quantitySetTextView);
-                alertPlus.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if(Integer.parseInt(quantitySetTV.getText().toString())<5){
-                            quantitySetTV.setText(String.valueOf(Integer.valueOf(quantitySetTV.getText().toString())+1));
-                        }
-                    }
-                });
-                alertMinus.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if(Integer.parseInt(quantitySetTV.getText().toString())>0){
-                            quantitySetTV.setText(String.valueOf(Integer.valueOf(quantitySetTV.getText().toString())-1));
-                        }
-                    }
-                });
+                    android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getContext());
 
-                builder.setTitle("Select Quantity");
-                builder.setMessage(itemName.get(i));
-                builder.setView(quantityAlert);
-                builder.setPositiveButton("Add to Cart", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i1) {
-                        int quant = Integer.valueOf(quantitySetTV.getText().toString());
-                        if(quant!=0){
-                            if(FoodMenuDisplayActivity.cartItemName.contains(itemName.get(i))){
-                                int pos = FoodMenuDisplayActivity.cartItemName.indexOf(itemName.get(i));
-                                FoodMenuDisplayActivity.cartItemQuantity.set(pos, FoodMenuDisplayActivity.cartItemQuantity.get(pos)+quant);
+                    View quantityAlert = getLayoutInflater().inflate(R.layout.adjust_quantity_display, null);
+                    alertPlus = quantityAlert.findViewById(R.id.alertPlus);
+                    alertMinus = quantityAlert.findViewById(R.id.alertMinus);
+                    quantitySetTV = quantityAlert.findViewById(R.id.quantitySetTextView);
+                    alertPlus.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (Integer.parseInt(quantitySetTV.getText().toString()) < 5) {
+                                quantitySetTV.setText(String.valueOf(Integer.valueOf(quantitySetTV.getText().toString()) + 1));
                             }
-                            else{
-                                FoodMenuDisplayActivity.cartItemName.add(itemName.get(i));
-                                FoodMenuDisplayActivity.cartItemQuantity.add(quant);
-                                FoodMenuDisplayActivity.cartItemPrice.add(Integer.parseInt(itemPrice.get(i)));
-                                FoodMenuDisplayActivity.cartItemCategory.add(CATEGORY);
-                            }
-                            Toast.makeText(getContext(),"Added to Cart",Toast.LENGTH_LONG).show();
                         }
-                    }
-                });
+                    });
+                    alertMinus.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (Integer.parseInt(quantitySetTV.getText().toString()) > 0) {
+                                quantitySetTV.setText(String.valueOf(Integer.valueOf(quantitySetTV.getText().toString()) - 1));
+                            }
+                        }
+                    });
 
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                    builder.setTitle("Select Quantity");
+                    builder.setMessage(itemName.get(i));
+                    builder.setView(quantityAlert);
+                    builder.setPositiveButton("Add to Cart", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i1) {
+                            int quant = Integer.valueOf(quantitySetTV.getText().toString());
+                            if (quant != 0) {
+                                if (FoodMenuDisplayActivity.cartItemName.contains(itemName.get(i))) {
+                                    int pos = FoodMenuDisplayActivity.cartItemName.indexOf(itemName.get(i));
+                                    FoodMenuDisplayActivity.cartItemQuantity.set(pos, FoodMenuDisplayActivity.cartItemQuantity.get(pos) + quant);
+                                } else {
+                                    FoodMenuDisplayActivity.cartItemName.add(itemName.get(i));
+                                    FoodMenuDisplayActivity.cartItemQuantity.add(quant);
+                                    FoodMenuDisplayActivity.cartItemPrice.add(Integer.parseInt(itemPrice.get(i)));
+                                    FoodMenuDisplayActivity.cartItemCategory.add(CATEGORY);
+                                }
+                                Toast.makeText(getContext(), "Added to Cart", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
 
-                    }
-                });
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
 
-                android.support.v7.app.AlertDialog dialog = builder.show();
+                        }
+                    });
 
+                    android.support.v7.app.AlertDialog dialog = builder.show();
 
+                }
             }
         });
 
