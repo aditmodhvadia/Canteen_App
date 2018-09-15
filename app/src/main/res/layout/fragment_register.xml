@@ -57,15 +57,13 @@
 
         <Button
             android:id="@+id/userAddButton"
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/buttonstyleselector"
-            android:gravity="center"
-            android:paddingLeft="40dp"
-            android:paddingRight="40dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/colorPrimaryDark"
             android:text="Get Registered"
-            android:textColor="#ffffff" />
+            android:textColor="#fff"
+            android:shadowColor="@color/colorPrimary"/>
     </LinearLayout>
 </ScrollView>
