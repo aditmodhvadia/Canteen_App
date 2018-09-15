@@ -1,11 +1,15 @@
 package com.example.getfood;
 
 import android.content.Context;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -50,6 +54,10 @@ public class OrderDisplayAdapter extends BaseAdapter {
 
         orderItemNameTextView.setText(orderItemName.get(position));
         orderItemQuantityTextView.setText(orderItemQuantity.get(position).toString());
+
+        Animation animation = AnimationUtils.loadAnimation(context, R.anim.fade_in);
+        animation.setStartOffset(position*10);
+        v.startAnimation(animation);
 
         return v;
     }
