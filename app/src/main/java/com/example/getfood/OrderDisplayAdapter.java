@@ -15,16 +15,17 @@ import java.util.ArrayList;
 
 public class OrderDisplayAdapter extends BaseAdapter {
 
-    ArrayList<String>  orderItemName;
+    ArrayList<String> orderItemName, orderItemStatus;
     ArrayList<Integer> orderItemQuantity;
     Context context;
     LayoutInflater inflater;
 
-    TextView orderItemQuantityTextView, orderItemNameTextView;
+    TextView orderItemQuantityTextView, orderItemNameTextView, orderItemStatusTextView;
 
-    public OrderDisplayAdapter(ArrayList<String> orderItemName, ArrayList<Integer> orderItemQuantity, Context context) {
+    public OrderDisplayAdapter(ArrayList<String> orderItemName, ArrayList<Integer> orderItemQuantity, ArrayList<String> orderItemStatus, Context context) {
         this.orderItemName = orderItemName;
         this.orderItemQuantity = orderItemQuantity;
+        this.orderItemStatus = orderItemStatus;
         this.context = context;
         this.inflater = (LayoutInflater) LayoutInflater.from(context);
     }
@@ -47,16 +48,18 @@ public class OrderDisplayAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        View v = inflater.inflate(R.layout.order_display_layout,null);
+        View v = inflater.inflate(R.layout.order_display_layout, null);
 
         orderItemQuantityTextView = v.findViewById(R.id.orderItemQuantityTextView);
         orderItemNameTextView = v.findViewById(R.id.orderItemNameTextView);
+        orderItemStatusTextView = v.findViewById(R.id.orderItemStatusTextView);
 
         orderItemNameTextView.setText(orderItemName.get(position));
-        orderItemQuantityTextView.setText(orderItemQuantity.get(position).toString());
+        orderItemQuantityTextView.setText(String.valueOf(orderItemQuantity.get(position)));
+        orderItemStatusTextView.setText(orderItemStatus.get(position));
 
         Animation animation = AnimationUtils.loadAnimation(context, R.anim.fade_in);
-        animation.setStartOffset(position*10);
+        animation.setStartOffset(position * 10);
         v.startAnimation(animation);
 
         return v;

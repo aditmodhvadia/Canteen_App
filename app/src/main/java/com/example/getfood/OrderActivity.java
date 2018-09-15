@@ -29,7 +29,7 @@ public class OrderActivity extends AppCompatActivity {
     ListView orderListView;
     OrderDisplayAdapter orderDisplayAdapter;
 
-    ArrayList<String> orderItemName, orderItemCategory;
+    ArrayList<String> orderItemName, orderItemCategory, orderItemStatus;
     ArrayList<Integer> orderItemPrice, orderItemQuantity;
     int orderTotal;
     String orderID, rollNo, orderTime, orderTotalPrice;
@@ -50,6 +50,7 @@ public class OrderActivity extends AppCompatActivity {
         orderItemQuantity = new ArrayList<>();
         orderItemPrice = new ArrayList<>();
         orderItemCategory = new ArrayList<>();
+        orderItemStatus = new ArrayList<>();
 
         orderData = getIntent();
         if(orderData.getExtras().isEmpty()){
@@ -66,6 +67,10 @@ public class OrderActivity extends AppCompatActivity {
         root.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                orderItemCategory.clear();
+                orderItemName.clear();
+                orderItemQuantity.clear();
+                orderItemStatus.clear();
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                     if(dsp.getKey().equals("Time to deliver")){
                         orderTime = dsp.getKey();
@@ -81,10 +86,11 @@ public class OrderActivity extends AppCompatActivity {
                             orderItemCategory.add(dsp.getKey());
                             orderItemName.add(dspInner.getKey());
                             orderItemQuantity.add(Integer.valueOf(dspInner.child("Quantity").getValue().toString()));
+                            orderItemStatus.add(dspInner.child("Status").getValue().toString());
                         }
                     }
                 }
-                orderDisplayAdapter = new OrderDisplayAdapter(orderItemName, orderItemQuantity, getApplicationContext());
+                orderDisplayAdapter = new OrderDisplayAdapter(orderItemName, orderItemQuantity, orderItemStatus, getApplicationContext());
                 orderListView.setAdapter(orderDisplayAdapter);
             }
 
