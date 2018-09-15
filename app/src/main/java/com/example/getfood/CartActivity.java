@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -34,8 +36,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.paytm.pgsdk.PaytmOrder;
 import com.paytm.pgsdk.PaytmPGService;
 import com.paytm.pgsdk.PaytmPaymentTransactionCallback;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -152,7 +156,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public static void callConfirmDialog(final int position, final Context context){
+    public static void callConfirmDialog(final int position, final Context context) {
 //        quantity is set to 0, hence confirm before removing the item
         AlertDialog.Builder confirmRemoveItemBuilder = new AlertDialog.Builder(context);
         confirmRemoveItemBuilder.setTitle("Are you sure you want to remove item?");
@@ -160,6 +164,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         confirmRemoveItemBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+
                 FoodMenuDisplayActivity.cartItemQuantity.remove(position);
                 FoodMenuDisplayActivity.cartItemPrice.remove(position);
                 FoodMenuDisplayActivity.cartItemName.remove(position);
@@ -169,7 +174,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 //                    finish();
 
                 }
-                cartDisplayAdapter.notifyDataSetChanged();
                 calcTotal();
                 Toast.makeText(context, "Cart Adjusted", Toast.LENGTH_SHORT).show();
 //                finish();
@@ -206,7 +210,8 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         }
         int hour = currTime.get(Calendar.HOUR_OF_DAY);
         int mins = currTime.get(Calendar.MINUTE);
-        hour = 12; mins = 15;
+        hour = 12;
+        mins = 15;
 
         if (hour < 8 || (hour == 8 && mins <= 20)) {
             Log.d("Debug", "Before Ordering time");
@@ -260,9 +265,15 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
     public static void setDisplayListView(Context context) {
         cartDisplayAdapter = new CartDisplayAdapter(FoodMenuDisplayActivity.cartItemName, FoodMenuDisplayActivity.cartItemQuantity,
-                FoodMenuDisplayActivity.cartItemPrice, context );
+                FoodMenuDisplayActivity.cartItemPrice, context);
         cartListView.setAdapter(cartDisplayAdapter);
+//        cartListView.removeViewAt();
 //        calculate total of all the items in cart and display it
+        calcTotal();
+    }
+    public static void notifyChangeAndCalcTotal(Context context){
+//        cartListView.invalidateViews();
+        cartDisplayAdapter.notifyDataSetChanged();
         calcTotal();
     }
 
@@ -273,11 +284,11 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             total = total + price * FoodMenuDisplayActivity.cartItemQuantity.get(i++);
         }
 
-        totalPriceTV.setText("Total: Rs. " +String.valueOf(total));
+        totalPriceTV.setText("Total: Rs. " + String.valueOf(total));
 
     }
 
-    public void setTotalValue(int total){
+    public void setTotalValue(int total) {
         totalPriceTV.setText(String.valueOf(total));
     }
 
@@ -457,7 +468,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         paramMap.put("WEBSITE", "APPSTAGING");
         paramMap.put("CALLBACK_URL", "https://securegw.paytm.in/theia/paytmCallback?ORDER_ID=<voleyworks10>");
         paramMap.put("CHECKSUMHASH", checksumHash);
-
 
 
         //creating a paytm order object using the hashmap

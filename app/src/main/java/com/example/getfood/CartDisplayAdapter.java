@@ -3,10 +3,13 @@ package com.example.getfood;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -49,10 +52,10 @@ public class CartDisplayAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int i, View view, ViewGroup viewGroup) {
+    public View getView(final int i, View view, final ViewGroup viewGroup) {
 
 
-        View vi = view;
+        final View vi;
         ViewHolder mainViewHolder = null;
         if (view == null) {
             vi = inflater.inflate(R.layout.cart_display_customlistview, null);
@@ -64,6 +67,11 @@ public class CartDisplayAdapter extends BaseAdapter {
             viewHolder.increase = vi.findViewById(R.id.increaseButton);
             viewHolder.decrease = vi.findViewById(R.id.decreaseButton);
             viewHolder.quantity = vi.findViewById(R.id.itemQuantityTextView);
+
+//            Animation animation = AnimationUtils.loadAnimation(context, R.anim.slide_in);
+//            vi.startAnimation(animation);
+
+
 
             viewHolder.increase.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -89,25 +97,34 @@ public class CartDisplayAdapter extends BaseAdapter {
                         value--;
                         viewHolder.quantity.setText(String.valueOf(value));
                         FoodMenuDisplayActivity.cartItemQuantity.set(i, value);
-                        CartActivity.cartDisplayAdapter.notifyDataSetChanged();
+//                        CartActivity.cartDisplayAdapter.notifyDataSetChanged();
                         CartActivity.calcTotal();
                         Toast.makeText(context, "Cart Adjusted", Toast.LENGTH_SHORT).show();
                     }
                     else if (value == 1) {
-                        FoodMenuDisplayActivity.cartItemQuantity.remove(i);
-                        FoodMenuDisplayActivity.cartItemPrice.remove(i);
-                        FoodMenuDisplayActivity.cartItemName.remove(i);
-                        FoodMenuDisplayActivity.cartItemCategory.remove(i);
+
+                        vi.animate().alpha(0.0f).setDuration(750);
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            public void run() {
+                                // yourMethod();
+                                FoodMenuDisplayActivity.cartItemQuantity.remove(i);
+                                FoodMenuDisplayActivity.cartItemPrice.remove(i);
+                                FoodMenuDisplayActivity.cartItemName.remove(i);
+                                FoodMenuDisplayActivity.cartItemCategory.remove(i);
 //                        notifyDataSetChanged(); not working properly
-//                        CartActivity.cartDisplayAdapter.notifyDataSetChanged();/
-                        CartActivity.setDisplayListView(context);
-                        if(FoodMenuDisplayActivity.cartItemName.size() == 0){
+//                        CartActivity.cartDisplayAdapter.notifyDataSetChanged();
+                                CartActivity.setDisplayListView(context);
+                                if(FoodMenuDisplayActivity.cartItemName.size() == 0){
 //                            finish the activity
-                            Toast.makeText(context, "Cart is Empty", Toast.LENGTH_SHORT).show();
-                            CartActivity.activity.finish();
-                        }
-                        CartActivity.calcTotal();
-                        Toast.makeText(context, "Cart Adjusted", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(context, "Cart is Empty", Toast.LENGTH_SHORT).show();
+                                    CartActivity.activity.finish();
+                                }
+//                                CartActivity.notifyChangeAndCalcTotal(context);
+                                CartActivity.calcTotal();
+                                Toast.makeText(context, "Cart Adjusted", Toast.LENGTH_SHORT).show();
+                            }
+                        }, 750);
 
                     }
                 }
@@ -118,6 +135,7 @@ public class CartDisplayAdapter extends BaseAdapter {
 
             vi.setTag(viewHolder);
         } else {
+            vi = view;
             mainViewHolder = (ViewHolder) view.getTag();
         }
 
