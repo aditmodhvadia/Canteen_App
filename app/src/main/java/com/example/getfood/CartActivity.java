@@ -377,6 +377,8 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         for (int pos = 0; pos < FoodMenuDisplayActivity.cartItemName.size(); pos++) {
             orderRoot.child(String.valueOf(orderID)).child("Items").child(FoodMenuDisplayActivity.cartItemCategory.get(pos)).child(FoodMenuDisplayActivity.cartItemName.get(pos))
                     .child("Quantity").setValue(FoodMenuDisplayActivity.cartItemQuantity.get(pos));
+            orderRoot.child(String.valueOf(orderID)).child("Items").child(FoodMenuDisplayActivity.cartItemCategory.get(pos)).child(FoodMenuDisplayActivity.cartItemName.get(pos))
+                    .child("Status").setValue("Received");
         }
 //        orderRoot.child(String.valueOf(orderID)).child("Total Amount").setValue(String.valueOf(total));
 //        orderRoot.child(String.valueOf(orderID)).child("Time to deliver").setValue(orderTime);
