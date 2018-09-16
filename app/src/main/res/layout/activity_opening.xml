@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".OpeningActivity"
-    android:background="@drawable/background_red">
+    android:background="@drawable/background_dark">
 
     <ImageView
         android:layout_width="wrap_content"
