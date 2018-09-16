@@ -4,6 +4,8 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
@@ -120,10 +122,12 @@ public class OrderActivity extends AppCompatActivity {
                 .setContentText("Order is being cooked")
                 .setVibrate(new long[]{0, 400, 200, 400})
                 .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText("Much longer text that cannot fit one line..."))
+                        .bigText("Be ready to take your order when your food is cooked!"))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setAutoCancel(true)
                 .addAction(R.drawable.ic_person_add_black_48dp, "Open", pi)
+                .setColorized(true)
+                .setColor(getResources().getColor(R.color.colorPrimary))
                 .setContentIntent(pi);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);

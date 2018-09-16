@@ -210,9 +210,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         }
         int hour = currTime.get(Calendar.HOUR_OF_DAY);
         int mins = currTime.get(Calendar.MINUTE);
-        hour = 12;
-        mins = 15;
-
         if (hour < 8 || (hour == 8 && mins <= 20)) {
             Log.d("Debug", "Before Ordering time");
             makeText("Cannot place order now, Order after 08:20 AM");
