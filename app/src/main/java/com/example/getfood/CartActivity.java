@@ -204,12 +204,13 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         currTime = Calendar.getInstance();
 //        check if it is a sunday, then ordering is closed TODO: confirm with docs for the value of Sunday in Calendar
         currTime.set(Calendar.DAY_OF_WEEK, currTime.get(Calendar.DAY_OF_WEEK) - 1);
-        if (currTime.get(Calendar.DAY_OF_WEEK) == 7) {
-            makeText("Cannot order on Sunday, Order Tomorrow");
-            return;
-        }
+//        if (currTime.get(Calendar.DAY_OF_WEEK) == 7) {
+//            makeText("Cannot order on Sunday, Order Tomorrow");
+//            return;
+//        }
         int hour = currTime.get(Calendar.HOUR_OF_DAY);
         int mins = currTime.get(Calendar.MINUTE);
+        hour = 12; mins =15;
         if (hour < 8 || (hour == 8 && mins <= 20)) {
             Log.d("Debug", "Before Ordering time");
             makeText("Cannot place order now, Order after 08:20 AM");
