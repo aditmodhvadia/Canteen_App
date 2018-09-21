@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -47,6 +48,7 @@ public class RegisterFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     EditText userConPasswordEditText, userPasswordEditText, userEmailEditText;
+    CheckBox termsCheckBox;
     Button userAddButton;
     ProgressDialog progressDialog;
     int flag;
@@ -80,7 +82,9 @@ public class RegisterFragment extends Fragment {
 
         userConPasswordEditText = (EditText) view.findViewById(R.id.userConPasswordEditText);
         userPasswordEditText = (EditText) view.findViewById(R.id.userPasswordEditText);
-        userEmailEditText = (EditText) view.findViewById(R.id.userLoginEmailEditText);
+        userEmailEditText = view.findViewById(R.id.userLoginEmailEditText);
+
+        termsCheckBox = view.findViewById(R.id.termsCheckBox);
 
 
         userAddButton = (Button) view.findViewById(R.id.userAddButton);
@@ -101,6 +105,23 @@ public class RegisterFragment extends Fragment {
         userEmail = userEmailEditText.getText().toString().trim().toLowerCase();
 
         //Validating all entries First
+
+        if (userEmail.isEmpty()) {
+            userEmailEditText.setError("Email ID Required");
+            userEmailEditText.requestFocus();
+            return;
+        }
+        if (!Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
+            userEmailEditText.setError("Enter valid Email Address");
+            userEmailEditText.requestFocus();
+            return;
+        }
+
+        if (!userEmail.contains("nirmauni.ac.in")) {
+            userEmailEditText.setError("Enter valid Nirma University Domain Email Address");
+            userEmailEditText.requestFocus();
+            return;
+        }
 
         if (userPass.isEmpty()) {
             userPasswordEditText.setError("Password Required");
@@ -133,20 +154,8 @@ public class RegisterFragment extends Fragment {
             return;
         }
 
-        if (userEmail.isEmpty()) {
-            userEmailEditText.setError("Email ID Required");
-            userEmailEditText.requestFocus();
-            return;
-        }
-        if (!Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
-            userEmailEditText.setError("Enter valid Email Address");
-            userEmailEditText.requestFocus();
-            return;
-        }
-
-        if (!userEmail.contains("nirmauni.ac.in")) {
-            userEmailEditText.setError("Enter valid Nirma University Domain Email Address");
-            userEmailEditText.requestFocus();
+        if(!termsCheckBox.isChecked()){
+            Toast.makeText(getContext(), "You must agree to the Terms and Conditions", Toast.LENGTH_SHORT).show();
             return;
         }
 
