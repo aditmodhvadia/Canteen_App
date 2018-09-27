@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".Activity.LoginActivity"
             android:label="Get Food"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -31,11 +31,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".FoodMenuDisplayActivity"
+            android:name=".Activity.FoodMenuDisplayActivity"
             android:label="@string/title_activity_food_menu_display"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".CartActivity" />
-        <activity android:name=".OrderActivity" />
+        <activity android:name=".Activity.CartActivity" />
+        <activity android:name=".Activity.OrderActivity" />
         <activity
             android:name="com.paytm.pgsdk.PaytmPGActivity"
             android:configChanges="keyboardHidden|orientation|keyboard"

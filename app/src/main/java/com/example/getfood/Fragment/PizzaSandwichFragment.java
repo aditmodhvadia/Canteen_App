@@ -1,7 +1,6 @@
-package com.example.getfood;
+package com.example.getfood.Fragment;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +14,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.getfood.Activity.FoodMenuDisplayActivity;
+import com.example.getfood.Adapter.MenuDisplayAdapter;
+import com.example.getfood.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,22 +25,23 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class SouthIndianFragment extends Fragment {
+
+public class PizzaSandwichFragment extends Fragment {
 
     private DatabaseReference rootFood;
     ProgressDialog progressDialog;
-    private String CATEGORY = "South Indian";
+    private String CATEGORY = "Pizza Sandwich";
     ArrayList<String> itemName, itemPrice;
 
     Button alertPlus, alertMinus;
     TextView quantitySetTV;
 
-    ListView southIndianDisplayListView;
+    ListView pizzaSandwichDisplayListView;
     MenuDisplayAdapter displayAdapter;
 
     private OnFragmentInteractionListener mListener;
 
-    public SouthIndianFragment() {
+    public PizzaSandwichFragment() {
         // Required empty public constructor
     }
 
@@ -46,12 +49,13 @@ public class SouthIndianFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_south_indian, container, false);
+
+        View v = inflater.inflate(R.layout.fragment_pizza_sandwich, container, false);
 
 //        progressDialog = new ProgressDialog(getContext());
         itemName = new ArrayList<String>();
         itemPrice = new ArrayList<String>();
-        southIndianDisplayListView = v.findViewById(R.id.southIndianDisplayListView);
+        pizzaSandwichDisplayListView = v.findViewById(R.id.pizzaSandwichDisplayListView);
 //        display progress dialog till data is fetched
 //        progressDialog.setTitle("Please Wait..");
 //        progressDialog.setMessage("Fetching data");
@@ -72,11 +76,8 @@ public class SouthIndianFragment extends Fragment {
                     itemPrice.add(dsp.child("Price").getValue().toString());
 
                 }
-
                 displayAdapter = new MenuDisplayAdapter(itemName, itemPrice, getContext());
-                southIndianDisplayListView.setAdapter(displayAdapter);
-
-
+                pizzaSandwichDisplayListView.setAdapter(displayAdapter);
 //                progressDialog.hide();
             }
 
@@ -85,7 +86,7 @@ public class SouthIndianFragment extends Fragment {
             }
         });
 
-        southIndianDisplayListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        pizzaSandwichDisplayListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
 
@@ -154,7 +155,6 @@ public class SouthIndianFragment extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }

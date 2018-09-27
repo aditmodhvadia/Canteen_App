@@ -10,7 +10,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.widget.Toast;
 
-import com.example.getfood.OrderActivity;
+import com.example.getfood.Activity.OrderActivity;
 import com.example.getfood.R;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;

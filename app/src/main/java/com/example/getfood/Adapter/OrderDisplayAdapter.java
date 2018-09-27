@@ -1,4 +1,4 @@
-package com.example.getfood;
+package com.example.getfood.Adapter;
 
 import android.content.Context;
 import android.os.Handler;
@@ -10,6 +10,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.getfood.R;
 
 import java.util.ArrayList;
 

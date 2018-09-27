@@ -1,4 +1,4 @@
-package com.example.getfood;
+package com.example.getfood.Activity;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -13,7 +13,9 @@ import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toast;
+
+import com.example.getfood.Adapter.OrderDisplayAdapter;
+import com.example.getfood.R;
 import com.example.getfood.Service.OrderNotificationService;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

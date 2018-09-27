@@ -1,4 +1,4 @@
-package com.example.getfood;
+package com.example.getfood.Activity;
 
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +17,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.getfood.Fragment.LoginFragment;
+import com.example.getfood.R;
+import com.example.getfood.Fragment.RegisterFragment;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
