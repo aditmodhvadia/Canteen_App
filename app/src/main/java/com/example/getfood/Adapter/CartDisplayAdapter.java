@@ -101,7 +101,7 @@ public class CartDisplayAdapter extends BaseAdapter {
                     }
                     else if (value == 1) {
 
-                        vi.animate().alpha(0.0f).setDuration(750);
+                        vi.animate().alpha(0.0f).setDuration(250);
                         Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
                             public void run() {

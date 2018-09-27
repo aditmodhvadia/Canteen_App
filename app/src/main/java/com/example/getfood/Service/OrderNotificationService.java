@@ -78,6 +78,8 @@ public class OrderNotificationService extends Service {
 
     public void customNotification() {
 
+//        todo: change the display messages to tell user that your order was updated
+
         Intent i = new Intent(this, OrderActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         i.putExtra("OrderID",ORDER_ID);

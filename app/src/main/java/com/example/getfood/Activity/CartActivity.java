@@ -282,8 +282,10 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         for (Integer price : FoodMenuDisplayActivity.cartItemPrice) {
             total = total + price * FoodMenuDisplayActivity.cartItemQuantity.get(i++);
         }
-
+//        set alpha of total price textview to zero, and then animate it to increase to 1.0
+        totalPriceTV.setAlpha(0.0f);
         totalPriceTV.setText("Total: Rs. " + String.valueOf(total));
+        totalPriceTV.animate().alpha(1.0f).setDuration(250);
 
     }
 
