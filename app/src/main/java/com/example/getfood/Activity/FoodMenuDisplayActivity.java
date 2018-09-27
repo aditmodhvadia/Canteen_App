@@ -2,8 +2,12 @@ package com.example.getfood.Activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
@@ -12,6 +16,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,6 +39,7 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
 
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
+    private DrawerLayout mDrawerLayout;
     FloatingActionButton floatingActionButton;
     FirebaseAuth auth;
     int exitCount;
@@ -71,8 +77,46 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
 
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+
+        mDrawerLayout = findViewById(R.id.main_content);
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        // set item as selected to persist highlight
+                        menuItem.setChecked(true);
+                        // close drawer when item is tapped
+                        if (menuItem.getItemId() == R.id.nav_cart) {
+                            Toast.makeText(FoodMenuDisplayActivity.this, "Cart Pressed", Toast.LENGTH_SHORT).show();
+                        }else if (menuItem.getItemId() == R.id.nav_order) {
+                            Toast.makeText(FoodMenuDisplayActivity.this, "Order Pressed", Toast.LENGTH_SHORT).show();
+                        }else if (menuItem.getItemId() == R.id.nav_terms) {
+                            Toast.makeText(FoodMenuDisplayActivity.this, "Terms & Conditions Pressed", Toast.LENGTH_SHORT).show();
+                        }else if (menuItem.getItemId() == R.id.nav_logout) {
+                            Toast.makeText(FoodMenuDisplayActivity.this, "Logout Pressed", Toast.LENGTH_SHORT).show();
+                        } else {
+
+                            Toast.makeText(FoodMenuDisplayActivity.this, String.valueOf(menuItem.getItemId()), Toast.LENGTH_SHORT).show();
+
+                        }
+                        mDrawerLayout.closeDrawers();
+
+                        // Add code here to update the UI based on the item selected
+                        // For example, swap UI fragments here
+
+                        return true;
+                    }
+                });
 
         floatingActionButton = findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -85,8 +129,8 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
         cartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(cartItemName.isEmpty())
-                makeText("Cart is Empty");
+                if (cartItemName.isEmpty())
+                    makeText("Cart is Empty");
                 else
                     showCart();
             }
@@ -103,16 +147,11 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -233,12 +272,12 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
         AlertDialog dialog = builder.show();
     }
 
-    private void showCart(){
-        Intent i = new Intent(this,CartActivity.class);
+    private void showCart() {
+        Intent i = new Intent(this, CartActivity.class);
         startActivity(i);
     }
 
-    public void makeText(String msg){
+    public void makeText(String msg) {
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 }
