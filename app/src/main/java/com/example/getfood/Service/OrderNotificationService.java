@@ -20,7 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class OrderNotificationService extends Service {
 
-    //    Variables
+//    Variables
     private String ORDER_ID;
 //    Firebase Variables
     DatabaseReference currOrderRoot;

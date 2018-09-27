@@ -23,7 +23,7 @@ public class MenuDisplayAdapter extends BaseAdapter {
         this.itemName = itemName;
         this.itemPrice = itemPrice;
         this.context = context;
-        this.inflater = (LayoutInflater) LayoutInflater.from(context);
+        this.inflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -44,13 +44,13 @@ public class MenuDisplayAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
 
-        View vi = view;
+        View vi;
         vi = inflater.inflate(R.layout.food_menu_display_custom_listview, null);
         itemNameTextView = vi.findViewById(R.id.itemNameTextView);
         itemPriceTextView = vi.findViewById(R.id.itemPriceTextView);
 
         itemNameTextView.setText(itemName.get(i));
-        itemPriceTextView.setText("Price: Rs. "+itemPrice.get(i));
+        itemPriceTextView.setText(String.format("Price: Rs. %s", itemPrice.get(i)));
 
         return vi;
     }

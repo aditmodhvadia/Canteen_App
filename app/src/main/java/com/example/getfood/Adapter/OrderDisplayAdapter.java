@@ -29,7 +29,7 @@ public class OrderDisplayAdapter extends BaseAdapter {
         this.orderItemQuantity = orderItemQuantity;
         this.orderItemStatus = orderItemStatus;
         this.context = context;
-        this.inflater = (LayoutInflater) LayoutInflater.from(context);
+        this.inflater = LayoutInflater.from(context);
     }
 
     @Override
