@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <group android:checkableBehavior="single">
+        <!--todo: add icons and proper items-->
+        <item
+            android:id="@+id/nav_cart"
+            android:icon="@drawable/ic_cart"
+            android:title="Cart" />
+        <item
+            android:id="@+id/nav_order"
+
+            android:title="Order" />
+    </group>
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_terms"
+            android:title="Terms &amp; Conditions" />
+        <item
+            android:id="@+id/nav_logout"
+            android:title="Logout" />
+    </group>
+</menu>
