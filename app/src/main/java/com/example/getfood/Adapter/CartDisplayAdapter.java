@@ -70,7 +70,6 @@ public class CartDisplayAdapter extends BaseAdapter {
 //            vi.startAnimation(animation);
 
 
-
             viewHolder.increase.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -98,8 +97,7 @@ public class CartDisplayAdapter extends BaseAdapter {
 //                        CartActivity.cartDisplayAdapter.notifyDataSetChanged();
                         CartActivity.calcTotal();
                         Toast.makeText(context, "Cart Adjusted", Toast.LENGTH_SHORT).show();
-                    }
-                    else if (value == 1) {
+                    } else if (value == 1) {
 
                         vi.animate().alpha(0.0f).setDuration(250);
                         Handler handler = new Handler();
@@ -113,7 +111,7 @@ public class CartDisplayAdapter extends BaseAdapter {
 //                        notifyDataSetChanged(); not working properly
 //                        CartActivity.cartDisplayAdapter.notifyDataSetChanged();
                                 CartActivity.setDisplayListView(context);
-                                if(FoodMenuDisplayActivity.cartItemName.size() == 0){
+                                if (FoodMenuDisplayActivity.cartItemName.size() == 0) {
 //                            finish the activity
                                     Toast.makeText(context, "Cart is Empty", Toast.LENGTH_SHORT).show();
                                     CartActivity.activity.finish();
