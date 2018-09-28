@@ -42,14 +42,14 @@
                     android:layout_weight="1" />
 
                 <Button
-                    android:id="@+id/cartButton"
+                    android:id="@+id/helpButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
                     android:layout_marginRight="7dp"
                     android:background="@color/colorPrimary"
-                    android:drawableLeft="@drawable/ic_cart"
-                    android:text="Cart" />
+                    android:drawableLeft="@drawable/ic_help"
+                    android:text="Help" />
 
             </LinearLayout>
 
@@ -119,9 +119,9 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:padding="3dp"
-                app:backgroundTint="#fff"
+                app:backgroundTint="@color/colorPrimary"
                 app:fabSize="normal"
-                app:srcCompat="@android:drawable/ic_lock_lock" />
+                app:srcCompat="@drawable/ic_cart" />
 
         </FrameLayout>
     </FrameLayout>

@@ -44,7 +44,7 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
     FirebaseAuth auth;
     int exitCount;
     long currTime, prevTime;
-    Button cartButton;
+    Button helpButton;
 
     public static ArrayList<String> cartItemName, cartItemCategory;
     public static ArrayList<Integer> cartItemQuantity, cartItemPrice;
@@ -63,7 +63,7 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
         cartItemCategory = new ArrayList<>();
         cartItemPrice = new ArrayList<>();
         cartItemQuantity = new ArrayList<>();
-        cartButton = findViewById(R.id.cartButton);
+        helpButton = findViewById(R.id.helpButton);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -133,17 +133,17 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                logout();
-            }
-        });
-
-        cartButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
                 if (cartItemName.isEmpty())
                     makeText("Cart is Empty");
                 else
                     showCart();
+            }
+        });
+
+        helpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                makeText("Help Pressed");
             }
         });
     }
