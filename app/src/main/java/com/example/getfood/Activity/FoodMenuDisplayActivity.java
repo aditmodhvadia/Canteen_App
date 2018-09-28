@@ -80,13 +80,19 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
-        actionbar.setDisplayHomeAsUpEnabled(true);
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        if (actionbar != null) {
+            actionbar.setDisplayHomeAsUpEnabled(true);
+            actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        }
+        else{
+            makeText("Action Bar null");
+        }
+
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        mDrawerLayout = findViewById(R.id.main_content);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(
@@ -97,13 +103,18 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
                         menuItem.setChecked(true);
                         // close drawer when item is tapped
                         if (menuItem.getItemId() == R.id.nav_cart) {
-                            Toast.makeText(FoodMenuDisplayActivity.this, "Cart Pressed", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(FoodMenuDisplayActivity.this, "Cart Pressed", Toast.LENGTH_SHORT).show();
+                            if (cartItemName.isEmpty())
+                                makeText("Cart is Empty");
+                            else
+                                showCart();
                         }else if (menuItem.getItemId() == R.id.nav_order) {
-                            Toast.makeText(FoodMenuDisplayActivity.this, "Order Pressed", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(FoodMenuDisplayActivity.this, "Order Pressed", Toast.LENGTH_SHORT).show();
                         }else if (menuItem.getItemId() == R.id.nav_terms) {
-                            Toast.makeText(FoodMenuDisplayActivity.this, "Terms & Conditions Pressed", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(FoodMenuDisplayActivity.this, "Terms & Conditions Pressed", Toast.LENGTH_SHORT).show();
                         }else if (menuItem.getItemId() == R.id.nav_logout) {
-                            Toast.makeText(FoodMenuDisplayActivity.this, "Logout Pressed", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(FoodMenuDisplayActivity.this, "Logout Pressed", Toast.LENGTH_SHORT).show();
+                            logout();
                         } else {
 
                             Toast.makeText(FoodMenuDisplayActivity.this, String.valueOf(menuItem.getItemId()), Toast.LENGTH_SHORT).show();
@@ -135,14 +146,6 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
                     showCart();
             }
         });
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_food_menu_display, menu);
-        return false;
     }
 
     @Override
