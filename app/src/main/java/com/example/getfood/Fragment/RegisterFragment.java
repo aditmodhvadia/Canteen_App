@@ -2,6 +2,8 @@ package com.example.getfood.Fragment;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,10 +14,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.getfood.Activity.TermsActivity;
 import com.example.getfood.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -29,6 +36,7 @@ public class RegisterFragment extends Fragment {
 
 
     EditText userConPasswordEditText, userPasswordEditText, userEmailEditText;
+    TextView termsTextView;
     CheckBox termsCheckBox;
     Button userAddButton;
     ProgressDialog progressDialog;
@@ -49,7 +57,7 @@ public class RegisterFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         getActivity().setTitle("Register");
@@ -65,6 +73,16 @@ public class RegisterFragment extends Fragment {
         userEmailEditText = view.findViewById(R.id.userLoginEmailEditText);
 
         termsCheckBox = view.findViewById(R.id.termsCheckBox);
+        termsTextView = view.findViewById(R.id.termsTextView);
+
+        termsTextView.setPaintFlags(termsTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+        termsTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), TermsActivity.class));
+            }
+        });
 
 
         userAddButton = view.findViewById(R.id.userAddButton);
@@ -134,7 +152,7 @@ public class RegisterFragment extends Fragment {
             return;
         }
 
-        if(!termsCheckBox.isChecked()){
+        if (!termsCheckBox.isChecked()) {
             Toast.makeText(getContext(), "You must agree to the Terms and Conditions", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -171,8 +189,7 @@ public class RegisterFragment extends Fragment {
                                 });
                                 builder.show();
 
-                            }
-                            else{
+                            } else {
                                 if (task.getException() instanceof FirebaseNetworkException) {
                                     Toast.makeText(getContext(), "Internet connectivity required", Toast.LENGTH_SHORT).show();
                                 } else if (task.getException() instanceof FirebaseAuthUserCollisionException) {

@@ -44,7 +44,9 @@
         <service
             android:name=".Service.OrderNotificationService"
             android:enabled="true"
-            android:exported="true"/>
+            android:exported="true" />
+
+        <activity android:name=".Activity.TermsActivity"></activity>
     </application>
 
 </manifest>
