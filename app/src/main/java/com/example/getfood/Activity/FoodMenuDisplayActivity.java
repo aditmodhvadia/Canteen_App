@@ -111,6 +111,7 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
                         }else if (menuItem.getItemId() == R.id.nav_order) {
 //                            Toast.makeText(FoodMenuDisplayActivity.this, "Order Pressed", Toast.LENGTH_SHORT).show();
                         }else if (menuItem.getItemId() == R.id.nav_terms) {
+                            startActivity(new Intent(FoodMenuDisplayActivity.this, TermsActivity.class));
 //                            Toast.makeText(FoodMenuDisplayActivity.this, "Terms & Conditions Pressed", Toast.LENGTH_SHORT).show();
                         }else if (menuItem.getItemId() == R.id.nav_logout) {
 //                            Toast.makeText(FoodMenuDisplayActivity.this, "Logout Pressed", Toast.LENGTH_SHORT).show();
