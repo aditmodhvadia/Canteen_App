@@ -70,9 +70,10 @@ public class SouthIndianFragment extends Fragment {
                 itemPrice.clear();
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
 
-                    itemName.add(dsp.getKey());
-                    itemPrice.add(dsp.child("Price").getValue().toString());
-
+                    if(dsp.child("Available").getValue().toString().equals("Yes")){
+                        itemName.add(dsp.getKey());
+                        itemPrice.add(dsp.child("Price").getValue().toString());
+                    }
                 }
 
                 displayAdapter = new MenuDisplayAdapter(itemName, itemPrice, getContext());
