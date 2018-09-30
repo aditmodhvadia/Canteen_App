@@ -65,6 +65,8 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
         cartItemQuantity = new ArrayList<>();
         helpButton = findViewById(R.id.helpButton);
 
+        auth = FirebaseAuth.getInstance();
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -109,6 +111,11 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
                             else
                                 showCart();
                         }else if (menuItem.getItemId() == R.id.nav_order) {
+                            Intent orders = new Intent(FoodMenuDisplayActivity.this, OrderListActivity.class);
+                            String email = auth.getCurrentUser().getEmail();
+                            String rollNo = email.substring(0, email.indexOf("@"));
+                            orders.putExtra("RollNo", rollNo);
+                            startActivity(orders);
 //                            Toast.makeText(FoodMenuDisplayActivity.this, "Order Pressed", Toast.LENGTH_SHORT).show();
                         }else if (menuItem.getItemId() == R.id.nav_terms) {
                             startActivity(new Intent(FoodMenuDisplayActivity.this, TermsActivity.class));
@@ -260,7 +267,6 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                auth = FirebaseAuth.getInstance();
                 auth.signOut();
                 finish();
             }

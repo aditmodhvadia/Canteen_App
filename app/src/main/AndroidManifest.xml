@@ -46,7 +46,8 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".Activity.TermsActivity"></activity>
+        <activity android:name=".Activity.TermsActivity" />
+        <activity android:name=".Activity.OrderListActivity"></activity>
     </application>
 
 </manifest>
