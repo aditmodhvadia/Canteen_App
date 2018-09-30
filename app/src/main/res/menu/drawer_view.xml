@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <group android:checkableBehavior="single">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/group1"
+        android:checkableBehavior="single">
         <!--todo: add icons and proper items-->
         <item
             android:id="@+id/nav_cart"
@@ -8,12 +10,19 @@
             android:title="Cart" />
         <item
             android:id="@+id/nav_order"
-
-            android:title="Order" />
+            android:title="Orders" />
     </group>
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/group2"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_help"
+            android:icon="@drawable/ic_help"
+            android:title="Help &amp; feedback" />
+
         <item
             android:id="@+id/nav_terms"
+            android:icon="@drawable/ic_lock_black_24dp"
             android:title="Terms &amp; Conditions" />
         <item
             android:id="@+id/nav_logout"

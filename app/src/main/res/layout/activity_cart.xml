@@ -19,11 +19,23 @@
             android:textAlignment="center"
             android:textSize="28sp" />
 
-        <ListView
-            android:id="@+id/cartListView"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="520dp"
-            android:listSelector="@drawable/list_selector" />
+            android:layout_height="wrap_content">
+
+            <ListView
+                android:id="@+id/cartListView"
+                android:layout_width="match_parent"
+                android:layout_height="520dp"
+                android:background="#817d7d"
+                android:divider="#817d7d"
+                android:dividerHeight="10.0sp"
+                android:listSelector="@drawable/list_selector"
+                android:paddingStart="6dp"
+                android:paddingTop="6dp"
+                android:paddingEnd="6dp"
+                android:paddingBottom="6dp" />
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,8 +47,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginBottom="30dp"
                 android:layout_marginEnd="15dp"
+                android:layout_marginBottom="30dp"
                 android:padding="5dp"
                 android:textSize="24sp" />
 
@@ -48,10 +60,10 @@
                 android:layout_marginBottom="20dp"
                 android:background="#00f"
                 android:elevation="2.0dp"
-                android:paddingBottom="20dp"
                 android:paddingLeft="40dp"
-                android:paddingRight="40dp"
                 android:paddingTop="20dp"
+                android:paddingRight="40dp"
+                android:paddingBottom="20dp"
                 android:text="Place Order"
                 android:textColor="#fff"
                 android:textSize="18sp" />
