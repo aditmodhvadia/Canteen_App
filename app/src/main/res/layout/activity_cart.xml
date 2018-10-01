@@ -19,23 +19,16 @@
             android:textAlignment="center"
             android:textSize="28sp" />
 
-        <FrameLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/cartRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="520dp"
+            android:paddingStart="6dp"
+            android:paddingTop="6dp"
+            android:paddingEnd="6dp"
+            android:paddingBottom="6dp"
+            android:scrollbars="vertical" />
 
-            <ListView
-                android:id="@+id/cartListView"
-                android:layout_width="match_parent"
-                android:layout_height="520dp"
-                android:background="#817d7d"
-                android:divider="#817d7d"
-                android:dividerHeight="10.0sp"
-                android:listSelector="@drawable/list_selector"
-                android:paddingStart="6dp"
-                android:paddingTop="6dp"
-                android:paddingEnd="6dp"
-                android:paddingBottom="6dp" />
-        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

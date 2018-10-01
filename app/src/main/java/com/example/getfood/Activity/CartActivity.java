@@ -10,6 +10,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -18,14 +20,13 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.getfood.Adapter.CartDisplayAdapter;
+import com.example.getfood.Adapter.CartRecyclerViewDisplayAdapter;
 import com.example.getfood.Paytm;
 import com.example.getfood.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,10 +38,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.paytm.pgsdk.PaytmOrder;
 import com.paytm.pgsdk.PaytmPGService;
 import com.paytm.pgsdk.PaytmPaymentTransactionCallback;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -50,21 +49,18 @@ import java.util.Map;
 
 public class CartActivity extends AppCompatActivity implements View.OnClickListener, PaytmPaymentTransactionCallback {
 
-    static ListView cartListView;
-    static CartDisplayAdapter cartDisplayAdapter;
+    RecyclerView cartRecyclerView;
+    RecyclerView.Adapter cartRecyclerDisplayAdapter;
 
     public static Activity activity = null;
 
     static TextView totalPriceTV;
     Button orderButton;
-    //  alertdialog views
-    Button alertPlus, alertMinus;
-    TextView quantitySetTV;
-    AlertDialog chooseTimeDialog;
     Intent orderIntent;
 
     //    choose time views
     Button firstBreakButton, secondBreakButton, lastBreakButton, nowButton;
+    AlertDialog chooseTimeDialog;
 
     public static int total;
 
@@ -81,72 +77,19 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
-        cartListView = findViewById(R.id.cartListView);
+        cartRecyclerView = findViewById(R.id.cartRecyclerView);
+        cartRecyclerView.setHasFixedSize(true);
+        cartRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
 
         totalPriceTV = findViewById(R.id.totalPriceTV);
         orderButton = findViewById(R.id.orderButton);
 
-        setDisplayListView(getApplicationContext());
+//        setDisplayListView(getApplicationContext());
 
-//        show dialog to adjust the quantity of items in the cart
-
-        cartListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-
-                AlertDialog.Builder setQuantityBuilder = new AlertDialog.Builder(CartActivity.this);
-                View quantityAlert = getLayoutInflater().inflate(R.layout.adjust_quantity_display, null);
-                alertPlus = quantityAlert.findViewById(R.id.alertPlus);
-                alertMinus = quantityAlert.findViewById(R.id.alertMinus);
-                quantitySetTV = quantityAlert.findViewById(R.id.quantitySetTextView);
-                quantitySetTV.setText(FoodMenuDisplayActivity.cartItemQuantity.get(position).toString());
-                alertPlus.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (Integer.parseInt(quantitySetTV.getText().toString()) < 20) {
-                            quantitySetTV.setText(String.valueOf(Integer.valueOf(quantitySetTV.getText().toString()) + 1));
-                        }
-                    }
-                });
-                alertMinus.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (Integer.parseInt(quantitySetTV.getText().toString()) > 0) {
-                            quantitySetTV.setText(String.valueOf(Integer.valueOf(quantitySetTV.getText().toString()) - 1));
-                        }
-                    }
-                });
-
-                setQuantityBuilder.setTitle("Select Quantity");
-                setQuantityBuilder.setMessage(FoodMenuDisplayActivity.cartItemName.get(position));
-                setQuantityBuilder.setView(quantityAlert);
-
-                setQuantityBuilder.setPositiveButton("Adjust Cart", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                        int quant = Integer.valueOf(quantitySetTV.getText().toString());
-                        if (quant != 0) {
-                            FoodMenuDisplayActivity.cartItemQuantity.set(position, quant);
-                            cartDisplayAdapter.notifyDataSetChanged();
-                            calcTotal();
-                            makeText("Cart Adjusted");
-                        } else {
-                            callConfirmDialog(position, CartActivity.this);
-                        }
-                    }
-                });
-
-                setQuantityBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                    }
-                });
-
-                AlertDialog dialog2 = setQuantityBuilder.show();
-            }
-        });
+        cartRecyclerDisplayAdapter = new CartRecyclerViewDisplayAdapter(FoodMenuDisplayActivity.cartItemName,FoodMenuDisplayActivity.cartItemQuantity, FoodMenuDisplayActivity.cartItemPrice, this);
+        cartRecyclerView.setAdapter(cartRecyclerDisplayAdapter);
+        calcTotal();
 
         orderButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,40 +98,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-    }
-
-    public static void callConfirmDialog(final int position, final Context context) {
-//        quantity is set to 0, hence confirm before removing the item
-        AlertDialog.Builder confirmRemoveItemBuilder = new AlertDialog.Builder(context);
-        confirmRemoveItemBuilder.setTitle("Are you sure you want to remove item?");
-
-        confirmRemoveItemBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-                FoodMenuDisplayActivity.cartItemQuantity.remove(position);
-                FoodMenuDisplayActivity.cartItemPrice.remove(position);
-                FoodMenuDisplayActivity.cartItemName.remove(position);
-                FoodMenuDisplayActivity.cartItemCategory.remove(position);
-                if (FoodMenuDisplayActivity.cartItemName.isEmpty()) {
-                    Toast.makeText(context, "Cart is Empty", Toast.LENGTH_SHORT).show();
-//                    finish();
-
-                }
-                calcTotal();
-                Toast.makeText(context, "Cart Adjusted", Toast.LENGTH_SHORT).show();
-//                finish();
-            }
-        });
-
-        confirmRemoveItemBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        });
-
-        AlertDialog dialogConfirmQuantitySet = confirmRemoveItemBuilder.show();
     }
 
     private void chooseTime() {
@@ -262,20 +171,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public static void setDisplayListView(Context context) {
-        cartDisplayAdapter = new CartDisplayAdapter(FoodMenuDisplayActivity.cartItemName, FoodMenuDisplayActivity.cartItemQuantity,
-                FoodMenuDisplayActivity.cartItemPrice, context);
-        cartListView.setAdapter(cartDisplayAdapter);
-//        cartListView.removeViewAt();
-//        calculate total of all the items in cart and display it
-        calcTotal();
-    }
-    public static void notifyChangeAndCalcTotal(Context context){
-//        cartListView.invalidateViews();
-        cartDisplayAdapter.notifyDataSetChanged();
-        calcTotal();
-    }
-
     public static void calcTotal() {
         int i = 0;
         total = 0;
@@ -287,10 +182,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         totalPriceTV.setText(String.format("Total: Rs. %s", String.valueOf(total)));
         totalPriceTV.animate().alpha(1.0f).setDuration(250);
 
-    }
-
-    public void setTotalValue(int total) {
-        totalPriceTV.setText(String.valueOf(total));
     }
 
     @Override
