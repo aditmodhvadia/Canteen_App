@@ -6,13 +6,13 @@
     android:layout_height="wrap_content"
     app:cardCornerRadius="8dp"
     android:elevation="15dp"
+    android:layout_margin="8dp"
     android:id="@+id/cardView"
     android:background="#fff">
 
     <android.support.constraint.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
         android:background="#fff">
 
         <TextView
@@ -61,8 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
-            android:paddingStart="4dp"
-            android:paddingEnd="4dp"
+            android:padding="5dp"
             android:scaleType="center"
             android:src="@drawable/ic_add"
             android:tint="#2c3e50"
@@ -76,8 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="8dp"
-            android:paddingStart="4dp"
-            android:paddingEnd="4dp"
+            android:padding="5dp"
             android:scaleType="center"
             android:src="@drawable/ic_remove"
             android:tint="#2c3e50"
