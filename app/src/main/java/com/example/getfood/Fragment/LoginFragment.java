@@ -95,6 +95,9 @@ public class LoginFragment extends Fragment {
         return v;
     }
 
+//    todo:onStart ma auth check karo
+
+
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name

@@ -23,6 +23,7 @@
         <activity
             android:name=".Activity.LoginActivity"
             android:label="Get Food"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,9 +34,14 @@
         <activity
             android:name=".Activity.FoodMenuDisplayActivity"
             android:label="@string/title_activity_food_menu_display"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activity.CartActivity" />
-        <activity android:name=".Activity.OrderActivity" />
+        <activity
+            android:name=".Activity.CartActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.OrderActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.paytm.pgsdk.PaytmPGActivity"
             android:configChanges="keyboardHidden|orientation|keyboard"
@@ -46,8 +52,12 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".Activity.TermsActivity" />
-        <activity android:name=".Activity.OrderListActivity"></activity>
+        <activity
+            android:name=".Activity.TermsActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activity.OrderListActivity">
+            android:screenOrientation="portrait"
+        </activity>
     </application>
 
 </manifest>
