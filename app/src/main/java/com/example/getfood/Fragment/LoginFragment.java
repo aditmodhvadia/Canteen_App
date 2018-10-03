@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 import com.example.getfood.Activity.FoodMenuDisplayActivity;
 import com.example.getfood.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
@@ -53,10 +55,11 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         auth = FirebaseAuth.getInstance();
-        if(auth.getCurrentUser()!=null){
-            Intent i = new Intent(getContext(), FoodMenuDisplayActivity.class);
-            startActivity(i);
-        }
+//        swapped checking for authentication to redirect to Display from here to onStart of Login Activity
+//        if(auth.getCurrentUser()!=null){
+//            Intent i = new Intent(getContext(), FoodMenuDisplayActivity.class);
+//            startActivity(i);
+//        }
         View v = inflater.inflate(R.layout.fragment_login_curr_user, container, false);
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -93,6 +96,37 @@ public class LoginFragment extends Fragment {
             }
         });
         return v;
+    }
+
+//    timeout progress dialog
+
+    public void startProgressDialog(){
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+
+        progressDialog = ProgressDialog.show(getContext(), "Please Wait", "Confirming your Order", false,
+                true, new DialogInterface.OnCancelListener() {
+
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+//                        if (listAdapter.isEmpty())
+//                            Toast.makeText(MainActivity.this, "Start with a new List.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        progressDialog.setCancelable(false);
+
+        Runnable progressRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (progressDialog != null && progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getContext(), "There might be some error...", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+        Handler pdCanceller = new Handler();
+        pdCanceller.postDelayed(progressRunnable, 15000);
     }
 
 //    todo:onStart ma auth check karo
@@ -198,6 +232,12 @@ public class LoginFragment extends Fragment {
                                         Toast.makeText(getContext(), "Some error occurred. Try again", Toast.LENGTH_SHORT).show();
                                     }
                                 }
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                progressDialog.hide();
+                                Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
                             }
                         });
 

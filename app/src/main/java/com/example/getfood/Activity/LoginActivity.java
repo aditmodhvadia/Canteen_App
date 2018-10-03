@@ -1,5 +1,6 @@
 package com.example.getfood.Activity;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 
@@ -31,6 +32,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
 
+    FirebaseAuth auth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +55,14 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        auth = FirebaseAuth.getInstance();
+        if(auth.getCurrentUser() != null){
+            startActivity(new Intent(LoginActivity.this, FoodMenuDisplayActivity.class));
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
