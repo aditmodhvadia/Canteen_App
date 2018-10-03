@@ -1,5 +1,6 @@
 package com.example.getfood.Service;
 
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
@@ -130,7 +131,8 @@ public class OrderNotificationService extends Service {
                 .setVibrate(new long[]{0, 400, 200, 400})
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(item +" is " +status +"\nBe ready to take your order when food is cooked!"))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setPriority(Notification.PRIORITY_HIGH)
                 .setAutoCancel(true)
                 .addAction(R.drawable.ic_person_add_black_48dp, "Open", pi)
                 .setColorized(true)

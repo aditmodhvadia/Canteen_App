@@ -24,6 +24,7 @@
             android:id="@+id/nav_terms"
             android:icon="@drawable/ic_lock_black_24dp"
             android:title="Terms &amp; Conditions" />
+
         <item
             android:id="@+id/nav_logout"
             android:title="Logout" />
