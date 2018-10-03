@@ -3,67 +3,103 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_red"
-    tools:context=".RegisterFragment">
+    android:background="@drawable/traffic_dark"
+    tools:context=".Fragment.RegisterFragment">
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
-<!-- there is no id to this textview-->
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="Register"
+            android:textAlignment="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            android:textColor="#fff" />
 
         <EditText
             android:id="@+id/userLoginEmailEditText"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="60dp"
-            android:background="#60f9cbc8"
-            android:drawableStart="@drawable/ic_person_black_24dp"
-            android:hint=" Email ID"
-            android:padding="8dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/edittextstyle"
+            android:ems="10"
+            android:hint="Email Address"
+            android:inputType="textEmailAddress"
+            android:padding="15dp"
             android:textColor="#fff"
-            android:textColorHint="#d3d3d3" />
+            android:textColorHint="#fff" />
 
         <EditText
             android:id="@+id/userPasswordEditText"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:background="#60f9cbc8"
-            android:drawableStart="@drawable/ic_lock_black_24dp"
-            android:hint=" Password"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/edittextstyle"
+            android:ems="10"
+            android:hint="Password"
             android:inputType="textPassword"
-            android:padding="8dp"
+            android:padding="15dp"
             android:textColor="#fff"
-            android:textColorHint="#d3d3d3"  />
+            android:textColorHint="#fff" />
 
         <EditText
             android:id="@+id/userConPasswordEditText"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:background="#60f9cbc8"
-            android:drawableStart="@drawable/ic_lock_black_24dp"
-            android:hint=" Confirm Password"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/edittextstyle"
+            android:ems="10"
+            android:hint="Confirm Password"
             android:inputType="textPassword"
-            android:padding="8dp"
+            android:padding="15dp"
             android:textColor="#fff"
-            android:textColorHint="#d3d3d3"  />
+            android:textColorHint="#fff" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/termsCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:text="I accept the"
+                android:textColor="#fff" />
+
+            <TextView
+                android:id="@+id/termsTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:paddingStart="0dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="10dp"
+                android:text=" Terms and Conditions"
+                android:textColor="#1425d9" />
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/userAddButton"
-            android:layout_width="300dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:background="@color/colorPrimaryDark"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/buttonstyleselector"
+            android:gravity="center"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
             android:text="Get Registered"
-            android:textColor="#fff"
-            android:shadowColor="@color/colorPrimary"/>
+            android:textColor="#ffffff" />
+
     </LinearLayout>
 </ScrollView>

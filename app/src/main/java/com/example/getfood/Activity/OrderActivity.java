@@ -1,4 +1,4 @@
-package com.example.getfood;
+package com.example.getfood.Activity;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -14,27 +14,28 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.getfood.Adapter.OrderDisplayAdapter;
+import com.example.getfood.R;
+import com.example.getfood.Service.OrderNotificationService;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 
 public class OrderActivity extends AppCompatActivity {
-
-    TextView testTV;
+//    Layout Views
+    TextView testTV, test;
     ListView orderListView;
-    CartDisplayAdapter cartDisplayAdapter;
-
-    ArrayList<String> orderItemName, orderItemCategory;
+    OrderDisplayAdapter orderDisplayAdapter;
+//    Variables
+    ArrayList<String> orderItemName, orderItemCategory, orderItemStatus;
     ArrayList<Integer> orderItemPrice, orderItemQuantity;
     int orderTotal;
     String orderID, rollNo, orderTime, orderTotalPrice;
     Intent orderData;
-
-
+//    Firebase Variables
     DatabaseReference root;
 
     @Override
@@ -44,27 +45,33 @@ public class OrderActivity extends AppCompatActivity {
 
         testTV = findViewById(R.id.testTV);
         orderListView = findViewById(R.id.orderListView);
-
+        test = findViewById(R.id.test);
+//        Initialization
         orderItemName = new ArrayList<>();
         orderItemQuantity = new ArrayList<>();
         orderItemPrice = new ArrayList<>();
         orderItemCategory = new ArrayList<>();
-
+        orderItemStatus = new ArrayList<>();
+//        Getting data from the calling activity/Intent
         orderData = getIntent();
         if(orderData.getExtras().isEmpty()){
             Toast.makeText(getApplicationContext(), "No Data Received", Toast.LENGTH_SHORT).show();
             return;
         }
         createNotificationChannel();
-
+//        Get data from Intent
         orderID = orderData.getExtras().getString("OrderID");
         orderTotal = orderData.getExtras().getInt("Total");
         rollNo = orderData.getExtras().getString("RollNo");
 
-        root = FirebaseDatabase.getInstance().getReference().child("Order").child(orderID).child(rollNo);
+        root = FirebaseDatabase.getInstance().getReference().child("Order").child(orderID).child("Items");
         root.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                orderItemCategory.clear();
+                orderItemName.clear();
+                orderItemQuantity.clear();
+                orderItemStatus.clear();
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                     if(dsp.getKey().equals("Time to deliver")){
                         orderTime = dsp.getKey();
@@ -72,27 +79,30 @@ public class OrderActivity extends AppCompatActivity {
                     else if(dsp.getKey().equals("Total Amount")){
                         orderTotalPrice = dsp.getKey();
                     }
+                    else if(dsp.getKey().equals("Roll No")){
+
+                    }
                     else{
                         for (DataSnapshot dspInner : dsp.getChildren()){
                             orderItemCategory.add(dsp.getKey());
                             orderItemName.add(dspInner.getKey());
                             orderItemQuantity.add(Integer.valueOf(dspInner.child("Quantity").getValue().toString()));
+                            orderItemStatus.add(dspInner.child("Status").getValue().toString());
                         }
                     }
                 }
-                cartDisplayAdapter = new CartDisplayAdapter(orderItemName, orderItemQuantity,
-                        null, getApplicationContext());
-                orderListView.setAdapter(cartDisplayAdapter);
+                orderDisplayAdapter = new OrderDisplayAdapter(orderItemName, orderItemQuantity, orderItemStatus, getApplicationContext());
+                orderListView.setAdapter(orderDisplayAdapter);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(OrderActivity.this, databaseError.toString(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(OrderActivity.this, databaseError.toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
 
-        testTV.setText("Order ID is " +orderID);
+        testTV.setText(String.format("Order ID is %s", orderID));
     }
 
     public void customNotification() {
@@ -111,10 +121,12 @@ public class OrderActivity extends AppCompatActivity {
                 .setContentText("Order is being cooked")
                 .setVibrate(new long[]{0, 400, 200, 400})
                 .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText("Much longer text that cannot fit one line..."))
+                        .bigText("Be ready to take your order when your food is cooked!"))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setAutoCancel(true)
                 .addAction(R.drawable.ic_person_add_black_48dp, "Open", pi)
+                .setColorized(true)
+                .setColor(getResources().getColor(R.color.colorPrimary))
                 .setContentIntent(pi);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
@@ -127,13 +139,26 @@ public class OrderActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        customNotification();
+        Intent service = new Intent(OrderActivity.this, OrderNotificationService.class);
+        service.putExtra("OrderID", orderData.getStringExtra("OrderID"));
+        startService(service);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        customNotification();
+//        todo: call notification before starting service
+//        customNotification();
+        Intent service = new Intent(OrderActivity.this, OrderNotificationService.class);
+        service.putExtra("OrderID", orderData.getStringExtra("OrderID"));
+        startService(service);
+
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        stopService(new Intent(this, OrderNotificationService.class));
     }
 
     @Override

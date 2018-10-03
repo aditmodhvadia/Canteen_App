@@ -1,21 +1,22 @@
-package com.example.getfood;
+package com.example.getfood.Activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +27,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.getfood.Fragment.ChineseFragment;
+import com.example.getfood.Fragment.PizzaSandwichFragment;
+import com.example.getfood.R;
+import com.example.getfood.Fragment.SouthIndianFragment;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -34,11 +39,12 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
 
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
+    private DrawerLayout mDrawerLayout;
     FloatingActionButton floatingActionButton;
     FirebaseAuth auth;
     int exitCount;
     long currTime, prevTime;
-    Button cartButton;
+    Button helpButton;
 
     public static ArrayList<String> cartItemName, cartItemCategory;
     public static ArrayList<Integer> cartItemQuantity, cartItemPrice;
@@ -57,7 +63,9 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
         cartItemCategory = new ArrayList<>();
         cartItemPrice = new ArrayList<>();
         cartItemQuantity = new ArrayList<>();
-        cartButton = findViewById(R.id.cartButton);
+        helpButton = findViewById(R.id.helpButton);
+
+        auth = FirebaseAuth.getInstance();
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -71,48 +79,90 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
 
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionbar = getSupportActionBar();
+        if (actionbar != null) {
+            actionbar.setDisplayHomeAsUpEnabled(true);
+            actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        }
+        else{
+            makeText("Action Bar null");
+        }
+
+
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        // set item as selected to persist highlight
+                        menuItem.setChecked(true);
+                        // close drawer when item is tapped
+                        if (menuItem.getItemId() == R.id.nav_cart) {
+//                            Toast.makeText(FoodMenuDisplayActivity.this, "Cart Pressed", Toast.LENGTH_SHORT).show();
+                            if (cartItemName.isEmpty())
+                                makeText("Cart is Empty");
+                            else
+                                showCart();
+                        }else if (menuItem.getItemId() == R.id.nav_order) {
+                            Intent orders = new Intent(FoodMenuDisplayActivity.this, OrderListActivity.class);
+                            String email = auth.getCurrentUser().getEmail();
+                            String rollNo = email.substring(0, email.indexOf("@"));
+                            orders.putExtra("RollNo", rollNo);
+                            startActivity(orders);
+//                            Toast.makeText(FoodMenuDisplayActivity.this, "Order Pressed", Toast.LENGTH_SHORT).show();
+                        }else if (menuItem.getItemId() == R.id.nav_terms) {
+                            startActivity(new Intent(FoodMenuDisplayActivity.this, TermsActivity.class));
+//                            Toast.makeText(FoodMenuDisplayActivity.this, "Terms & Conditions Pressed", Toast.LENGTH_SHORT).show();
+                        }else if (menuItem.getItemId() == R.id.nav_logout) {
+//                            Toast.makeText(FoodMenuDisplayActivity.this, "Logout Pressed", Toast.LENGTH_SHORT).show();
+                            logout();
+                        } else {
+
+                            Toast.makeText(FoodMenuDisplayActivity.this, String.valueOf(menuItem.getItemId()), Toast.LENGTH_SHORT).show();
+
+                        }
+                        mDrawerLayout.closeDrawers();
+
+                        // Add code here to update the UI based on the item selected
+                        // For example, swap UI fragments here
+
+                        return true;
+                    }
+                });
 
         floatingActionButton = findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                logout();
-            }
-        });
-
-        cartButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(cartItemName.isEmpty())
-                makeText("Cart is Empty");
+                if (cartItemName.isEmpty())
+                    makeText("Cart is Empty");
                 else
                     showCart();
             }
         });
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_food_menu_display, menu);
-        return true;
+        helpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                makeText("Help Pressed");
+            }
+        });
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -217,7 +267,6 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                auth = FirebaseAuth.getInstance();
                 auth.signOut();
                 finish();
             }
@@ -233,12 +282,12 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
         AlertDialog dialog = builder.show();
     }
 
-    private void showCart(){
-        Intent i = new Intent(this,CartActivity.class);
+    private void showCart() {
+        Intent i = new Intent(this, CartActivity.class);
         startActivity(i);
     }
 
-    public void makeText(String msg){
+    public void makeText(String msg) {
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 }
