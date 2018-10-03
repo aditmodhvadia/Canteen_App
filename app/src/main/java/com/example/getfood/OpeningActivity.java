@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.getfood.Activity.LoginActivity;
+
 public class OpeningActivity extends AppCompatActivity {
 
     @Override

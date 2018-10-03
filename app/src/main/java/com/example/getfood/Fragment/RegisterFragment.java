@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,8 +20,11 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.getfood.Activity.FoodMenuDisplayActivity;
+import com.example.getfood.Activity.TermsActivity;
 import com.example.getfood.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -48,6 +52,7 @@ public class RegisterFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     EditText userConPasswordEditText, userPasswordEditText, userEmailEditText;
+    TextView termsTextView;
     Button userAddButton;
     ProgressDialog progressDialog;
     int flag;
@@ -82,6 +87,7 @@ public class RegisterFragment extends Fragment {
         userConPasswordEditText = (EditText) view.findViewById(R.id.userConPasswordEditText);
         userPasswordEditText = (EditText) view.findViewById(R.id.userPasswordEditText);
         userEmailEditText = (EditText) view.findViewById(R.id.userLoginEmailEditText);
+        termsTextView = view.findViewById(R.id.termsTextView);
 
 
         userAddButton = (Button) view.findViewById(R.id.userAddButton);
@@ -90,6 +96,14 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 checkValues();
+            }
+        });
+
+        termsTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), TermsActivity.class));
+
             }
         });
     }

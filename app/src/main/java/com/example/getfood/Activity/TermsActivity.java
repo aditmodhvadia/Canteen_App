@@ -14,17 +14,13 @@ public class TermsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_terms);
-
-        WebView wv = findViewById(R.id.wv);
+        WebView wv = new WebView(getApplicationContext());
+        setContentView(wv);
 
         wv.setVisibility(View.VISIBLE);
-        String iframe ="<iframe src=\"https://docs.google.com/a/nirmauni.ac.in/document/d/e/2PACX-1vSs_x9OacQFiTHHp0PCLfVaQXvYCmu703Vedff1zdLDkqfNm--RiOXEBBle-H_aEDLmgrFMLfNYayPx/pub?embedded=true\"></iframe>\n" +
-                "\t</div>";
         wv.getSettings().setJavaScriptEnabled(true);
         wv.getSettings().setAllowFileAccess(true);
         wv.setWebViewClient(new TermsActivity.Callback());
-
         String working = "https://www.google.com/a/nirmauni.ac.in/ServiceLogin?service=wise&passive=1209600&continue=https://docs.google.com/a/nirmauni.ac.in/document/d/e/2PACX-1vSs_x9OacQFiTHHp0PCLfVaQXvYCmu703Vedff1zdLDkqfNm--RiOXEBBle-H_aEDLmgrFMLfNYayPx/pub?embedded%3Dtrue&followup=https://docs.google.com/a/nirmauni.ac.in/document/d/e/2PACX-1vSs_x9OacQFiTHHp0PCLfVaQXvYCmu703Vedff1zdLDkqfNm--RiOXEBBle-H_aEDLmgrFMLfNYayPx/pub?embedded%3Dtrue&ltmpl=docs";
 
         String directdisplay = "https://docs.google.com/a/nirmauni.ac.in/document/d/e/2PACX-1vSs_x9OacQFiTHHp0PCLfVaQXvYCmu703Vedff1zdLDkqfNm--RiOXEBBle-H_aEDLmgrFMLfNYayPx/pub";
