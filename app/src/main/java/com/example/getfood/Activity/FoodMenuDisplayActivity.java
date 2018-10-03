@@ -120,6 +120,19 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
                         }else if (menuItem.getItemId() == R.id.nav_terms) {
                             startActivity(new Intent(FoodMenuDisplayActivity.this, TermsActivity.class));
 //                            Toast.makeText(FoodMenuDisplayActivity.this, "Terms & Conditions Pressed", Toast.LENGTH_SHORT).show();
+                        }else if (menuItem.getItemId() == R.id.nav_contact) {
+
+                            Intent email = new Intent(Intent.ACTION_SEND);
+                            email.putExtra(Intent.EXTRA_EMAIL, new String[]{ "adit.modhvadia@gmail.com"});
+                            email.putExtra(Intent.EXTRA_CC, new String[]{"15bce001@nirmauni.ac.in",
+                                    "15bce014@nirmauni.ac.in"});
+                            email.putExtra(Intent.EXTRA_SUBJECT, "Query/Report for my Kanteen");
+
+                            //need this to prompts email client only
+                            email.setType("message/rfc822");
+
+                            startActivity(Intent.createChooser(email, "Choose an Email client :"));
+
                         }else if (menuItem.getItemId() == R.id.nav_logout) {
 //                            Toast.makeText(FoodMenuDisplayActivity.this, "Logout Pressed", Toast.LENGTH_SHORT).show();
                             logout();

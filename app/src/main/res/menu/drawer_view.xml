@@ -26,6 +26,11 @@
             android:title="Terms &amp; Conditions" />
 
         <item
+            android:id="@+id/nav_contact"
+            android:icon="@drawable/ic_mail"
+            android:title="Contact Us" />
+
+        <item
             android:id="@+id/nav_logout"
             android:title="Logout" />
     </group>
