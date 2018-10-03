@@ -8,9 +8,9 @@
     <application
         android:name=".FirebasePersistance"
         android:allowBackup="true"
-        android:icon="@drawable/mykanteenicon"
+        android:icon="@drawable/mykanteeniconk"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/mykanteenicon"
+        android:roundIcon="@drawable/mykanteeniconk"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">

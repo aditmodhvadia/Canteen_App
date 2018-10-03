@@ -116,7 +116,7 @@ public class OrderActivity extends AppCompatActivity {
         PendingIntent pi = PendingIntent.getActivity(this, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "default")
-                .setSmallIcon(R.drawable.btn_clear)
+                .setSmallIcon(R.drawable.mykanteenlogonotif)
                 .setContentTitle("Your Order")
                 .setContentText("Order is being cooked")
                 .setVibrate(new long[]{0, 400, 200, 400})

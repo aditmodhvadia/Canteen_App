@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.getfood.Activity.OrderActivity;
@@ -23,7 +24,7 @@ public class OrderNotificationService extends Service {
 //    Variables
     private String ORDER_ID;
 //    Firebase Variables
-    DatabaseReference currOrderRoot;
+    DatabaseReference currOrderRootChinese, currOrderRootSouthIndian, currOrderRootPizza;
     public OrderNotificationService() {
     }
 
@@ -41,33 +42,70 @@ public class OrderNotificationService extends Service {
         Intent data = intent;
         ORDER_ID = data.getStringExtra("OrderID");
 
-        currOrderRoot = FirebaseDatabase.getInstance().getReference().child("Order").child(ORDER_ID);
+        currOrderRootChinese = FirebaseDatabase.getInstance().getReference().child("Order").child(ORDER_ID).child("Items").child("Chinese");
+        currOrderRootSouthIndian = FirebaseDatabase.getInstance().getReference().child("Order").child(ORDER_ID).child("Items").child("South Indian");
+        currOrderRootPizza = FirebaseDatabase.getInstance().getReference().child("Order").child(ORDER_ID).child("Items").child("Pizza Sandwich");
 
-        currOrderRoot.addChildEventListener(new ChildEventListener() {
+        currOrderRootChinese.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
             }
-
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                customNotification();
+                customNotification(dataSnapshot.getKey(), dataSnapshot.child("Status").getValue().toString());
             }
-
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
             }
-
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
 
+        currOrderRootSouthIndian.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                customNotification(dataSnapshot.getKey(), dataSnapshot.child("Status").getValue().toString());
+            }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+        currOrderRootPizza.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                customNotification(dataSnapshot.getKey(), dataSnapshot.child("Status").getValue().toString().toLowerCase());
+            }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
 
@@ -76,7 +114,7 @@ public class OrderNotificationService extends Service {
         return START_STICKY;
     }
 
-    public void customNotification() {
+    public void customNotification(String item, String status) {
 
 //        todo: change the display messages to tell user that your order was updated
 
@@ -86,12 +124,12 @@ public class OrderNotificationService extends Service {
         PendingIntent pi = PendingIntent.getActivity(this, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "default")
-                .setSmallIcon(R.drawable.btn_clear)
+                .setSmallIcon(R.drawable.mykanteenlogonotif)
                 .setContentTitle("Your Order "+ORDER_ID)
-                .setContentText("Order is being cooked")
+                .setContentText(item +" is " +status)
                 .setVibrate(new long[]{0, 400, 200, 400})
                 .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText("Be ready to take your order when your food is cooked!"))
+                        .bigText(item +" is " +status +"\nBe ready to take your order when food is cooked!"))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setAutoCancel(true)
                 .addAction(R.drawable.ic_person_add_black_48dp, "Open", pi)
