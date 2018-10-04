@@ -6,7 +6,7 @@
         <!--todo: add icons and proper items-->
         <item
             android:id="@+id/nav_cart"
-            android:icon="@drawable/ic_cart"
+            android:icon="@drawable/ic_shopping_cart"
             android:title="Cart" />
         <item
             android:id="@+id/nav_order"
@@ -17,7 +17,7 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/nav_help"
-            android:icon="@drawable/ic_help"
+            android:icon="@drawable/ic_action_help"
             android:title="Help &amp; feedback" />
 
         <item
@@ -27,7 +27,7 @@
 
         <item
             android:id="@+id/nav_contact"
-            android:icon="@drawable/ic_mail"
+            android:icon="@drawable/ic_contact_us"
             android:title="Contact Us" />
 
         <item

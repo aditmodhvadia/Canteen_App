@@ -48,7 +48,7 @@
                     android:layout_marginTop="6dp"
                     android:layout_marginRight="7dp"
                     android:background="@color/colorPrimary"
-                    android:drawableLeft="@drawable/ic_help"
+                    android:drawableLeft="@drawable/ic_action_help"
                     android:text="Help" />
 
             </LinearLayout>
@@ -123,7 +123,7 @@
                 android:padding="3dp"
                 app:backgroundTint="@color/colorPrimary"
                 app:fabSize="normal"
-                app:srcCompat="@drawable/ic_cart" />
+                app:srcCompat="@drawable/ic_shopping_cart" />
 
         </FrameLayout>
     </FrameLayout>

@@ -140,9 +140,11 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
                         }else if (menuItem.getItemId() == R.id.nav_logout) {
 //                            Toast.makeText(FoodMenuDisplayActivity.this, "Logout Pressed", Toast.LENGTH_SHORT).show();
                             logout();
-                        } else {
+                        }else if(menuItem.getItemId() == R.id.nav_help) {
+                            Toast.makeText(FoodMenuDisplayActivity.this, "Help Pressed", Toast.LENGTH_SHORT).show();
+                        }else {
 
-                            Toast.makeText(FoodMenuDisplayActivity.this, String.valueOf(menuItem.getItemId()), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(FoodMenuDisplayActivity.this, "Error Occurred", Toast.LENGTH_SHORT).show();
 
                         }
                         mDrawerLayout.closeDrawers();
