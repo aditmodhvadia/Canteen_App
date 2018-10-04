@@ -105,37 +105,6 @@ public class OrderActivity extends AppCompatActivity {
         testTV.setText(String.format("Order ID is %s", orderID));
     }
 
-    public void customNotification() {
-        createNotificationChannel();
-
-        Intent i = new Intent(this, OrderActivity.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        i.putExtra("OrderID",orderID);
-        i.putExtra("Total", orderTotal);
-        i.putExtra("RollNo",rollNo);
-        PendingIntent pi = PendingIntent.getActivity(this, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "default")
-                .setSmallIcon(R.drawable.mykanteenlogonotif)
-                .setContentTitle("Your Order")
-                .setContentText("Order is being cooked")
-                .setVibrate(new long[]{0, 400, 200, 400})
-                .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText("Be ready to take your order when your food is cooked!"))
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setAutoCancel(true)
-                .addAction(R.drawable.ic_person_add_black_48dp, "Open", pi)
-                .setColorized(true)
-                .setColor(getResources().getColor(R.color.colorPrimary))
-                .setContentIntent(pi);
-
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-
-        notificationManager.notify(0, mBuilder.build());
-
-
-    }
-
     @Override
     protected void onStop() {
         super.onStop();
@@ -162,24 +131,13 @@ public class OrderActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        customNotification();
-    }
-
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        customNotification();
-//    }
-
-    @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         orderData = intent;
     }
 
     private void createNotificationChannel() {
+
 //        create notification channel only for Builds greater than Oreo(8.0)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "Order Channel";

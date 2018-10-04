@@ -2,6 +2,7 @@ package com.example.getfood.Activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -127,6 +128,9 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
                             email.putExtra(Intent.EXTRA_CC, new String[]{"15bce001@nirmauni.ac.in",
                                     "15bce014@nirmauni.ac.in"});
                             email.putExtra(Intent.EXTRA_SUBJECT, "Query/Report for my Kanteen");
+
+                            email.putExtra(Intent.EXTRA_TEXT, "Debug Information: "+Build.MANUFACTURER +"\n" +Build.DEVICE +"\n"
+                                    +Build.BRAND +"\n" +Build.MODEL +"\nAPI Level: " +Build.VERSION.SDK_INT);
 
                             //need this to prompts email client only
                             email.setType("message/rfc822");

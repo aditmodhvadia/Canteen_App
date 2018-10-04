@@ -125,7 +125,7 @@ public class OrderNotificationService extends Service {
         PendingIntent pi = PendingIntent.getActivity(this, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "default")
-                .setSmallIcon(R.drawable.mykanteenlogonotif)
+                .setSmallIcon(R.drawable.ic_notif_icon_k)
                 .setContentTitle("Your Order "+ORDER_ID)
                 .setContentText(item +" is " +status)
                 .setVibrate(new long[]{0, 400, 200, 400})
@@ -134,7 +134,8 @@ public class OrderNotificationService extends Service {
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setPriority(Notification.PRIORITY_HIGH)
                 .setAutoCancel(true)
-                .addAction(R.drawable.ic_person_add_black_48dp, "Open", pi)
+//                todo: icon expands on lower devices
+                .addAction(R.drawable.ic_open_notif,"Open", pi)
                 .setColorized(true)
                 .setColor(getResources().getColor(R.color.colorPrimary))
                 .setContentIntent(pi);

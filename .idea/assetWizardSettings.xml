@@ -33,8 +33,9 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="imageAsset" value="C:\Users\Adit\Downloads\icons8-shopping-cart-filled-100.png" />
-                                      <entry key="outputName" value="ic_remove" />
+                                      <entry key="assetType" value="IMAGE" />
+                                      <entry key="imageAsset" value="F:\Project Work\Sem 6\MADT\Canteen App\app\src\main\res\drawable-xxhdpi\mykanteeniconk.png" />
+                                      <entry key="outputName" value="ic_final_icon" />
                                     </map>
                                   </option>
                                 </PersistentState>

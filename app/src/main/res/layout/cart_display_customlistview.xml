@@ -21,11 +21,15 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
+            android:layout_marginEnd="5dp"
             android:text="Name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="#000"
-            android:textSize="24sp"
+            app:layout_constraintEnd_toStartOf="@+id/decreaseButton"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_max="@+id/decreaseButton" />
 
         <TextView
             android:id="@+id/itemQuantityTextView"
@@ -57,7 +61,7 @@
         <ImageButton
             android:id="@+id/increaseButton"
             style="?android:attr/borderlessButtonStyle"
-            android:layout_width="23dp"
+            android:layout_width="36dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
@@ -71,8 +75,9 @@
         <ImageButton
             android:id="@+id/decreaseButton"
             style="?android:attr/borderlessButtonStyle"
-            android:layout_width="29dp"
+            android:layout_width="36dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="8dp"
             android:padding="5dp"
@@ -80,6 +85,7 @@
             android:src="@drawable/ic_remove"
             android:tint="#2c3e50"
             app:layout_constraintEnd_toStartOf="@+id/itemQuantityTextView"
+            app:layout_constraintStart_toEndOf="@+id/itemNameTextView"
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

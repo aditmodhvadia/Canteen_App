@@ -316,7 +316,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 (Request.Method.POST, "https://adit-canteen-alay1012.c9users.io/paytm/generateChecksum.php", new JSONObject(map), new com.android.volley.Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-
                         try {
 //                            makeText(response.getString("CHECKSUMHASH"));
                             Log.d("response", "Our server Checksum was " + response.getString("CHECKSUMHASH"));
