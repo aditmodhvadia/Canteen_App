@@ -15,10 +15,10 @@
         android:src="@drawable/mykanteenlogofinal"/>
 
     <TextView
+        android:id="@+id/emailTextView"
         android:layout_marginTop="25dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="K Canteen"
         android:textColor="#fff"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 

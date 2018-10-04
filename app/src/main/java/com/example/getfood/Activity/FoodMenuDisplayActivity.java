@@ -69,7 +69,13 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
         cartItemQuantity = new ArrayList<>();
         helpButton = findViewById(R.id.helpButton);
 
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        TextView emailTextView = headerView.findViewById(R.id.emailTextView);
+
         auth = FirebaseAuth.getInstance();
+        emailTextView.setText(auth.getCurrentUser().getEmail());
+
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -100,7 +106,7 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
+//        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
