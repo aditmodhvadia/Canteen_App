@@ -122,7 +122,7 @@ public class OrderActivity extends AppCompatActivity {
                 .setVibrate(new long[]{0, 400, 200, 400})
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText("Be ready to take your order when your food is cooked!"))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)
                 .addAction(R.drawable.ic_person_add_black_48dp, "Open", pi)
                 .setColorized(true)
@@ -184,7 +184,7 @@ public class OrderActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "Order Channel";
             String description = "Primary display";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel channel = new NotificationChannel("default", name, importance);
             channel.setDescription(description);
 
