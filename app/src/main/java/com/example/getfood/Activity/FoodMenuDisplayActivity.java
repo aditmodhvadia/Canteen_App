@@ -3,6 +3,7 @@ package com.example.getfood.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -32,6 +33,8 @@ import com.example.getfood.Fragment.ChineseFragment;
 import com.example.getfood.Fragment.PizzaSandwichFragment;
 import com.example.getfood.R;
 import com.example.getfood.Fragment.SouthIndianFragment;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -137,7 +140,24 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
 
                             startActivity(Intent.createChooser(email, "Choose an Email client :"));
 
-                        }else if (menuItem.getItemId() == R.id.nav_logout) {
+                        }else if(menuItem.getItemId() == R.id.nav_reset_password){
+
+                            auth.sendPasswordResetEmail(auth.getCurrentUser().getEmail()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(FoodMenuDisplayActivity.this, "Password Reset Email Sent!", Toast.LENGTH_SHORT).show();
+                                    auth.signOut();
+                                    finish();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(FoodMenuDisplayActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                        }
+                        else if (menuItem.getItemId() == R.id.nav_logout) {
 //                            Toast.makeText(FoodMenuDisplayActivity.this, "Logout Pressed", Toast.LENGTH_SHORT).show();
                             logout();
                         }else if(menuItem.getItemId() == R.id.nav_help) {
