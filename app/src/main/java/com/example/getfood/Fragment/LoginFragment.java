@@ -42,6 +42,7 @@ public class LoginFragment extends Fragment {
     ProgressDialog progressDialog;
     CheckBox showPasswordCheckBox;
     private FirebaseAuth auth;
+    private boolean timeout = false, success = false;
 
     private OnFragmentInteractionListener mListener;
 
@@ -66,6 +67,7 @@ public class LoginFragment extends Fragment {
 
 
         progressDialog = new ProgressDialog(getContext());
+        progressDialog.setCanceledOnTouchOutside(false);
         userLoginEmailEditText = v.findViewById(R.id.userLoginEmailEditText);
         userLoginPasswordEditText = (EditText) v.findViewById(R.id.userLoginPasswordEditText);
         showPasswordCheckBox = (CheckBox) v.findViewById(R.id.showPasswordCheckBox);
@@ -100,12 +102,13 @@ public class LoginFragment extends Fragment {
 
 //    timeout progress dialog
 
-    public void startProgressDialog(){
+    public void startProgressDialog() {
+        timeout = false;
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
 
-        progressDialog = ProgressDialog.show(getContext(), "Please Wait", "Confirming your Order", false,
+        progressDialog = ProgressDialog.show(getContext(), "Please Wait", "Logging in", false,
                 true, new DialogInterface.OnCancelListener() {
 
                     @Override
@@ -121,16 +124,18 @@ public class LoginFragment extends Fragment {
             public void run() {
                 if (progressDialog != null && progressDialog.isShowing()) {
                     progressDialog.dismiss();
-                    Toast.makeText(getContext(), "There might be some error...", Toast.LENGTH_SHORT).show();
+                    if (!success) {
+                        Toast.makeText(getContext(), "Connection problem, try again", Toast.LENGTH_SHORT).show();
+                        timeout = true;
+                    }
                 }
             }
         };
         Handler pdCanceller = new Handler();
-        pdCanceller.postDelayed(progressRunnable, 15000);
+        pdCanceller.postDelayed(progressRunnable, 2000);
     }
 
 //    todo:onStart ma auth check karo
-
 
 
     public interface OnFragmentInteractionListener {
@@ -175,19 +180,25 @@ public class LoginFragment extends Fragment {
             return;
         }
 
-        progressDialog.setMessage("Logging In");
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.show();
+//        progressDialog.setMessage("Logging In");
+//        progressDialog.setCanceledOnTouchOutside(false);
+//        progressDialog.show();
+        startProgressDialog();
 
         auth.signInWithEmailAndPassword(officerEmail, officerPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 //Succesfull login
+                progressDialog.hide();
+                success = true;
+                if (timeout) {
+//                    Toast.makeText(getContext(), "Inside timeout check after successful login", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if (task.isSuccessful()) {
                     //officer is email verified, hence can proceed further
                     if (auth.getCurrentUser().isEmailVerified()) {
 //                        login successful
-                        progressDialog.hide();
                         userLoginEmailEditText.setText("");
                         userLoginPasswordEditText.setText("");
 //                        new activity will be opened which will display the food items
@@ -224,11 +235,9 @@ public class LoginFragment extends Fragment {
                                 else {
                                     if (task.getException() instanceof FirebaseNetworkException) {
                                         Toast.makeText(getContext(), "Internet connectivity required", Toast.LENGTH_SHORT).show();
-                                    }
-                                    else if (task.getException() instanceof FirebaseAuthInvalidUserException) {
+                                    } else if (task.getException() instanceof FirebaseAuthInvalidUserException) {
                                         Toast.makeText(getContext(), "Email ID not Registered", Toast.LENGTH_SHORT).show();
-                                    }
-                                    else {
+                                    } else {
                                         Toast.makeText(getContext(), "Some error occurred. Try again", Toast.LENGTH_SHORT).show();
                                     }
                                 }
