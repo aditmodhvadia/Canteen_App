@@ -12,6 +12,10 @@
             android:id="@+id/nav_order"
             android:title="Orders" />
         <item
+            android:id="@+id/nav_map"
+            android:icon="@drawable/ic_google_maps"
+            android:title="Locate Us" />
+        <item
             android:id="@+id/nav_reset_password"
             android:title="Reset Password" />
     </group>

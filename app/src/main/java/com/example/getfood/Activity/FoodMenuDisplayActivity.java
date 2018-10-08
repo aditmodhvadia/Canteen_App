@@ -130,6 +130,9 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
                         }else if (menuItem.getItemId() == R.id.nav_terms) {
                             startActivity(new Intent(FoodMenuDisplayActivity.this, TermsActivity.class));
 //                            Toast.makeText(FoodMenuDisplayActivity.this, "Terms & Conditions Pressed", Toast.LENGTH_SHORT).show();
+                        }else if (menuItem.getItemId() == R.id.nav_map) {
+                            startActivity(new Intent(FoodMenuDisplayActivity.this, MapsActivity.class));
+//                            Toast.makeText(FoodMenuDisplayActivity.this, "Terms & Conditions Pressed", Toast.LENGTH_SHORT).show();
                         }else if (menuItem.getItemId() == R.id.nav_contact) {
 
                             Intent email = new Intent(Intent.ACTION_SEND);
