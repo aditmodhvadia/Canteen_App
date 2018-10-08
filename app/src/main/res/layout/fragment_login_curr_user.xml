@@ -17,12 +17,13 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="60dp"
-            android:background="@color/colorPrimary"
+            android:background="#60f9cbc8"
             android:drawableStart="@drawable/ic_person_black_24dp"
             android:hint=" Email ID"
-            android:padding="7dp"
+            android:padding="9dp"
             android:textColor="#fff"
             android:textColorHint="#d3d3d3" />
+
 
         <EditText
             android:id="@+id/userLoginPasswordEditText"
@@ -30,11 +31,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:background="@color/colorPrimary"
+            android:background="#60f9cbc8"
             android:drawableStart="@drawable/ic_lock_black_24dp"
             android:hint=" Password"
             android:inputType="textPassword"
-            android:padding="7dp"
+            android:padding="9dp"
             android:textColor="#fff"
             android:textColorHint="#d3d3d3" />
 
@@ -48,9 +49,9 @@
             android:layout_marginTop="10dp"
             android:shadowColor="#fff"
             android:text="Show Password"
-            android:textColor="#000"
-            android:textColorHighlight="#000"
-            android:textColorHint="#000"
+            android:textColor="@color/colorAccent"
+            android:textColorHighlight="@color/colorAccent"
+            android:textColorHint="@color/colorAccent"
             android:textColorLink="#000" />
 
         <Button
@@ -73,7 +74,7 @@
             android:text="Forgot Password?"
             android:layout_marginTop="5dp"
             android:layout_gravity="center"
-            android:textColor="#000" />
+            android:textColor="@color/colorAccent" />
 
 
     </LinearLayout>
