@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/traffic_dark"
+    android:background="@drawable/background_red"
     tools:context=".Fragment.RegisterFragment">
 
 
@@ -23,40 +23,46 @@
 
         <EditText
             android:id="@+id/userLoginEmailEditText"
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="15dp"
-            android:background="@drawable/edittextstyle"
+            android:background="@color/colorPrimary"
             android:ems="10"
             android:hint="Email Address"
+            android:drawableStart="@drawable/ic_person_black_24dp"
             android:inputType="textEmailAddress"
-            android:padding="15dp"
+            android:padding="7dp"
             android:textColor="#fff"
             android:textColorHint="#fff" />
 
         <EditText
             android:id="@+id/userPasswordEditText"
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/colorPrimary"
             android:layout_marginTop="15dp"
-            android:background="@drawable/edittextstyle"
+            android:drawableStart="@drawable/ic_lock_black_24dp"
             android:ems="10"
             android:hint="Password"
             android:inputType="textPassword"
-            android:padding="15dp"
+            android:padding="7dp"
             android:textColor="#fff"
             android:textColorHint="#fff" />
 
         <EditText
             android:id="@+id/userConPasswordEditText"
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="15dp"
-            android:background="@drawable/edittextstyle"
+            android:background="@color/colorPrimary"
+            android:drawableStart="@drawable/ic_lock_black_24dp"
             android:ems="10"
             android:hint="Confirm Password"
             android:inputType="textPassword"
-            android:padding="15dp"
+            android:padding="7dp"
             android:textColor="#fff"
             android:textColorHint="#fff" />
 
@@ -81,10 +87,11 @@
                 android:layout_marginTop="20dp"
                 android:paddingStart="0dp"
                 android:paddingTop="10dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:paddingEnd="10dp"
                 android:paddingBottom="10dp"
                 android:text=" Terms and Conditions"
-                android:textColor="#1425d9" />
+                android:textColor="#372fb4" />
 
         </LinearLayout>
 
