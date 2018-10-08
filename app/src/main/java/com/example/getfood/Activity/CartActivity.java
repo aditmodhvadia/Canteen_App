@@ -179,7 +179,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         }
 //        set alpha of total price textview to zero, and then animate it to increase to 1.0
         totalPriceTV.setAlpha(0.0f);
-        totalPriceTV.setText(String.format("Total: Rs. %s", String.valueOf(total)));
+        totalPriceTV.setText(String.format("Total: ₹ %s", String.valueOf(total)));
         totalPriceTV.animate().alpha(1.0f).setDuration(250);
 
     }

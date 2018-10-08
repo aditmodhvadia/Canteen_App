@@ -55,8 +55,8 @@ public class OrderListDisplayAdapter extends BaseAdapter {
 
 
 //        Set text for all the TextViews
-        orderIDTextView.setText(orderID.get(position));
-        orderAmountTextView.setText(orderAmount.get(position));
+        orderIDTextView.setText("Order ID: " +orderID.get(position));
+        orderAmountTextView.setText(String.format("Amount: ₹ %s", orderAmount.get(position)));
         orderTimeTextView.setText(orderTime.get(position));
 
 //        Start animation on individual list items

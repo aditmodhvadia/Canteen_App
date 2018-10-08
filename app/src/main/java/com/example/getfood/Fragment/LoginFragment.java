@@ -3,7 +3,6 @@ package com.example.getfood.Fragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -21,7 +20,6 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.getfood.Activity.FoodMenuDisplayActivity;
 import com.example.getfood.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -44,8 +42,6 @@ public class LoginFragment extends Fragment {
     private FirebaseAuth auth;
     private boolean timeout = false, success = false;
 
-    private OnFragmentInteractionListener mListener;
-
     public LoginFragment() {
         // Required empty public constructor
     }
@@ -54,13 +50,9 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         auth = FirebaseAuth.getInstance();
-//        swapped checking for authentication to redirect to Display from here to onStart of Login Activity
-//        if(auth.getCurrentUser()!=null){
-//            Intent i = new Intent(getContext(), FoodMenuDisplayActivity.class);
-//            startActivity(i);
-//        }
+
+        // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_login_curr_user, container, false);
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -69,8 +61,8 @@ public class LoginFragment extends Fragment {
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setCanceledOnTouchOutside(false);
         userLoginEmailEditText = v.findViewById(R.id.userLoginEmailEditText);
-        userLoginPasswordEditText = (EditText) v.findViewById(R.id.userLoginPasswordEditText);
-        showPasswordCheckBox = (CheckBox) v.findViewById(R.id.showPasswordCheckBox);
+        userLoginPasswordEditText = v.findViewById(R.id.userLoginPasswordEditText);
+        showPasswordCheckBox = v.findViewById(R.id.showPasswordCheckBox);
 
         showPasswordCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -83,14 +75,14 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        userLoginButton = (Button) v.findViewById(R.id.userLoginButton);
+        userLoginButton = v.findViewById(R.id.userLoginButton);
         userLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 loginUser();
             }
         });
-        forgotPasswordTextView = (TextView) v.findViewById(R.id.forgotPasswordTextView);
+        forgotPasswordTextView = v.findViewById(R.id.forgotPasswordTextView);
         forgotPasswordTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -135,15 +127,6 @@ public class LoginFragment extends Fragment {
         pdCanceller.postDelayed(progressRunnable, 2000);
     }
 
-//    todo:onStart ma auth check karo
-
-
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
-
-
     private void loginUser() {
         final String officerEmail, officerPassword;
 
@@ -186,17 +169,19 @@ public class LoginFragment extends Fragment {
         startProgressDialog();
 
         auth.signInWithEmailAndPassword(officerEmail, officerPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 //Succesfull login
                 progressDialog.hide();
-                success = true;
                 if (timeout) {
+                    success = false;
 //                    Toast.makeText(getContext(), "Inside timeout check after successful login", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                success = true;
                 if (task.isSuccessful()) {
-                    //officer is email verified, hence can proceed further
+                    //user is email verified, hence can proceed further
                     if (auth.getCurrentUser().isEmailVerified()) {
 //                        login successful
                         userLoginEmailEditText.setText("");
@@ -208,7 +193,7 @@ public class LoginFragment extends Fragment {
 
 
                     }
-                    //officer is not email verified, so verification email will be sent
+                    //user is not email verified, so verification email will be sent
                     else {
                         auth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override

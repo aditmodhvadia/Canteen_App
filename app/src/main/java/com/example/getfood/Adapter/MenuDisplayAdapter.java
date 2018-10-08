@@ -50,7 +50,7 @@ public class MenuDisplayAdapter extends BaseAdapter {
         itemPriceTextView = vi.findViewById(R.id.itemPriceTextView);
 
         itemNameTextView.setText(itemName.get(i));
-        itemPriceTextView.setText(String.format("Price: Rs. %s", itemPrice.get(i)));
+        itemPriceTextView.setText(String.format("Price: ₹ %s", itemPrice.get(i)));
 
         return vi;
     }
