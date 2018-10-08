@@ -38,7 +38,7 @@ public class OrderNotificationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        Toast.makeText(this, "Service for Get Food started", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Service for Get Food started", Toast.LENGTH_SHORT).show();
 
         Intent data = intent;
         ORDER_ID = data.getStringExtra("OrderID");
