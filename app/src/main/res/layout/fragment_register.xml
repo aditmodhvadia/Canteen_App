@@ -27,12 +27,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="15dp"
-            android:background="@color/colorPrimary"
+            android:background="#60f9cbc8"
             android:ems="10"
             android:hint="Email Address"
             android:drawableStart="@drawable/ic_person_black_24dp"
             android:inputType="textEmailAddress"
-            android:padding="7dp"
+            android:padding="9dp"
             android:textColor="#fff"
             android:textColorHint="#fff" />
 
@@ -41,13 +41,13 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@color/colorPrimary"
+            android:background="#60f9cbc8"
             android:layout_marginTop="15dp"
             android:drawableStart="@drawable/ic_lock_black_24dp"
             android:ems="10"
             android:hint="Password"
             android:inputType="textPassword"
-            android:padding="7dp"
+            android:padding="9dp"
             android:textColor="#fff"
             android:textColorHint="#fff" />
 
@@ -57,12 +57,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="15dp"
-            android:background="@color/colorPrimary"
+            android:background="#60f9cbc8"
             android:drawableStart="@drawable/ic_lock_black_24dp"
             android:ems="10"
             android:hint="Confirm Password"
             android:inputType="textPassword"
-            android:padding="7dp"
+            android:padding="9dp"
             android:textColor="#fff"
             android:textColorHint="#fff" />
 
@@ -97,11 +97,11 @@
 
         <Button
             android:id="@+id/userAddButton"
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="15dp"
-            android:background="@drawable/buttonstyleselector"
+            android:background="@color/colorPrimaryDark"
             android:gravity="center"
             android:paddingLeft="40dp"
             android:paddingRight="40dp"

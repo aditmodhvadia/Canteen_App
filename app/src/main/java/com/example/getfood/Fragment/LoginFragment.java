@@ -124,7 +124,7 @@ public class LoginFragment extends Fragment {
             }
         };
         Handler pdCanceller = new Handler();
-        pdCanceller.postDelayed(progressRunnable, 2000);
+        pdCanceller.postDelayed(progressRunnable, 10000);
     }
 
     private void loginUser() {

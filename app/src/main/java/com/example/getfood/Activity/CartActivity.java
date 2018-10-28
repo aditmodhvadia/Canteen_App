@@ -120,7 +120,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 //        }
         int hour = currTime.get(Calendar.HOUR_OF_DAY);
         int mins = currTime.get(Calendar.MINUTE);
-        hour = 12; mins =15;
+//        hour = 12; mins =15;
         if (hour < 8 || (hour == 8 && mins <= 20)) {
             Log.d("Debug", "Before Ordering time");
             makeText("Cannot place order now, Order after 08:20 AM");
@@ -292,9 +292,9 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         FoodMenuDisplayActivity.cartItemQuantity.clear();
         FoodMenuDisplayActivity.cartItemPrice.clear();
 
-//        startActivity(orderIntent);
-//
-        generateCheckSumVoley();
+        startActivity(orderIntent);
+
+//        generateCheckSumVoley();
 //        generate checksum from server and pass all details to paytm
 //        launched order activity
     }
@@ -304,13 +304,13 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         RequestQueue queue = Volley.newRequestQueue(this);
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("MID", "GetFoo88084336099945");
-        map.put("ORDER_ID", "review2finanl");
+        map.put("ORDER_ID", "osltry");
         map.put("CUST_ID", "15bce001");
         map.put("INDUSTRY_TYPE_ID", "Retail");
         map.put("CHANNEL_ID", "WAP");
         map.put("TXN_AMOUNT", String.valueOf(total));
         map.put("WEBSITE", "APPSTAGING");
-        map.put("CALLBACK_URL", "https://securegw.paytm.in/theia/paytmCallback?ORDER_ID=review2finanl");
+        map.put("CALLBACK_URL", "https://securegw.paytm.in/theia/paytmCallback?ORDER_ID=osltry");
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.POST, "https://adit-canteen-alay1012.c9users.io/paytm/generateChecksum.php", new JSONObject(map), new com.android.volley.Response.Listener<JSONObject>() {
@@ -353,13 +353,13 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 //        dummy values as of now for testing purposes
         Map<String, String> paramMap = new HashMap<>();
         paramMap.put("MID", "GetFoo88084336099945");
-        paramMap.put("ORDER_ID", "review2finanl");
+        paramMap.put("ORDER_ID", "osltry");
         paramMap.put("CUST_ID", "15bce001");
         paramMap.put("INDUSTRY_TYPE_ID", "Retail");
         paramMap.put("CHANNEL_ID", "WAP");
         paramMap.put("TXN_AMOUNT", String.valueOf(total));
         paramMap.put("WEBSITE", "APPSTAGING");
-        paramMap.put("CALLBACK_URL", "https://securegw.paytm.in/theia/paytmCallback?ORDER_ID=review2finanl");
+        paramMap.put("CALLBACK_URL", "https://securegw.paytm.in/theia/paytmCallback?ORDER_ID=osltry");
         paramMap.put("CHECKSUMHASH", checksumHash);
 
 
