@@ -4,7 +4,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.GravityCompat;
@@ -26,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +48,7 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private DrawerLayout mDrawerLayout;
     FloatingActionButton floatingActionButton;
+    CoordinatorLayout coordinatorLayoutParent;
     FirebaseAuth auth;
     int exitCount;
     long currTime, prevTime;
@@ -70,6 +74,7 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
         helpButton = findViewById(R.id.helpButton);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
+        coordinatorLayoutParent = findViewById(R.id.CoordinatorLayoutParent);
         View headerView = navigationView.getHeaderView(0);
         TextView emailTextView = headerView.findViewById(R.id.emailTextView);
 
@@ -291,13 +296,13 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
     public void onBackPressed() {
         exitCount++;
         if (exitCount == 1) {
-            makeText("Press back once more to logout");
+            showSnackBar(coordinatorLayoutParent, "Press back once more to logout");
             prevTime = System.currentTimeMillis();
         }
         if (exitCount == 2) {
             currTime = System.currentTimeMillis();
             if (currTime - prevTime > 2000) {
-                makeText("Press back once more to logout");
+                showSnackBar(coordinatorLayoutParent, "Press back once more to logout");
                 prevTime = System.currentTimeMillis();
                 exitCount = 1;
             } else {
@@ -333,6 +338,12 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
     private void showCart() {
         Intent i = new Intent(this, CartActivity.class);
         startActivity(i);
+    }
+
+    public void showSnackBar(View parent, String msg){
+        Snackbar snackbar = Snackbar
+                .make(parent, msg, Snackbar.LENGTH_SHORT);
+        snackbar.show();
     }
 
     public void makeText(String msg) {
