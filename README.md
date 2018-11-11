@@ -58,5 +58,5 @@ This project is licensed under the GPL License - see the [LICENSE](https://githu
 * Prof. Shivani Desai for guiding us throughout the project development
 * [PurpleBooth](https://gist.github.com/PurpleBooth)- For the initial template of the ReadME file
 * [Aman Agarwal](https://github.com/amanbasu) - For the constant support and encouragement
-* [Belal Khan](https://www.simplifiedcoding.net/) () - For his tutorials and videos through which I grasped many new concepts
+* [Belal Khan](https://www.simplifiedcoding.net/) - For his tutorials and videos through which I grasped many new concepts
 
