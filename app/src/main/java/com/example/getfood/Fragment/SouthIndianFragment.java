@@ -30,7 +30,7 @@ public class SouthIndianFragment extends Fragment {
     private DatabaseReference rootFood;
     ProgressDialog progressDialog;
     private String CATEGORY = "South Indian";
-    ArrayList<String> itemName, itemPrice;
+    ArrayList<String> itemName, itemPrice, itemRating;
 
     Button alertPlus, alertMinus;
     TextView quantitySetTV;
@@ -51,8 +51,9 @@ public class SouthIndianFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_south_indian, container, false);
 
 //        progressDialog = new ProgressDialog(getContext());
-        itemName = new ArrayList<String>();
-        itemPrice = new ArrayList<String>();
+        itemName = new ArrayList<>();
+        itemPrice = new ArrayList<>();
+        itemRating = new ArrayList<>();
         southIndianDisplayListView = v.findViewById(R.id.southIndianDisplayListView);
 //        display progress dialog till data is fetched
 //        progressDialog.setTitle("Please Wait..");
@@ -73,10 +74,11 @@ public class SouthIndianFragment extends Fragment {
                     if(dsp.child("Available").getValue().toString().equals("Yes")){
                         itemName.add(dsp.getKey());
                         itemPrice.add(dsp.child("Price").getValue().toString());
+                        itemRating.add(dsp.child("Rating").getValue().toString());
                     }
                 }
 
-                displayAdapter = new MenuDisplayAdapter(itemName, itemPrice, getContext());
+                displayAdapter = new MenuDisplayAdapter(itemName, itemPrice, itemRating, getContext());
                 southIndianDisplayListView.setAdapter(displayAdapter);
 
 

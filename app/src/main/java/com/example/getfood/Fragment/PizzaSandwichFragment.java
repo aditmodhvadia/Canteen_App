@@ -31,7 +31,7 @@ public class PizzaSandwichFragment extends Fragment {
     private DatabaseReference rootFood;
     ProgressDialog progressDialog;
     private String CATEGORY = "Pizza Sandwich";
-    ArrayList<String> itemName, itemPrice;
+    ArrayList<String> itemName, itemPrice, itemRating;
 
     Button alertPlus, alertMinus;
     TextView quantitySetTV;
@@ -53,8 +53,9 @@ public class PizzaSandwichFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_pizza_sandwich, container, false);
 
 //        progressDialog = new ProgressDialog(getContext());
-        itemName = new ArrayList<String>();
-        itemPrice = new ArrayList<String>();
+        itemName = new ArrayList<>();
+        itemPrice = new ArrayList<>();
+        itemRating = new ArrayList<>();
         pizzaSandwichDisplayListView = v.findViewById(R.id.pizzaSandwichDisplayListView);
 //        display progress dialog till data is fetched
 //        progressDialog.setTitle("Please Wait..");
@@ -75,9 +76,10 @@ public class PizzaSandwichFragment extends Fragment {
                     if(dsp.child("Available").getValue().toString().equals("Yes")){
                         itemName.add(dsp.getKey());
                         itemPrice.add(dsp.child("Price").getValue().toString());
+                        itemRating.add(dsp.child("Rating").getValue().toString());
                     }
                 }
-                displayAdapter = new MenuDisplayAdapter(itemName, itemPrice, getContext());
+                displayAdapter = new MenuDisplayAdapter(itemName, itemPrice, itemRating,  getContext());
                 pizzaSandwichDisplayListView.setAdapter(displayAdapter);
 //                progressDialog.hide();
             }

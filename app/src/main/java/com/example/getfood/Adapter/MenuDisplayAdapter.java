@@ -13,15 +13,16 @@ import java.util.ArrayList;
 
 public class MenuDisplayAdapter extends BaseAdapter {
 
-    ArrayList<String> itemName,itemPrice;
+    ArrayList<String> itemName,itemPrice, itemRating;
     Context context;
     LayoutInflater inflater;
 
-    TextView itemNameTextView, itemPriceTextView;
+    TextView itemNameTextView, itemPriceTextView, itemRatingTextView;
 
-    public MenuDisplayAdapter(ArrayList<String> itemName, ArrayList<String> itemPrice, Context context) {
+    public MenuDisplayAdapter(ArrayList<String> itemName, ArrayList<String> itemPrice, ArrayList<String> itemRating, Context context) {
         this.itemName = itemName;
         this.itemPrice = itemPrice;
+        this.itemRating = itemRating;
         this.context = context;
         this.inflater = LayoutInflater.from(context);
     }
@@ -48,9 +49,10 @@ public class MenuDisplayAdapter extends BaseAdapter {
         vi = inflater.inflate(R.layout.food_menu_display_custom_listview, null);
         itemNameTextView = vi.findViewById(R.id.itemNameTextView);
         itemPriceTextView = vi.findViewById(R.id.itemPriceTextView);
-
+        itemRatingTextView = vi.findViewById(R.id.itemRatingTextView);
         itemNameTextView.setText(itemName.get(i));
         itemPriceTextView.setText(String.format("₹ %s", itemPrice.get(i)));
+        itemRatingTextView.setText(itemRating.get(i));
 
         return vi;
     }
