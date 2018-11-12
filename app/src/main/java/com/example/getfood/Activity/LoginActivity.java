@@ -1,6 +1,14 @@
 package com.example.getfood.Activity;
 
+import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.Fragment;
@@ -8,6 +16,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +28,11 @@ import com.example.getfood.Fragment.LoginFragment;
 import com.example.getfood.Fragment.RegisterFragment;
 import com.example.getfood.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -30,35 +44,125 @@ public class LoginActivity extends AppCompatActivity {
     private ViewPager mViewPager;
 
     FirebaseAuth auth;
+    DatabaseReference vCheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
 
+        PackageInfo pInfo = null;
+        try {
+            pInfo = getApplicationContext().getPackageManager().getPackageInfo(getPackageName(), 0);
+            final String version = pInfo.versionName;
+            vCheck = FirebaseDatabase.getInstance().getReference().child("version-check");
 
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+            vCheck.child(version).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.getValue().toString().equals("Yes")){
+                        Log.d("vcheck", "Inside db check for yes");
+                        auth = FirebaseAuth.getInstance();
+                        if(auth.getCurrentUser() != null){
+                            startActivity(new Intent(LoginActivity.this, FoodMenuDisplayActivity.class));
+                            Log.d("vcheck", "everything green");
 
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+                        }
+                        else{
+                            setContentView(R.layout.activity_login);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+                            Log.d("vcheck", "not logged in");
 
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+                            // Create the adapter that will return a fragment for each of the three
+                            // primary sections of the activity.
+                            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
+                            // Set up the ViewPager with the sections adapter.
+                            mViewPager = (ViewPager) findViewById(R.id.container);
+                            mViewPager.setAdapter(mSectionsPagerAdapter);
+
+                            TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+
+                            mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+                            tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+
+                        }
+                    }
+                    else{
+                        setContentView(R.layout.activity_login);
+
+                        Log.d("vcheck", "not logged in");
+
+                        // Create the adapter that will return a fragment for each of the three
+                        // primary sections of the activity.
+                        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+                        // Set up the ViewPager with the sections adapter.
+                        mViewPager = (ViewPager) findViewById(R.id.container);
+                        mViewPager.setAdapter(mSectionsPagerAdapter);
+
+                        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+
+                        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+                        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+
+                        Log.d("vcheck", "version outdated");
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+
+                        builder.setMessage("This version of the app is outdated now. Update to the latest version.")
+                                .setTitle("Warning!");
+                        builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+//                                Toast.makeText(LoginActivity.this, "Update", Toast.LENGTH_SHORT).show();
+                                String url = "https://github.com/aditmodhvadia/Canteen_App/tree/master";
+                                try {
+                                    Intent i = new Intent("android.intent.action.MAIN");
+                                    i.setComponent(ComponentName.unflattenFromString("com.android.chrome/com.android.chrome.Main"));
+                                    i.addCategory("android.intent.category.LAUNCHER");
+                                    i.setData(Uri.parse(url));
+                                    startActivity(i);
+                                }
+                                catch(ActivityNotFoundException e) {
+                                    // Chrome is not installed
+                                    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                                    startActivity(i);
+                                }
+                            }
+                        });
+                        builder.setNegativeButton("Exit", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        });
+                        builder.setCancelable(false);
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                    }
+//                    Toast.makeText(getApplicationContext(), dataSnapshot.getValue().toString(), Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+//            Toast.makeText(this, vCheck.child(version).getKey(), Toast.LENGTH_LONG).show();
+
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        auth = FirebaseAuth.getInstance();
-        if(auth.getCurrentUser() != null){
-            startActivity(new Intent(LoginActivity.this, FoodMenuDisplayActivity.class));
-        }
+//        auth = FirebaseAuth.getInstance();
+//        if (auth.getCurrentUser() != null) {
+//            startActivity(new Intent(LoginActivity.this, FoodMenuDisplayActivity.class));
+//        }
     }
 
     @Override
@@ -130,15 +234,15 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            switch (position){
+            switch (position) {
                 case 0:
                     return new LoginFragment();
 
                 case 1:
                     return new RegisterFragment();
 
-                    default:
-                        return new LoginFragment();
+                default:
+                    return new LoginFragment();
             }
         }
 
@@ -174,7 +278,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void makeText(String msg){
+    public void makeText(String msg) {
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 }

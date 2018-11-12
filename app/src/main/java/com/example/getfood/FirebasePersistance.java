@@ -8,7 +8,7 @@ public class FirebasePersistance extends android.app.Application {
     public void onCreate() {
         super.onCreate();
         /* Enable disk persistence  */
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+//        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
     }
 
 }
