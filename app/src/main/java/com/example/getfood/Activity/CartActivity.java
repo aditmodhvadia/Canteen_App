@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -79,7 +80,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
         cartRecyclerView = findViewById(R.id.cartRecyclerView);
         cartRecyclerView.setHasFixedSize(true);
-        cartRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        cartRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
 
         totalPriceTV = findViewById(R.id.totalPriceTV);

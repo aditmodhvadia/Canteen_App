@@ -61,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="#00f"
+            android:background="@color/colorPrimaryDark"
             android:elevation="2.0dp"
             android:paddingLeft="40dp"
             android:paddingTop="20dp"

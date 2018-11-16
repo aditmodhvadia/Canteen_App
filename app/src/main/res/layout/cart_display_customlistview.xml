@@ -2,13 +2,13 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="8dp"
+    android:layout_margin="4dp"
+    android:background="#fff"
     android:elevation="15dp"
-    android:layout_margin="8dp"
-    android:id="@+id/cardView"
-    android:background="#fff">
+    app:cardCornerRadius="8dp">
 
     <android.support.constraint.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -20,12 +20,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="5dp"
             android:text="Name"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="#000"
-            app:layout_constraintEnd_toStartOf="@+id/decreaseButton"
+            app:layout_constraintEnd_toStartOf="@+id/itemPriceTextView"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -35,41 +35,44 @@
             android:id="@+id/itemQuantityTextView"
             android:layout_width="36dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="64dp"
             android:text="0"
             android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="#000"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@+id/increaseButton"
+            app:layout_constraintStart_toEndOf="@+id/decreaseButton"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/itemPriceTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
             android:text="Price"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="#62ce80"
-            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/itemNameTextView" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/itemNameTextView"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
         <ImageButton
             android:id="@+id/increaseButton"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="36dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="48dp"
             android:padding="5dp"
             android:scaleType="center"
             android:src="@drawable/ic_add"
             android:tint="#2c3e50"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/itemQuantityTextView"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
@@ -77,15 +80,23 @@
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="36dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:padding="5dp"
             android:scaleType="center"
             android:src="@drawable/ic_remove"
             android:tint="#2c3e50"
-            app:layout_constraintEnd_toStartOf="@+id/itemQuantityTextView"
-            app:layout_constraintStart_toEndOf="@+id/itemNameTextView"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/itemNameTextView" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/veggreensymbol" />
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

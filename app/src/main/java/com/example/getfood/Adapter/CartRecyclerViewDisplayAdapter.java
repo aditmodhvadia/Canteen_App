@@ -45,7 +45,7 @@ public class CartRecyclerViewDisplayAdapter extends RecyclerView.Adapter<CartRec
     public void onBindViewHolder(@NonNull final CartRecyclerViewDisplayAdapter.ViewHolder holder, int position) {
 
         holder.itemNameTextView.setText(cartItemName.get(position));
-        holder.itemPriceTextView.setText("Price: Rs. " + cartItemPrice.get(position));
+        holder.itemPriceTextView.setText("₹ " + cartItemPrice.get(position));
         holder.itemQuantityTextView.setText(cartItemQuantity.get(position).toString());
 
         holder.increaseButton.setOnClickListener(new View.OnClickListener() {
