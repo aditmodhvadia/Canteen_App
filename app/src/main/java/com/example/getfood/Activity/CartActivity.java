@@ -170,6 +170,9 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
         chooseTimeDialog = chooseTimeBuilder.show();
 
+        Button nbutton = chooseTimeDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+        nbutton.setTextColor(getResources().getColor(R.color.colorPrimary));
+
     }
 
     public static void calcTotal() {

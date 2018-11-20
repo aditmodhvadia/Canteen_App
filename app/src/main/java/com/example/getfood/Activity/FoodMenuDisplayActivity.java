@@ -2,6 +2,7 @@ package com.example.getfood.Activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
@@ -296,18 +297,21 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
     public void onBackPressed() {
         exitCount++;
         if (exitCount == 1) {
-            showSnackBar(coordinatorLayoutParent, "Press back once more to logout");
+            showSnackBar(coordinatorLayoutParent, "Press back once more to exit");
             prevTime = System.currentTimeMillis();
         }
         if (exitCount == 2) {
             currTime = System.currentTimeMillis();
             if (currTime - prevTime > 2000) {
-                showSnackBar(coordinatorLayoutParent, "Press back once more to logout");
+                showSnackBar(coordinatorLayoutParent, "Press back once more to exit");
                 prevTime = System.currentTimeMillis();
                 exitCount = 1;
             } else {
-                FirebaseAuth.getInstance().signOut();
-                finish();
+                Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+                homeIntent.addCategory( Intent.CATEGORY_HOME );
+//                homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(homeIntent);
+
             }
         }
     }
@@ -315,6 +319,7 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
     private void logout() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Logout");
+
         builder.setMessage("Are you sure you want to Logout?");
 
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -333,6 +338,11 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
         });
 
         AlertDialog dialog = builder.show();
+
+        Button nbutton = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+        nbutton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        Button pbutton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+        pbutton.setTextColor(getResources().getColor(R.color.colorPrimary));
     }
 
     private void showCart() {

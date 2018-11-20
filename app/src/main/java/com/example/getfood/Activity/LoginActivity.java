@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.getfood.Fragment.LoginFragment;
@@ -115,7 +116,7 @@ public class LoginActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 //                                Toast.makeText(LoginActivity.this, "Update", Toast.LENGTH_SHORT).show();
-                                String url = "https://github.com/aditmodhvadia/Canteen_App/tree/master";
+                                String url = "https://github.com/aditmodhvadia/Canteen_App/releases";
                                 try {
                                     Intent i = new Intent("android.intent.action.MAIN");
                                     i.setComponent(ComponentName.unflattenFromString("com.android.chrome/com.android.chrome.Main"));
@@ -139,6 +140,10 @@ public class LoginActivity extends AppCompatActivity {
                         builder.setCancelable(false);
                         AlertDialog dialog = builder.create();
                         dialog.show();
+                        Button nbutton = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+                        nbutton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                        Button pbutton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+                        pbutton.setTextColor(getResources().getColor(R.color.colorPrimary));
                     }
 //                    Toast.makeText(getApplicationContext(), dataSnapshot.getValue().toString(), Toast.LENGTH_LONG).show();
                 }

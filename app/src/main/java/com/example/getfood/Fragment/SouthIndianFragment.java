@@ -151,6 +151,11 @@ public class SouthIndianFragment extends Fragment {
 
                     android.support.v7.app.AlertDialog dialog = builder.show();
 
+                    Button nbutton = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+                    nbutton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    Button pbutton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+                    pbutton.setTextColor(getResources().getColor(R.color.colorPrimary));
+
                 }
             }
         });
