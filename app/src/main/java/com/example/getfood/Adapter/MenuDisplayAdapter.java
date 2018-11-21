@@ -1,6 +1,7 @@
 package com.example.getfood.Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,13 @@ public class MenuDisplayAdapter extends BaseAdapter {
         itemNameTextView.setText(itemName.get(i));
         itemPriceTextView.setText(String.format("₹ %s", itemPrice.get(i)));
         itemRatingTextView.setText(itemRating.get(i));
+        if(Float.valueOf(itemRating.get(i))<2.0){
+            itemRatingTextView.setTextColor(Color.RED);
+        } else if(Float.valueOf(itemRating.get(i))<3.5){
+            itemRatingTextView.setTextColor(Color.YELLOW);
+        } else{
+            itemRatingTextView.setTextColor(Color.GREEN);
+        }
 
         return vi;
     }

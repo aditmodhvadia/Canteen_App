@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -119,6 +120,9 @@ public class OrderActivity extends AppCompatActivity {
 
                             AlertDialog chooseTimeDialog = giveRating.create();
                             chooseTimeDialog.show();
+
+                            Button nbutton = chooseTimeDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+                            nbutton.setTextColor(getResources().getColor(R.color.colorPrimary));
 
                         } else if (dataSnapshot.child(itemCategory).child(itemName).child("Rating").exists()) {
                             Toast.makeText(OrderActivity.this, "Item already rated", Toast.LENGTH_SHORT).show();
