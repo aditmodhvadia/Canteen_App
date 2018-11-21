@@ -3,14 +3,19 @@ package com.example.getfood.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,20 +27,21 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 
 public class OrderActivity extends AppCompatActivity {
-//    Layout Views
+    //    Layout Views
     TextView testTV, test;
     ListView orderListView;
     OrderDisplayAdapter orderDisplayAdapter;
-//    Variables
+    //    Variables
     ArrayList<String> orderItemName, orderItemCategory, orderItemStatus;
     ArrayList<Integer> orderItemPrice, orderItemQuantity;
     int orderTotal;
     String orderID, rollNo, orderTime, orderTotalPrice;
     Intent orderData;
-//    Firebase Variables
+    //    Firebase Variables
     DatabaseReference root;
 
     @Override
@@ -54,7 +60,7 @@ public class OrderActivity extends AppCompatActivity {
         orderItemStatus = new ArrayList<>();
 //        Getting data from the calling activity/Intent
         orderData = getIntent();
-        if(orderData.getExtras().isEmpty()){
+        if (orderData.getExtras().isEmpty()) {
             Toast.makeText(getApplicationContext(), "No Data Received", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -67,23 +73,20 @@ public class OrderActivity extends AppCompatActivity {
         root = FirebaseDatabase.getInstance().getReference().child("Order").child(orderID).child("Items");
         root.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
                 orderItemCategory.clear();
                 orderItemName.clear();
                 orderItemQuantity.clear();
                 orderItemStatus.clear();
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                    if(dsp.getKey().equals("Time to deliver")){
+                    if (dsp.getKey().equals("Time to deliver")) {
                         orderTime = dsp.getKey();
-                    }
-                    else if(dsp.getKey().equals("Total Amount")){
+                    } else if (dsp.getKey().equals("Total Amount")) {
                         orderTotalPrice = dsp.getKey();
-                    }
-                    else if(dsp.getKey().equals("Roll No")){
+                    } else if (dsp.getKey().equals("Roll No")) {
 
-                    }
-                    else{
-                        for (DataSnapshot dspInner : dsp.getChildren()){
+                    } else {
+                        for (DataSnapshot dspInner : dsp.getChildren()) {
                             orderItemCategory.add(dsp.getKey());
                             orderItemName.add(dspInner.getKey());
                             orderItemQuantity.add(Integer.valueOf(dspInner.child("Quantity").getValue().toString()));
@@ -93,6 +96,37 @@ public class OrderActivity extends AppCompatActivity {
                 }
                 orderDisplayAdapter = new OrderDisplayAdapter(orderItemName, orderItemQuantity, orderItemStatus, getApplicationContext());
                 orderListView.setAdapter(orderDisplayAdapter);
+
+                orderListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        final String itemName = orderItemName.get(position);
+                        final String itemCategory = orderItemCategory.get(position);
+                        if (dataSnapshot.child(itemCategory).child(itemName).child("Status").getValue().toString().equals("Ready")
+                                && !dataSnapshot.child(itemCategory).child(itemName).child("Rating").exists()) {
+                            AlertDialog.Builder giveRating = new AlertDialog.Builder(OrderActivity.this);
+                            giveRating.setTitle("Give a Rating!");
+                            View ratingView = getLayoutInflater().inflate(R.layout.choose_rating, null);
+                            final RatingBar ratingBar = ratingView.findViewById(R.id.ratingBar);
+                            giveRating.setView(ratingView);
+                            giveRating.setPositiveButton("Rate", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    root.child(itemCategory).child(itemName).child("Rating").setValue(String.valueOf(ratingBar.getRating()));
+                                    updateRating(ratingBar.getRating(), itemName, itemCategory);
+                                }
+                            });
+
+                            AlertDialog chooseTimeDialog = giveRating.create();
+                            chooseTimeDialog.show();
+
+                        } else if (dataSnapshot.child(itemCategory).child(itemName).child("Rating").exists()) {
+                            Toast.makeText(OrderActivity.this, "Item already rated", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(OrderActivity.this, "Rate the item after it is ready", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
 
             @Override
@@ -103,6 +137,28 @@ public class OrderActivity extends AppCompatActivity {
 
 
         testTV.setText(String.format("Order ID is %s", orderID));
+    }
+
+    private void updateRating(final float rating, String itemName, String itemCategory) {
+
+        final DatabaseReference foodItems = FirebaseDatabase.getInstance().getReference().child("Food").child(itemCategory).child(itemName);
+        foodItems.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                float currRating = Float.valueOf(dataSnapshot.child("Rating").getValue().toString());
+                int numberOfRating = Integer.valueOf(dataSnapshot.child("NumberOfRating").getValue().toString());
+                float newRating = (currRating*numberOfRating++ + rating)/numberOfRating;
+                foodItems.child("Rating").setValue(newRating);
+                foodItems.child("NumberOfRating").setValue(numberOfRating);
+                Toast.makeText(OrderActivity.this, "Rating saved", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     @Override
