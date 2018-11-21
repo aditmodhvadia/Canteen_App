@@ -10,6 +10,7 @@
             android:title="Cart" />
         <item
             android:id="@+id/nav_order"
+            android:icon="@drawable/ic_orders"
             android:title="Orders" />
         <item
             android:id="@+id/nav_map"
@@ -17,6 +18,7 @@
             android:title="Locate Us" />
         <item
             android:id="@+id/nav_reset_password"
+            android:icon="@drawable/ic_forgot_password"
             android:title="Reset Password" />
     </group>
     <group
@@ -39,6 +41,7 @@
 
         <item
             android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_logout"
             android:title="Logout" />
     </group>
 </menu>
