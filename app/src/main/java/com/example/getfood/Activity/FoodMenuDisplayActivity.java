@@ -30,6 +30,7 @@ import android.view.ViewGroup;
 
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,7 +54,7 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
     FirebaseAuth auth;
     int exitCount;
     long currTime, prevTime;
-    Button helpButton;
+    ImageButton helpButton;
 
     public static ArrayList<String> cartItemName, cartItemCategory;
     public static ArrayList<Integer> cartItemQuantity, cartItemPrice;
@@ -275,12 +276,6 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
                 case 2:
                     return new PizzaSandwichFragment();
 
-                case 3:
-                    return new ChineseFragment();
-
-                case 4:
-                    return new ChineseFragment();
-
                 default:
                     return new ChineseFragment();
             }
@@ -289,7 +284,7 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 5;
+            return 3;
         }
     }
 

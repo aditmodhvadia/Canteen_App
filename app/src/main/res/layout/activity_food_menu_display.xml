@@ -50,15 +50,19 @@
                         android:layout_height="0dp"
                         android:layout_weight="1" />
 
-                    <Button
+                    <ImageButton
                         android:id="@+id/helpButton"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:layout_marginRight="7dp"
                         android:background="@color/colorPrimary"
-                        android:drawableLeft="@drawable/ic_action_help"
-                        android:text="Help" />
+                        android:elevation="0dp"
+                        android:scaleType="center"
+                        android:src="@drawable/ic_action_help" />
+
+
 
                 </LinearLayout>
 
@@ -85,17 +89,6 @@
                         android:layout_height="wrap_content"
                         android:text="Pizza and Sandwiches" />
 
-                    <android.support.design.widget.TabItem
-                        android:id="@+id/tabItem4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Category 4" />
-
-                    <android.support.design.widget.TabItem
-                        android:id="@+id/tabItem5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Category 5" />
 
                 </android.support.design.widget.TabLayout>
             </android.support.design.widget.AppBarLayout>
