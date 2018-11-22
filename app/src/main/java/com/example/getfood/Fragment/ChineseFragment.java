@@ -32,6 +32,7 @@ public class ChineseFragment extends Fragment {
     private DatabaseReference rootFood;
     ProgressDialog progressDialog;
     ArrayList<String> itemName, itemPrice, itemRating;
+    ArrayList<Integer> colors;
 
     Button alertPlus, alertMinus;
     TextView quantitySetTV;
@@ -55,6 +56,11 @@ public class ChineseFragment extends Fragment {
         itemName = new ArrayList<>();
         itemPrice = new ArrayList<>();
         itemRating = new ArrayList<>();
+        colors = new ArrayList<>();
+
+        colors.add(getResources().getColor(R.color.colorGoodRating));
+        colors.add(getResources().getColor(R.color.colorMediumRating));
+        colors.add(getResources().getColor(R.color.colorBadRating));
 
         chineseDisplayListView = v.findViewById(R.id.chineseDisplayListView);
         final String CATEGORY = "Chinese";
@@ -75,7 +81,7 @@ public class ChineseFragment extends Fragment {
                         itemRating.add(dsp.child("Rating").getValue().toString());
                     }
                 }
-                displayAdapter = new MenuDisplayAdapter(itemName, itemPrice, itemRating, getContext());
+                displayAdapter = new MenuDisplayAdapter(itemName, itemPrice, itemRating, colors, getContext());
                 chineseDisplayListView.setAdapter(displayAdapter);
 
 //                progressDialog.hide();

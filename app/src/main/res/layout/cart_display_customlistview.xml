@@ -35,14 +35,14 @@
             android:id="@+id/itemQuantityTextView"
             android:layout_width="36dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="64dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="20dp"
             android:text="0"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="#000"
-            app:layout_constraintStart_toEndOf="@+id/decreaseButton"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/decreaseButton" />
 
         <TextView
             android:id="@+id/itemPriceTextView"
@@ -66,14 +66,17 @@
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="36dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="48dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="8dp"
             android:padding="5dp"
             android:scaleType="center"
             android:src="@drawable/ic_add"
             android:tint="#2c3e50"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/itemQuantityTextView"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
 
         <ImageButton
             android:id="@+id/decreaseButton"
@@ -81,13 +84,13 @@
             android:layout_width="36dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
             android:padding="5dp"
             android:scaleType="center"
             android:src="@drawable/ic_remove"
             android:tint="#2c3e50"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/itemNameTextView" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
             android:id="@+id/imageView"

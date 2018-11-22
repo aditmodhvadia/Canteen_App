@@ -15,15 +15,17 @@ import java.util.ArrayList;
 public class MenuDisplayAdapter extends BaseAdapter {
 
     ArrayList<String> itemName,itemPrice, itemRating;
+    ArrayList<Integer> colors;
     Context context;
     LayoutInflater inflater;
 
     TextView itemNameTextView, itemPriceTextView, itemRatingTextView;
 
-    public MenuDisplayAdapter(ArrayList<String> itemName, ArrayList<String> itemPrice, ArrayList<String> itemRating, Context context) {
+    public MenuDisplayAdapter(ArrayList<String> itemName, ArrayList<String> itemPrice, ArrayList<String> itemRating, ArrayList<Integer> colors, Context context) {
         this.itemName = itemName;
         this.itemPrice = itemPrice;
         this.itemRating = itemRating;
+        this.colors = colors;
         this.context = context;
         this.inflater = LayoutInflater.from(context);
     }
@@ -55,11 +57,11 @@ public class MenuDisplayAdapter extends BaseAdapter {
         itemPriceTextView.setText(String.format("₹ %s", itemPrice.get(i)));
         itemRatingTextView.setText(itemRating.get(i));
         if(Float.valueOf(itemRating.get(i))<2.0){
-            itemRatingTextView.setTextColor(Color.RED);
+            itemRatingTextView.setTextColor(colors.get(2));
         } else if(Float.valueOf(itemRating.get(i))<3.5){
-            itemRatingTextView.setTextColor(Color.YELLOW);
+            itemRatingTextView.setTextColor(colors.get(1));
         } else{
-            itemRatingTextView.setTextColor(Color.GREEN);
+            itemRatingTextView.setTextColor(colors.get(0));
         }
 
         return vi;

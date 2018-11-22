@@ -31,6 +31,7 @@ public class SouthIndianFragment extends Fragment {
     ProgressDialog progressDialog;
     private String CATEGORY = "South Indian";
     ArrayList<String> itemName, itemPrice, itemRating;
+    ArrayList<Integer> colors;
 
     Button alertPlus, alertMinus;
     TextView quantitySetTV;
@@ -54,6 +55,10 @@ public class SouthIndianFragment extends Fragment {
         itemName = new ArrayList<>();
         itemPrice = new ArrayList<>();
         itemRating = new ArrayList<>();
+        colors = new ArrayList<>();
+        colors.add(getResources().getColor(R.color.colorGoodRating));
+        colors.add(getResources().getColor(R.color.colorMediumRating));
+        colors.add(getResources().getColor(R.color.colorBadRating));
         southIndianDisplayListView = v.findViewById(R.id.southIndianDisplayListView);
 //        display progress dialog till data is fetched
 //        progressDialog.setTitle("Please Wait..");
@@ -78,7 +83,7 @@ public class SouthIndianFragment extends Fragment {
                     }
                 }
 
-                displayAdapter = new MenuDisplayAdapter(itemName, itemPrice, itemRating, getContext());
+                displayAdapter = new MenuDisplayAdapter(itemName, itemPrice, itemRating, colors, getContext());
                 southIndianDisplayListView.setAdapter(displayAdapter);
 
 

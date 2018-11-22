@@ -32,6 +32,7 @@ public class PizzaSandwichFragment extends Fragment {
     ProgressDialog progressDialog;
     private String CATEGORY = "Pizza Sandwich";
     ArrayList<String> itemName, itemPrice, itemRating;
+    ArrayList<Integer> colors;
 
     Button alertPlus, alertMinus;
     TextView quantitySetTV;
@@ -56,6 +57,11 @@ public class PizzaSandwichFragment extends Fragment {
         itemName = new ArrayList<>();
         itemPrice = new ArrayList<>();
         itemRating = new ArrayList<>();
+        colors = new ArrayList<>();
+
+        colors.add(getResources().getColor(R.color.colorGoodRating));
+        colors.add(getResources().getColor(R.color.colorMediumRating));
+        colors.add(getResources().getColor(R.color.colorBadRating));
         pizzaSandwichDisplayListView = v.findViewById(R.id.pizzaSandwichDisplayListView);
 //        display progress dialog till data is fetched
 //        progressDialog.setTitle("Please Wait..");
@@ -79,7 +85,7 @@ public class PizzaSandwichFragment extends Fragment {
                         itemRating.add(dsp.child("Rating").getValue().toString());
                     }
                 }
-                displayAdapter = new MenuDisplayAdapter(itemName, itemPrice, itemRating,  getContext());
+                displayAdapter = new MenuDisplayAdapter(itemName, itemPrice, itemRating, colors, getContext());
                 pizzaSandwichDisplayListView.setAdapter(displayAdapter);
 //                progressDialog.hide();
             }

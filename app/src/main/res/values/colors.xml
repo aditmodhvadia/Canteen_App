@@ -6,4 +6,6 @@
     <color name="colorPrimaryText">#828282</color>
     <color name="colorDisableButton">#f1b9b9</color>
     <color name="colorMediumRating">#e67e22</color>
+    <color name="colorGoodRating">#27ae60</color>
+    <color name="colorBadRating">#e74c3c</color>
 </resources>
