@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.getfood.Activity.FoodMenuDisplayActivity;
 import com.example.getfood.Adapter.MenuDisplayAdapter;
+import com.example.getfood.FoodItem;
 import com.example.getfood.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -83,7 +84,9 @@ public class SouthIndianFragment extends Fragment {
                     }
                 }
 
-                displayAdapter = new MenuDisplayAdapter(itemName, itemPrice, itemRating, colors, getContext());
+                FoodItem SouthIndian = new FoodItem(itemName, itemPrice, itemRating);
+
+                displayAdapter = new MenuDisplayAdapter(SouthIndian, colors, getContext());
                 southIndianDisplayListView.setAdapter(displayAdapter);
 
 

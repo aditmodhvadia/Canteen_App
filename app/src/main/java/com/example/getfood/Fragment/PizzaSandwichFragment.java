@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.getfood.Activity.FoodMenuDisplayActivity;
 import com.example.getfood.Adapter.MenuDisplayAdapter;
+import com.example.getfood.FoodItem;
 import com.example.getfood.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -85,7 +86,10 @@ public class PizzaSandwichFragment extends Fragment {
                         itemRating.add(dsp.child("Rating").getValue().toString());
                     }
                 }
-                displayAdapter = new MenuDisplayAdapter(itemName, itemPrice, itemRating, colors, getContext());
+
+                FoodItem PizzaSandwich = new FoodItem(itemName, itemPrice, itemRating);
+
+                displayAdapter = new MenuDisplayAdapter(PizzaSandwich, colors, getContext());
                 pizzaSandwichDisplayListView.setAdapter(displayAdapter);
 //                progressDialog.hide();
             }

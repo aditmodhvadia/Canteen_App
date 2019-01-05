@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.getfood.FoodItem;
 import com.example.getfood.R;
 
 import java.util.ArrayList;
@@ -21,10 +22,10 @@ public class MenuDisplayAdapter extends BaseAdapter {
 
     TextView itemNameTextView, itemPriceTextView, itemRatingTextView;
 
-    public MenuDisplayAdapter(ArrayList<String> itemName, ArrayList<String> itemPrice, ArrayList<String> itemRating, ArrayList<Integer> colors, Context context) {
-        this.itemName = itemName;
-        this.itemPrice = itemPrice;
-        this.itemRating = itemRating;
+    public MenuDisplayAdapter(FoodItem foodList, ArrayList<Integer> colors, Context context) {
+        this.itemName = foodList.getItemName();
+        this.itemPrice = foodList.getItemPrice();
+        this.itemRating = foodList.getItemRating();
         this.colors = colors;
         this.context = context;
         this.inflater = LayoutInflater.from(context);

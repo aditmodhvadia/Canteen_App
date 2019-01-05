@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.getfood.Activity.FoodMenuDisplayActivity;
 import com.example.getfood.Adapter.MenuDisplayAdapter;
+import com.example.getfood.FoodItem;
 import com.example.getfood.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -81,7 +82,10 @@ public class ChineseFragment extends Fragment {
                         itemRating.add(dsp.child("Rating").getValue().toString());
                     }
                 }
-                displayAdapter = new MenuDisplayAdapter(itemName, itemPrice, itemRating, colors, getContext());
+
+                FoodItem chinese = new FoodItem(itemName, itemPrice, itemRating);
+
+                displayAdapter = new MenuDisplayAdapter(chinese, colors, getContext());
                 chineseDisplayListView.setAdapter(displayAdapter);
 
 //                progressDialog.hide();
