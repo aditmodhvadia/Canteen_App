@@ -333,6 +333,7 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 auth.signOut();
+                startActivity(new Intent(FoodMenuDisplayActivity.this, LoginActivity.class));
                 finish();
             }
         });
