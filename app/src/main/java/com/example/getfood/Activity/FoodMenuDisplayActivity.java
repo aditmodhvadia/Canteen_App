@@ -2,7 +2,6 @@ package com.example.getfood.Activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
@@ -23,21 +22,17 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.getfood.Fragment.ChineseFragment;
-import com.example.getfood.Fragment.PizzaSandwichFragment;
+import com.example.getfood.Fragment.FoodCategoryFragment;
 import com.example.getfood.R;
-import com.example.getfood.Fragment.SouthIndianFragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -102,8 +97,7 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
         if (actionbar != null) {
             actionbar.setDisplayHomeAsUpEnabled(true);
             actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
-        }
-        else{
+        } else {
             makeText("Action Bar null");
         }
 
@@ -127,36 +121,36 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
                                 makeText("Cart is Empty");
                             else
                                 showCart();
-                        }else if (menuItem.getItemId() == R.id.nav_order) {
+                        } else if (menuItem.getItemId() == R.id.nav_order) {
                             Intent orders = new Intent(FoodMenuDisplayActivity.this, OrderListActivity.class);
                             String email = auth.getCurrentUser().getEmail();
                             String rollNo = email.substring(0, email.indexOf("@"));
                             orders.putExtra("RollNo", rollNo);
                             startActivity(orders);
 //                            Toast.makeText(FoodMenuDisplayActivity.this, "Order Pressed", Toast.LENGTH_SHORT).show();
-                        }else if (menuItem.getItemId() == R.id.nav_terms) {
+                        } else if (menuItem.getItemId() == R.id.nav_terms) {
                             startActivity(new Intent(FoodMenuDisplayActivity.this, TermsActivity.class));
 //                            Toast.makeText(FoodMenuDisplayActivity.this, "Terms & Conditions Pressed", Toast.LENGTH_SHORT).show();
-                        }else if (menuItem.getItemId() == R.id.nav_map) {
+                        } else if (menuItem.getItemId() == R.id.nav_map) {
                             startActivity(new Intent(FoodMenuDisplayActivity.this, MapsActivity.class));
 //                            Toast.makeText(FoodMenuDisplayActivity.this, "Terms & Conditions Pressed", Toast.LENGTH_SHORT).show();
-                        }else if (menuItem.getItemId() == R.id.nav_contact) {
+                        } else if (menuItem.getItemId() == R.id.nav_contact) {
 
                             Intent email = new Intent(Intent.ACTION_SEND);
-                            email.putExtra(Intent.EXTRA_EMAIL, new String[]{ "adit.modhvadia@gmail.com"});
+                            email.putExtra(Intent.EXTRA_EMAIL, new String[]{"adit.modhvadia@gmail.com"});
                             email.putExtra(Intent.EXTRA_CC, new String[]{"15bce001@nirmauni.ac.in",
                                     "15bce014@nirmauni.ac.in"});
                             email.putExtra(Intent.EXTRA_SUBJECT, "Query/Report for my Kanteen");
 
-                            email.putExtra(Intent.EXTRA_TEXT, "Debug Information: "+Build.MANUFACTURER +"\n" +Build.DEVICE +"\n"
-                                    +Build.BRAND +"\n" +Build.MODEL +"\nAPI Level: " +Build.VERSION.SDK_INT);
+                            email.putExtra(Intent.EXTRA_TEXT, "Debug Information: " + Build.MANUFACTURER + "\n" + Build.DEVICE + "\n"
+                                    + Build.BRAND + "\n" + Build.MODEL + "\nAPI Level: " + Build.VERSION.SDK_INT);
 
                             //need this to prompts email client only
                             email.setType("message/rfc822");
 
                             startActivity(Intent.createChooser(email, "Choose an Email client :"));
 
-                        }else if(menuItem.getItemId() == R.id.nav_reset_password){
+                        } else if (menuItem.getItemId() == R.id.nav_reset_password) {
 
                             auth.sendPasswordResetEmail(auth.getCurrentUser().getEmail()).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
@@ -172,13 +166,12 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
                                 }
                             });
 
-                        }
-                        else if (menuItem.getItemId() == R.id.nav_logout) {
+                        } else if (menuItem.getItemId() == R.id.nav_logout) {
 //                            Toast.makeText(FoodMenuDisplayActivity.this, "Logout Pressed", Toast.LENGTH_SHORT).show();
                             logout();
-                        }else if(menuItem.getItemId() == R.id.nav_help) {
+                        } else if (menuItem.getItemId() == R.id.nav_help) {
                             Toast.makeText(FoodMenuDisplayActivity.this, "Help Pressed", Toast.LENGTH_SHORT).show();
-                        }else {
+                        } else {
 
                             Toast.makeText(FoodMenuDisplayActivity.this, "Error Occurred", Toast.LENGTH_SHORT).show();
 
@@ -266,18 +259,37 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
+
+
             switch (position) {
-                case 0:
-                    return new ChineseFragment();
-
-                case 1:
-                    return new SouthIndianFragment();
-
-                case 2:
-                    return new PizzaSandwichFragment();
-
-                default:
-                    return new ChineseFragment();
+                case 0: {
+                    FoodCategoryFragment fragment = new FoodCategoryFragment();
+                    Bundle args = new Bundle();
+                    args.putString("CATEGORY_TYPE", "Chinese");
+                    fragment.setArguments(args);
+                    return fragment;
+                }
+                case 1: {
+                    FoodCategoryFragment fragment = new FoodCategoryFragment();
+                    Bundle args = new Bundle();
+                    args.putString("CATEGORY_TYPE", "South Indian");
+                    fragment.setArguments(args);
+                    return fragment;
+                }
+                case 2: {
+                    FoodCategoryFragment fragment = new FoodCategoryFragment();
+                    Bundle args = new Bundle();
+                    args.putString("CATEGORY_TYPE", "Pizza Sandwich");
+                    fragment.setArguments(args);
+                    return fragment;
+                }
+                default: {
+                    FoodCategoryFragment fragment = new FoodCategoryFragment();
+                    Bundle args = new Bundle();
+                    args.putString("CATEGORY_TYPE", "Chinese");
+                    fragment.setArguments(args);
+                    return fragment;
+                }
             }
         }
 
@@ -303,7 +315,7 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
                 exitCount = 1;
             } else {
                 Intent homeIntent = new Intent(Intent.ACTION_MAIN);
-                homeIntent.addCategory( Intent.CATEGORY_HOME );
+                homeIntent.addCategory(Intent.CATEGORY_HOME);
 //                homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(homeIntent);
 
@@ -345,7 +357,7 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    public void showSnackBar(View parent, String msg){
+    public void showSnackBar(View parent, String msg) {
         Snackbar snackbar = Snackbar
                 .make(parent, msg, Snackbar.LENGTH_SHORT);
         snackbar.show();

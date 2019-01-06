@@ -28,12 +28,14 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class ChineseFragment extends Fragment {
+public class FoodCategoryFragment extends Fragment {
 
     private DatabaseReference rootFood;
     ProgressDialog progressDialog;
     ArrayList<String> itemName, itemPrice, itemRating;
     ArrayList<Integer> colors;
+
+    String CATEGORY = null;
 
     Button alertPlus, alertMinus;
     TextView quantitySetTV;
@@ -43,7 +45,7 @@ public class ChineseFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public ChineseFragment() {
+    public FoodCategoryFragment() {
         // Required empty public constructor
     }
 
@@ -62,9 +64,17 @@ public class ChineseFragment extends Fragment {
         colors.add(getResources().getColor(R.color.colorGoodRating));
         colors.add(getResources().getColor(R.color.colorMediumRating));
         colors.add(getResources().getColor(R.color.colorBadRating));
-
         chineseDisplayListView = v.findViewById(R.id.chineseDisplayListView);
-        final String CATEGORY = "Chinese";
+
+        Bundle args = this.getArguments();
+
+        if (args != null) {
+            CATEGORY = args.getString("CATEGORY_TYPE");
+            Toast.makeText(getContext(), CATEGORY, Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(getContext(), "Empty args", Toast.LENGTH_SHORT).show();
+        }
         rootFood = FirebaseDatabase.getInstance().getReference().child("Food").child(CATEGORY);
 
         rootFood.keepSynced(true);
