@@ -20,12 +20,17 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class OrderNotificationService extends Service {
 
 //    Variables
     private String ORDER_ID;
 //    Firebase Variables
     DatabaseReference currOrderRootChinese, currOrderRootSouthIndian, currOrderRootPizza;
+
+    NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+
     public OrderNotificationService() {
     }
 
@@ -138,9 +143,32 @@ public class OrderNotificationService extends Service {
                 .addAction(R.drawable.ic_open_notif,"Open", pi)
                 .setColorized(true)
                 .setColor(getResources().getColor(R.color.colorPrimary))
+                .setGroup("group_item_notif")
                 .setContentIntent(pi);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(0, mBuilder.build());
+//        notificationManager.notify(ThreadLocalRandom.current().nextInt(), mBuilder.build());
+//        notificationManager.notify(0, mBuilder.build());
+
+        inboxStyle.setBigContentTitle("Your order updates");
+//        Group Notification
+        NotificationCompat.Builder mBuilderGroup = new NotificationCompat.Builder(getApplicationContext(), "default")
+                .setSmallIcon(R.drawable.ic_notif_icon_k)
+                .setContentTitle("Your Order "+ORDER_ID)
+                .setContentText("Your order updates")
+                .setVibrate(new long[]{0, 400, 200, 400})
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setPriority(Notification.PRIORITY_HIGH)
+                .setAutoCancel(true)
+                .setColorized(true)
+                .setColor(getResources().getColor(R.color.colorPrimary))
+                .setGroup("group_item_notif")
+                .setGroupSummary(true)
+                .setContentIntent(pi);
+        inboxStyle.addLine(item +" is " +status);
+        mBuilderGroup.setStyle(inboxStyle);
+
+        notificationManager.notify(0, mBuilderGroup.build());
+
     }
 }

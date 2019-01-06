@@ -70,7 +70,6 @@ public class FoodCategoryFragment extends Fragment {
 
         if (args != null) {
             CATEGORY = args.getString("CATEGORY_TYPE");
-            Toast.makeText(getContext(), CATEGORY, Toast.LENGTH_SHORT).show();
         }
         else{
             Toast.makeText(getContext(), "Empty args", Toast.LENGTH_SHORT).show();
