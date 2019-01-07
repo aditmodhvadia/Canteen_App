@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,7 @@ import com.example.getfood.Activity.FoodMenuDisplayActivity;
 import com.example.getfood.Adapter.MenuDisplayAdapter;
 import com.example.getfood.FoodItem;
 import com.example.getfood.R;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,6 +45,7 @@ public class FoodCategoryFragment extends Fragment {
 
     ListView chineseDisplayListView;
     MenuDisplayAdapter displayAdapter;
+    ShimmerFrameLayout shimmerLayout;
 
     private OnFragmentInteractionListener mListener;
 
@@ -55,7 +58,7 @@ public class FoodCategoryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_chinese, container, false);
-
+        shimmerLayout = v.findViewById(R.id.shimmerLayout);
 //        progressDialog = new ProgressDialog(getContext());
         foodItem = new ArrayList<>();
 
@@ -70,8 +73,7 @@ public class FoodCategoryFragment extends Fragment {
 
         if (args != null) {
             CATEGORY = args.getString("CATEGORY_TYPE");
-        }
-        else{
+        } else {
             Toast.makeText(getContext(), "Empty args", Toast.LENGTH_SHORT).show();
         }
         rootFood = FirebaseDatabase.getInstance().getReference().child("Food").child(CATEGORY);
@@ -84,14 +86,23 @@ public class FoodCategoryFragment extends Fragment {
                 foodItem.clear();
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
 
-                    if(dsp.child("Available").getValue().toString().equals("Yes")){
+                    if (dsp.child("Available").getValue().toString().equals("Yes")) {
                         FoodItem newItem = new FoodItem(dsp.getKey(), dsp.child("Price").getValue().toString(), dsp.child("Rating").getValue().toString());
                         foodItem.add(newItem);
                     }
                 }
 
-                displayAdapter = new MenuDisplayAdapter(foodItem, colors, getContext());
-                chineseDisplayListView.setAdapter(displayAdapter);
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        displayAdapter = new MenuDisplayAdapter(foodItem, colors, getContext());
+                        chineseDisplayListView.setAdapter(displayAdapter);
+                        shimmerLayout.stopShimmer();
+                        shimmerLayout.setVisibility(View.GONE);
+                    }
+                }, 1000);
+
 
 //                progressDialog.hide();
             }
