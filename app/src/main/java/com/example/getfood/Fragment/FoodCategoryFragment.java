@@ -27,12 +27,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FoodCategoryFragment extends Fragment {
 
     private DatabaseReference rootFood;
     ProgressDialog progressDialog;
-    ArrayList<String> itemName, itemPrice, itemRating;
+    List<FoodItem> foodItem;
     ArrayList<Integer> colors;
 
     String CATEGORY = null;
@@ -56,9 +57,8 @@ public class FoodCategoryFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_chinese, container, false);
 
 //        progressDialog = new ProgressDialog(getContext());
-        itemName = new ArrayList<>();
-        itemPrice = new ArrayList<>();
-        itemRating = new ArrayList<>();
+        foodItem = new ArrayList<>();
+
         colors = new ArrayList<>();
 
         colors.add(getResources().getColor(R.color.colorGoodRating));
@@ -81,20 +81,16 @@ public class FoodCategoryFragment extends Fragment {
         rootFood.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                itemName.clear();
-                itemPrice.clear();
+                foodItem.clear();
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
 
                     if(dsp.child("Available").getValue().toString().equals("Yes")){
-                        itemName.add(dsp.getKey());
-                        itemPrice.add(dsp.child("Price").getValue().toString());
-                        itemRating.add(dsp.child("Rating").getValue().toString());
+                        FoodItem newItem = new FoodItem(dsp.getKey(), dsp.child("Price").getValue().toString(), dsp.child("Rating").getValue().toString());
+                        foodItem.add(newItem);
                     }
                 }
 
-                FoodItem chinese = new FoodItem(itemName, itemPrice, itemRating);
-
-                displayAdapter = new MenuDisplayAdapter(chinese, colors, getContext());
+                displayAdapter = new MenuDisplayAdapter(foodItem, colors, getContext());
                 chineseDisplayListView.setAdapter(displayAdapter);
 
 //                progressDialog.hide();
@@ -109,7 +105,7 @@ public class FoodCategoryFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
 
-                if (FoodMenuDisplayActivity.cartItemName.contains(itemName.get(i))) {
+                if (FoodMenuDisplayActivity.cartItemName.contains(foodItem.get(i).getItemName())) {
                     Toast.makeText(getContext(), "Item already in Cart", Toast.LENGTH_SHORT).show();
                 } else {
 
@@ -137,20 +133,20 @@ public class FoodCategoryFragment extends Fragment {
                     });
 
                     builder.setTitle("Select Quantity");
-                    builder.setMessage(itemName.get(i));
+                    builder.setMessage(foodItem.get(i).getItemName());
                     builder.setView(quantityAlert);
                     builder.setPositiveButton("Add to Cart", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i1) {
                             int quant = Integer.valueOf(quantitySetTV.getText().toString());
                             if (quant != 0) {
-                                if (FoodMenuDisplayActivity.cartItemName.contains(itemName.get(i))) {
-                                    int pos = FoodMenuDisplayActivity.cartItemName.indexOf(itemName.get(i));
+                                if (FoodMenuDisplayActivity.cartItemName.contains(foodItem.get(i).getItemName())) {
+                                    int pos = FoodMenuDisplayActivity.cartItemName.indexOf(foodItem.get(i).getItemName());
                                     FoodMenuDisplayActivity.cartItemQuantity.set(pos, FoodMenuDisplayActivity.cartItemQuantity.get(pos) + quant);
                                 } else {
-                                    FoodMenuDisplayActivity.cartItemName.add(itemName.get(i));
+                                    FoodMenuDisplayActivity.cartItemName.add(foodItem.get(i).getItemName());
                                     FoodMenuDisplayActivity.cartItemQuantity.add(quant);
-                                    FoodMenuDisplayActivity.cartItemPrice.add(Integer.parseInt(itemPrice.get(i)));
+                                    FoodMenuDisplayActivity.cartItemPrice.add(Integer.parseInt(foodItem.get(i).getItemPrice()));
                                     FoodMenuDisplayActivity.cartItemCategory.add(CATEGORY);
                                 }
                                 Toast.makeText(getContext(), "Added to Cart", Toast.LENGTH_LONG).show();

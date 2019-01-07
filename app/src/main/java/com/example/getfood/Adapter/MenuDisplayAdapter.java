@@ -12,20 +12,19 @@ import com.example.getfood.FoodItem;
 import com.example.getfood.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MenuDisplayAdapter extends BaseAdapter {
 
-    ArrayList<String> itemName,itemPrice, itemRating;
+    List<FoodItem> foodItem;
     ArrayList<Integer> colors;
     Context context;
     LayoutInflater inflater;
 
     TextView itemNameTextView, itemPriceTextView, itemRatingTextView;
 
-    public MenuDisplayAdapter(FoodItem foodList, ArrayList<Integer> colors, Context context) {
-        this.itemName = foodList.getItemName();
-        this.itemPrice = foodList.getItemPrice();
-        this.itemRating = foodList.getItemRating();
+    public MenuDisplayAdapter(List<FoodItem> foodItem, ArrayList<Integer> colors, Context context) {
+        this.foodItem = foodItem;
         this.colors = colors;
         this.context = context;
         this.inflater = LayoutInflater.from(context);
@@ -33,7 +32,7 @@ public class MenuDisplayAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return itemName.size();
+        return foodItem.size();
     }
 
     @Override
@@ -54,12 +53,12 @@ public class MenuDisplayAdapter extends BaseAdapter {
         itemNameTextView = vi.findViewById(R.id.itemNameTextView);
         itemPriceTextView = vi.findViewById(R.id.itemPriceTextView);
         itemRatingTextView = vi.findViewById(R.id.itemRatingTextView);
-        itemNameTextView.setText(itemName.get(i));
-        itemPriceTextView.setText(String.format("₹ %s", itemPrice.get(i)));
-        itemRatingTextView.setText(itemRating.get(i));
-        if(Float.valueOf(itemRating.get(i))<2.0){
+        itemNameTextView.setText(foodItem.get(i).getItemName());
+        itemPriceTextView.setText(String.format("₹ %s", foodItem.get(i).getItemPrice()));
+        itemRatingTextView.setText(foodItem.get(i).getItemRating());
+        if(Float.valueOf(foodItem.get(i).getItemRating())<2.0){
             itemRatingTextView.setTextColor(colors.get(2));
-        } else if(Float.valueOf(itemRating.get(i))<3.5){
+        } else if(Float.valueOf(foodItem.get(i).getItemRating())<3.5){
             itemRatingTextView.setTextColor(colors.get(1));
         } else{
             itemRatingTextView.setTextColor(colors.get(0));
