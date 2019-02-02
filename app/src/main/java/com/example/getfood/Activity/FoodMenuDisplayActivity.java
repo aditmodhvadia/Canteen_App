@@ -314,10 +314,11 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
                 prevTime = System.currentTimeMillis();
                 exitCount = 1;
             } else {
-                Intent homeIntent = new Intent(Intent.ACTION_MAIN);
-                homeIntent.addCategory(Intent.CATEGORY_HOME);
+//                Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+//                homeIntent.addCategory(Intent.CATEGORY_HOME);
 //                homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(homeIntent);
+//                startActivity(homeIntent);
+                finishAffinity();
 
             }
         }
