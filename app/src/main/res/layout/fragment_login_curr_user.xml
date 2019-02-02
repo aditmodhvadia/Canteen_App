@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragment.LoginFragment"
-    android:background="@drawable/background_red">
+    android:background="@drawable/background_red"
+    tools:context=".Fragment.login.LoginFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,8 +43,8 @@
             android:id="@+id/showPasswordCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/adminPasswordEditText"
             android:layout_below="@+id/adminPasswordEditText"
+            android:layout_alignStart="@+id/adminPasswordEditText"
             android:layout_marginLeft="80dp"
             android:layout_marginTop="10dp"
             android:shadowColor="#fff"
@@ -61,6 +61,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:background="@color/colorPrimaryDark"
+            android:onClick="loginClick"
             android:text="login"
             android:textColor="#fff" />
 
@@ -70,10 +71,10 @@
             android:layout_height="100dp"
             android:layout_below="@+id/userLoginButton"
             android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
             android:clickable="false"
             android:text="Forgot Password?"
-            android:layout_marginTop="5dp"
-            android:layout_gravity="center"
             android:textColor="@color/colorAccent" />
 
 

@@ -1,4 +1,4 @@
-package com.example.getfood.Fragment;
+package com.example.getfood.Fragment.login;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -20,7 +20,9 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.getfood.Activity.FoodMenuDisplayActivity;
+import com.example.getfood.Activity.LoginActivity;
 import com.example.getfood.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -32,7 +34,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 
 
-public class LoginFragment extends Fragment {
+public class LoginFragment extends Fragment implements LoginView{
 
     Button userLoginButton;
     EditText userLoginEmailEditText, userLoginPasswordEditText;
@@ -41,6 +43,8 @@ public class LoginFragment extends Fragment {
     CheckBox showPasswordCheckBox;
     private FirebaseAuth auth;
     private boolean timeout = false, success = false;
+
+    LoginPresenter presenter;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -57,7 +61,7 @@ public class LoginFragment extends Fragment {
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-
+        presenter = new LoginPresenter(LoginFragment.this);
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setCanceledOnTouchOutside(false);
         userLoginEmailEditText = v.findViewById(R.id.userLoginEmailEditText);
@@ -125,6 +129,13 @@ public class LoginFragment extends Fragment {
         };
         Handler pdCanceller = new Handler();
         pdCanceller.postDelayed(progressRunnable, 10000);
+    }
+
+    public void loginClick(View view) {
+        String userEmail = userLoginEmailEditText.getText().toString().trim().toLowerCase();
+        String userPassword = userLoginPasswordEditText.getText().toString().trim();
+
+        presenter.performLogin(userEmail, userPassword, userLoginEmailEditText, userLoginPasswordEditText);
     }
 
     private void loginUser() {
@@ -297,5 +308,16 @@ public class LoginFragment extends Fragment {
             }
         });
 
+    }
+
+    @Override
+    public void loginSuccess() {
+
+    }
+
+    @Override
+    public void loginErrror(String errmsg, EditText editText) {
+        editText.setError(errmsg);
+        editText.requestFocus();
     }
 }
