@@ -38,7 +38,7 @@ public class LoginFragment extends Fragment {
     EditText userLoginEmailEditText, userLoginPasswordEditText;
     TextView forgotPasswordTextView;
     ProgressDialog progressDialog;
-    CheckBox showPasswordCheckBox;
+//    CheckBox showPasswordCheckBox;
     private FirebaseAuth auth;
     private boolean timeout = false, success = false;
 
@@ -62,9 +62,9 @@ public class LoginFragment extends Fragment {
         progressDialog.setCanceledOnTouchOutside(false);
         userLoginEmailEditText = v.findViewById(R.id.userLoginEmailEditText);
         userLoginPasswordEditText = v.findViewById(R.id.userLoginPasswordEditText);
-        showPasswordCheckBox = v.findViewById(R.id.showPasswordCheckBox);
+//        showPasswordCheckBox = v.findViewById(R.id.showPasswordCheckBox);
 
-        showPasswordCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        /*showPasswordCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked) {
@@ -73,7 +73,7 @@ public class LoginFragment extends Fragment {
                     userLoginPasswordEditText.setTransformationMethod(new PasswordTransformationMethod());
                 }
             }
-        });
+        });*/
 
         userLoginButton = v.findViewById(R.id.userLoginButton);
         userLoginButton.setOnClickListener(new View.OnClickListener() {

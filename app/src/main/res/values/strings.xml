@@ -12,4 +12,7 @@
     <string name="title_activity_food_menu_display">FoodMenuDisplayActivity</string>
     <string name="title_activity_delete">DeleteActivity</string>
     <string name="title_activity_maps">Map</string>
+    <string name="password">Password</string>
+    <string name="email_id">Email ID</string>
+    <string name="confirm_password">Confirm Password</string>
 </resources>
