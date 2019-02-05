@@ -173,9 +173,9 @@ public class LoginFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 //Succesfull login
-                progressDialog.hide();
                 if (timeout) {
                     success = false;
+                    progressDialog.hide();
 //                    Toast.makeText(getContext(), "Inside timeout check after successful login", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -184,11 +184,11 @@ public class LoginFragment extends Fragment {
                     //user is email verified, hence can proceed further
                     if (auth.getCurrentUser().isEmailVerified()) {
 //                        login successful
-                        userLoginEmailEditText.setText("");
-                        userLoginPasswordEditText.setText("");
+//                        userLoginEmailEditText.setText("");
+//                        userLoginPasswordEditText.setText("");
+                        progressDialog.hide();
 //                        new activity will be opened which will display the food items
-                        Intent i = new Intent(getContext(), FoodMenuDisplayActivity.class);
-                        startActivity(i);
+                        startActivity(new Intent(getContext(), FoodMenuDisplayActivity.class));
 //                        getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
 
