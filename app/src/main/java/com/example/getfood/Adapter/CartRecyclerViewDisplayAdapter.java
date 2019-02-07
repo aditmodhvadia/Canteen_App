@@ -1,7 +1,6 @@
 package com.example.getfood.Adapter;
 
 import android.content.Context;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,12 +15,13 @@ import com.example.getfood.Activity.FoodMenuDisplayActivity;
 import com.example.getfood.R;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class CartRecyclerViewDisplayAdapter extends RecyclerView.Adapter<CartRecyclerViewDisplayAdapter.ViewHolder> {
 
-    ArrayList<String> cartItemName;
-    ArrayList<Integer> cartItemQuantity, cartItemPrice;
-    Context context;
+    private ArrayList<String> cartItemName;
+    private ArrayList<Integer> cartItemQuantity, cartItemPrice;
+    private Context context;
 
     public CartRecyclerViewDisplayAdapter(ArrayList<String> cartItemName, ArrayList<Integer> cartItemQuantity, ArrayList<Integer> cartItemPrice, Context context) {
         this.cartItemName = cartItemName;
@@ -45,7 +45,7 @@ public class CartRecyclerViewDisplayAdapter extends RecyclerView.Adapter<CartRec
     public void onBindViewHolder(@NonNull final CartRecyclerViewDisplayAdapter.ViewHolder holder, int position) {
 
         holder.itemNameTextView.setText(cartItemName.get(position));
-        holder.itemPriceTextView.setText("₹ " + cartItemPrice.get(position));
+        holder.itemPriceTextView.setText(String.format(Locale.ENGLISH, "%s%d", context.getString(R.string.rupee_symbol), cartItemPrice.get(position)));
         holder.itemQuantityTextView.setText(cartItemQuantity.get(position).toString());
 
         holder.increaseButton.setOnClickListener(new View.OnClickListener() {
@@ -59,7 +59,7 @@ public class CartRecyclerViewDisplayAdapter extends RecyclerView.Adapter<CartRec
                     FoodMenuDisplayActivity.cartItemQuantity.set(position, value + 1);
                     CartActivity.calcTotal();
                     notifyItemChanged(position);
-                    Toast.makeText(context, "Cart Adjusted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, context.getString(R.string.adjust_cart), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -69,7 +69,7 @@ public class CartRecyclerViewDisplayAdapter extends RecyclerView.Adapter<CartRec
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
 
-                if(position != RecyclerView.NO_POSITION){
+                if (position != RecyclerView.NO_POSITION) {
 
                     int value = FoodMenuDisplayActivity.cartItemQuantity.get(position);
 
@@ -81,7 +81,7 @@ public class CartRecyclerViewDisplayAdapter extends RecyclerView.Adapter<CartRec
 //                        CartActivity.cartDisplayAdapter.notifyDataSetChanged();
                         notifyItemChanged(position);
                         CartActivity.calcTotal();
-                        Toast.makeText(context, "Cart Adjusted", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, context.getString(R.string.adjust_cart), Toast.LENGTH_SHORT).show();
                     } else if (value == 1) {
 
                         FoodMenuDisplayActivity.cartItemQuantity.remove(position);
@@ -92,13 +92,13 @@ public class CartRecyclerViewDisplayAdapter extends RecyclerView.Adapter<CartRec
 
                         if (FoodMenuDisplayActivity.cartItemName.size() == 0) {
 //                            finish the activity
-                            Toast.makeText(context, "Cart is Empty", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, context.getString(R.string.cart_empty), Toast.LENGTH_SHORT).show();
                             CartActivity.activity.finish();
                         }
 //                                CartActivity.notifyChangeAndCalcTotal(context);
                         notifyItemRemoved(position);
                         CartActivity.calcTotal();
-                        Toast.makeText(context, "Cart Adjusted", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, context.getString(R.string.adjust_cart), Toast.LENGTH_SHORT).show();
 
                     }
                 }
@@ -115,13 +115,13 @@ public class CartRecyclerViewDisplayAdapter extends RecyclerView.Adapter<CartRec
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView itemQuantityTextView, itemNameTextView, itemPriceTextView;
-        public ImageButton increaseButton, decreaseButton;
+        TextView itemQuantityTextView, itemNameTextView, itemPriceTextView;
+        ImageButton increaseButton, decreaseButton;
 
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
 
             itemNameTextView = itemView.findViewById(R.id.itemNameTextView);

@@ -1,7 +1,6 @@
 package com.example.getfood.Adapter;
 
 import android.content.Context;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +8,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.getfood.R;
 
@@ -17,12 +15,12 @@ import java.util.ArrayList;
 
 public class OrderDisplayAdapter extends BaseAdapter {
 
-    ArrayList<String> orderItemName, orderItemStatus;
-    ArrayList<Integer> orderItemQuantity;
-    Context context;
-    LayoutInflater inflater;
+    private ArrayList<String> orderItemName, orderItemStatus;
+    private ArrayList<Integer> orderItemQuantity;
+    private Context context;
+    private LayoutInflater inflater;
 
-    TextView orderItemQuantityTextView, orderItemNameTextView, orderItemStatusTextView;
+    private TextView orderItemQuantityTextView, orderItemNameTextView, orderItemStatusTextView;
 
     public OrderDisplayAdapter(ArrayList<String> orderItemName, ArrayList<Integer> orderItemQuantity, ArrayList<String> orderItemStatus, Context context) {
         this.orderItemName = orderItemName;

@@ -2,7 +2,6 @@ package com.example.getfood.Fragment;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -33,21 +32,15 @@ import java.util.List;
 
 public class FoodCategoryFragment extends Fragment {
 
-    private DatabaseReference rootFood;
     ProgressDialog progressDialog;
     List<FoodItem> foodItem;
     ArrayList<Integer> colors;
-
     String CATEGORY = null;
-
     Button alertPlus, alertMinus;
     TextView quantitySetTV;
-
     ListView chineseDisplayListView;
     MenuDisplayAdapter displayAdapter;
     ShimmerFrameLayout shimmerLayout;
-
-    private OnFragmentInteractionListener mListener;
 
     public FoodCategoryFragment() {
         // Required empty public constructor
@@ -72,11 +65,11 @@ public class FoodCategoryFragment extends Fragment {
         Bundle args = this.getArguments();
 
         if (args != null) {
-            CATEGORY = args.getString("CATEGORY_TYPE");
+            CATEGORY = args.getString(getString(R.string.cat_type));
         } else {
-            Toast.makeText(getContext(), "Empty args", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.args_empty), Toast.LENGTH_SHORT).show();
         }
-        rootFood = FirebaseDatabase.getInstance().getReference().child("Food").child(CATEGORY);
+        DatabaseReference rootFood = FirebaseDatabase.getInstance().getReference().child(getString(R.string.food)).child(CATEGORY);
 
         rootFood.keepSynced(true);
 
@@ -86,8 +79,8 @@ public class FoodCategoryFragment extends Fragment {
                 foodItem.clear();
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
 
-                    if (dsp.child("Available").getValue().toString().equals("Yes")) {
-                        FoodItem newItem = new FoodItem(dsp.getKey(), dsp.child("Price").getValue().toString(), dsp.child("Rating").getValue().toString());
+                    if (dsp.child(getString(R.string.available)).getValue().toString().equals(getString(R.string.yes))) {
+                        FoodItem newItem = new FoodItem(dsp.getKey(), dsp.child(getString(R.string.price)).getValue().toString(), dsp.child(getString(R.string.rating)).getValue().toString());
                         foodItem.add(newItem);
                     }
                 }
@@ -117,7 +110,7 @@ public class FoodCategoryFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
 
                 if (FoodMenuDisplayActivity.cartItemName.contains(foodItem.get(i).getItemName())) {
-                    Toast.makeText(getContext(), "Item already in Cart", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.item_in_cart), Toast.LENGTH_SHORT).show();
                 } else {
 
                     android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getContext());
@@ -143,10 +136,10 @@ public class FoodCategoryFragment extends Fragment {
                         }
                     });
 
-                    builder.setTitle("Select Quantity");
+                    builder.setTitle(R.string.select_quantity);
                     builder.setMessage(foodItem.get(i).getItemName());
                     builder.setView(quantityAlert);
-                    builder.setPositiveButton("Add to Cart", new DialogInterface.OnClickListener() {
+                    builder.setPositiveButton(R.string.add_to_cart, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i1) {
                             int quant = Integer.valueOf(quantitySetTV.getText().toString());
@@ -160,12 +153,12 @@ public class FoodCategoryFragment extends Fragment {
                                     FoodMenuDisplayActivity.cartItemPrice.add(Integer.parseInt(foodItem.get(i).getItemPrice()));
                                     FoodMenuDisplayActivity.cartItemCategory.add(CATEGORY);
                                 }
-                                Toast.makeText(getContext(), "Added to Cart", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getContext(), getString(R.string.add_to_cart), Toast.LENGTH_LONG).show();
                             }
                         }
                     });
 
-                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -190,10 +183,5 @@ public class FoodCategoryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-    }
-
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }

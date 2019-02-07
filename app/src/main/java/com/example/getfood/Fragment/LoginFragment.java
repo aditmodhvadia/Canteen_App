@@ -7,19 +7,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
-import android.text.method.PasswordTransformationMethod;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.getfood.Activity.FoodMenuDisplayActivity;
 import com.example.getfood.R;
 import com.example.getfood.Utils.AlertUtils;
@@ -108,7 +105,6 @@ public class LoginFragment extends Fragment {
                     @Override
                     public void onCancel(DialogInterface dialog) {
 //                        if (listAdapter.isEmpty())
-//                            Toast.makeText(MainActivity.this, "Start with a new List.", Toast.LENGTH_SHORT).show();
                     }
                 });
         progressDialog.setCancelable(false);

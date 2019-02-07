@@ -9,8 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.example.getfood.Activity.OrderActivity;
 import com.example.getfood.R;
@@ -20,16 +18,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.concurrent.ThreadLocalRandom;
-
 public class OrderNotificationService extends Service {
 
-//    Variables
-    private String ORDER_ID;
-//    Firebase Variables
+    //    Firebase Variables
     DatabaseReference currOrderRootChinese, currOrderRootSouthIndian, currOrderRootPizza;
-
     NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+    //    Variables
+    private String ORDER_ID;
 
     public OrderNotificationService() {
     }
@@ -46,28 +41,32 @@ public class OrderNotificationService extends Service {
 //        Toast.makeText(this, "Service for Get Food started", Toast.LENGTH_SHORT).show();
 
         Intent data = intent;
-        ORDER_ID = data.getStringExtra("OrderID");
+        ORDER_ID = data.getStringExtra(getString(R.string.i_order_id));
 
-        currOrderRootChinese = FirebaseDatabase.getInstance().getReference().child("Order").child(ORDER_ID).child("Items").child("Chinese");
-        currOrderRootSouthIndian = FirebaseDatabase.getInstance().getReference().child("Order").child(ORDER_ID).child("Items").child("South Indian");
-        currOrderRootPizza = FirebaseDatabase.getInstance().getReference().child("Order").child(ORDER_ID).child("Items").child("Pizza Sandwich");
+        currOrderRootChinese = FirebaseDatabase.getInstance().getReference().child(getString(R.string.order)).child(ORDER_ID).child(getString(R.string.items)).child(getString(R.string.chinese));
+        currOrderRootSouthIndian = FirebaseDatabase.getInstance().getReference().child(getString(R.string.order)).child(ORDER_ID).child(getString(R.string.items)).child(getString(R.string.south_indian));
+        currOrderRootPizza = FirebaseDatabase.getInstance().getReference().child(getString(R.string.order)).child(ORDER_ID).child(getString(R.string.items)).child(getString(R.string.pizza_sandwich));
 
         currOrderRootChinese.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
             }
+
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                customNotification(dataSnapshot.getKey(), dataSnapshot.child("Status").getValue().toString());
+                customNotification(dataSnapshot.getKey(), dataSnapshot.child(getString(R.string.status)).getValue().toString());
             }
+
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
             }
+
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
@@ -78,17 +77,21 @@ public class OrderNotificationService extends Service {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
             }
+
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                customNotification(dataSnapshot.getKey(), dataSnapshot.child("Status").getValue().toString());
+                customNotification(dataSnapshot.getKey(), dataSnapshot.child(getString(R.string.status)).getValue().toString());
             }
+
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
             }
+
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
@@ -99,22 +102,25 @@ public class OrderNotificationService extends Service {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
             }
+
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                customNotification(dataSnapshot.getKey(), dataSnapshot.child("Status").getValue().toString().toLowerCase());
+                customNotification(dataSnapshot.getKey(), dataSnapshot.child(getString(R.string.status)).getValue().toString().toLowerCase());
             }
+
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
             }
+
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-
 
 
         return START_STICKY;
@@ -126,36 +132,36 @@ public class OrderNotificationService extends Service {
 
         Intent i = new Intent(this, OrderActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        i.putExtra("OrderID",ORDER_ID);
+        i.putExtra(getString(R.string.i_order_id), ORDER_ID);
         PendingIntent pi = PendingIntent.getActivity(this, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "default")
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), getString(R.string.default_channel_id))
                 .setSmallIcon(R.drawable.ic_notif_icon_k)
-                .setContentTitle("Your Order "+ORDER_ID)
-                .setContentText(item +" is " +status)
+                .setContentTitle(getString(R.string.your_order) + ORDER_ID)
+                .setContentText(item + " is " + status)
                 .setVibrate(new long[]{0, 400, 200, 400})
                 .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText(item +" is " +status +"\nBe ready to take your order when food is cooked!"))
+                        .bigText(item + " is " + status + "\nBe ready to take your order when food is cooked!"))
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setPriority(Notification.PRIORITY_HIGH)
                 .setAutoCancel(true)
 //                todo: icon expands on lower devices
-                .addAction(R.drawable.ic_open_notif,"Open", pi)
+                .addAction(R.drawable.ic_open_notif, getString(R.string.open), pi)
                 .setColorized(true)
                 .setColor(getResources().getColor(R.color.colorPrimary))
-                .setGroup("group_item_notif")
+                .setGroup(getString(R.string.group_notif_id))
                 .setContentIntent(pi);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 //        notificationManager.notify(ThreadLocalRandom.current().nextInt(), mBuilder.build());
 //        notificationManager.notify(0, mBuilder.build());
 
-        inboxStyle.setBigContentTitle("Your order updates");
+        inboxStyle.setBigContentTitle(getString(R.string.order_updates));
 //        Group Notification
-        NotificationCompat.Builder mBuilderGroup = new NotificationCompat.Builder(getApplicationContext(), "default")
+        NotificationCompat.Builder mBuilderGroup = new NotificationCompat.Builder(getApplicationContext(), getString(R.string.default_channel_id))
                 .setSmallIcon(R.drawable.ic_notif_icon_k)
-                .setContentTitle("Your Order "+ORDER_ID)
-                .setContentText("Your order updates")
+                .setContentTitle(getString(R.string.your_order) + ORDER_ID)
+                .setContentText(getString(R.string.your_order_updates))
                 .setVibrate(new long[]{0, 400, 200, 400})
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setPriority(Notification.PRIORITY_HIGH)
@@ -165,7 +171,7 @@ public class OrderNotificationService extends Service {
                 .setGroup("group_item_notif")
                 .setGroupSummary(true)
                 .setContentIntent(pi);
-        inboxStyle.addLine(item +" is " +status);
+        inboxStyle.addLine(item + " is " + status);
         mBuilderGroup.setStyle(inboxStyle);
 
         notificationManager.notify(0, mBuilderGroup.build());

@@ -13,8 +13,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,13 +35,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
 
-        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         // Add a marker in K Canteen and move the camera
         LatLng KCanteen = new LatLng(23.1282703,72.5435537);
-        mMap.addMarker(new MarkerOptions().position(KCanteen).title("K Canteen, Nirma University"));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(KCanteen, 18), 3000, null);
+        googleMap.addMarker(new MarkerOptions().position(KCanteen).title(getString(R.string.k_canteen_title)));
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(KCanteen, 18), 3000, null);
 
     }
 }
