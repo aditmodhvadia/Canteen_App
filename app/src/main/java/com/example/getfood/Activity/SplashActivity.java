@@ -9,13 +9,15 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 
 import com.example.getfood.R;
+import com.example.getfood.Utils.AlertUtils;
+import com.example.getfood.Utils.OnDialogButtonClickListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -56,45 +58,66 @@ public class SplashActivity extends AppCompatActivity {
                             startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                             finish();
                         }
-                    }
-                    else{
+                    } else {
                         //deprecated version of app
-                        AlertDialog.Builder builder = new AlertDialog.Builder(SplashActivity.this);
+                        AlertUtils.openAlertDialog(SplashActivity.this, "Warning!", "This version of the app is outdated now. Update to the latest version.",
+                                "Update", "Exit", new OnDialogButtonClickListener() {
+                                    @Override
+                                    public void onPositiveButtonClicked() {
+                                        String url = "https://github.com/aditmodhvadia/Canteen_App/releases";
+                                        try {
+                                            Intent i = new Intent("android.intent.action.MAIN");
+                                            i.setComponent(ComponentName.unflattenFromString("com.android.chrome/com.android.chrome.Main"));
+                                            i.addCategory("android.intent.category.LAUNCHER");
+                                            i.setData(Uri.parse(url));
+                                            startActivity(i);
+                                        } catch (ActivityNotFoundException e) {
+                                            // Chrome is not installed
+                                            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                                            startActivity(i);
+                                        }
+                                    }
 
-                        builder.setMessage("This version of the app is outdated now. Update to the latest version.")
-                                .setTitle("Warning!");
-                        builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-//                                Toast.makeText(LoginActivity.this, "Update", Toast.LENGTH_SHORT).show();
-                                String url = "https://github.com/aditmodhvadia/Canteen_App/releases";
-                                try {
-                                    Intent i = new Intent("android.intent.action.MAIN");
-                                    i.setComponent(ComponentName.unflattenFromString("com.android.chrome/com.android.chrome.Main"));
-                                    i.addCategory("android.intent.category.LAUNCHER");
-                                    i.setData(Uri.parse(url));
-                                    startActivity(i);
-                                }
-                                catch(ActivityNotFoundException e) {
-                                    // Chrome is not installed
-                                    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                                    startActivity(i);
-                                }
-                            }
-                        });
-                        builder.setNegativeButton("Exit", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                finish();
-                            }
-                        });
-                        builder.setCancelable(false);
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
-                        Button nbutton = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
-                        nbutton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                        Button pbutton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-                        pbutton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                                    @Override
+                                    public void onNegativeButtonClicked() {
+                                        finish();
+                                    }
+                                });
+//                        AlertDialog.Builder builder = new AlertDialog.Builder(SplashActivity.this);
+//
+//                        builder.setMessage("This version of the app is outdated now. Update to the latest version.")
+//                                .setTitle("Warning!");
+//                        builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+////                                Toast.makeText(LoginActivity.this, "Update", Toast.LENGTH_SHORT).show();
+//                                String url = "https://github.com/aditmodhvadia/Canteen_App/releases";
+//                                try {
+//                                    Intent i = new Intent("android.intent.action.MAIN");
+//                                    i.setComponent(ComponentName.unflattenFromString("com.android.chrome/com.android.chrome.Main"));
+//                                    i.addCategory("android.intent.category.LAUNCHER");
+//                                    i.setData(Uri.parse(url));
+//                                    startActivity(i);
+//                                } catch (ActivityNotFoundException e) {
+//                                    // Chrome is not installed
+//                                    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//                                    startActivity(i);
+//                                }
+//                            }
+//                        });
+//                        builder.setNegativeButton("Exit", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                finish();
+//                            }
+//                        });
+//                        builder.setCancelable(false);
+//                        AlertDialog dialog = builder.create();
+//                        dialog.show();
+//                        Button nbutton = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+//                        nbutton.setTextColor(getResources().getColor(R.color.colorPrimary));
+//                        Button pbutton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+//                        pbutton.setTextColor(getResources().getColor(R.color.colorPrimary));
                     }
                 }
 
@@ -127,45 +150,31 @@ public class SplashActivity extends AppCompatActivity {
                             //start login activity
                             startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                         }
-                    }
-                    else{
+                    } else {
                         //deprecated version of app
-                        AlertDialog.Builder builder = new AlertDialog.Builder(SplashActivity.this);
+                        AlertUtils.openAlertDialog(SplashActivity.this, "Warning!", "This version of the app is outdated now. Update to the latest version.",
+                                "Update", "Exit", new OnDialogButtonClickListener() {
+                                    @Override
+                                    public void onPositiveButtonClicked() {
+                                        String url = "https://github.com/aditmodhvadia/Canteen_App/releases";
+                                        try {
+                                            Intent i = new Intent("android.intent.action.MAIN");
+                                            i.setComponent(ComponentName.unflattenFromString("com.android.chrome/com.android.chrome.Main"));
+                                            i.addCategory("android.intent.category.LAUNCHER");
+                                            i.setData(Uri.parse(url));
+                                            startActivity(i);
+                                        } catch (ActivityNotFoundException e) {
+                                            // Chrome is not installed
+                                            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                                            startActivity(i);
+                                        }
+                                    }
 
-                        builder.setMessage("This version of the app is outdated now. Update to the latest version.")
-                                .setTitle("Warning!");
-                        builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-//                                Toast.makeText(LoginActivity.this, "Update", Toast.LENGTH_SHORT).show();
-                                String url = "https://github.com/aditmodhvadia/Canteen_App/releases";
-                                try {
-                                    Intent i = new Intent("android.intent.action.MAIN");
-                                    i.setComponent(ComponentName.unflattenFromString("com.android.chrome/com.android.chrome.Main"));
-                                    i.addCategory("android.intent.category.LAUNCHER");
-                                    i.setData(Uri.parse(url));
-                                    startActivity(i);
-                                }
-                                catch(ActivityNotFoundException e) {
-                                    // Chrome is not installed
-                                    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                                    startActivity(i);
-                                }
-                            }
-                        });
-                        builder.setNegativeButton("Exit", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                finish();
-                            }
-                        });
-                        builder.setCancelable(false);
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
-                        Button nbutton = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
-                        nbutton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                        Button pbutton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-                        pbutton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                                    @Override
+                                    public void onNegativeButtonClicked() {
+                                        finish();
+                                    }
+                                });
                     }
                 }
 

@@ -24,8 +24,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.getfood.Activity.FoodMenuDisplayActivity;
+import com.example.getfood.Activity.LoginActivity;
 import com.example.getfood.Activity.TermsActivity;
 import com.example.getfood.R;
+import com.example.getfood.Utils.AlertUtils;
+import com.example.getfood.Utils.OnDialogButtonClickListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -182,20 +185,36 @@ public class RegisterFragment extends Fragment {
                             if (task.isSuccessful()) {
                                 auth.getCurrentUser().sendEmailVerification();
 //                    Toast.makeText(getContext(),"Email sent for Verification",Toast.LENGTH_LONG).show();
-                                final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                                builder.setTitle("Email Sent!");
-                                builder.setMessage("Verification Email sent to your account. Check your Email");
-                                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        Toast.makeText(getContext(), "Login again after verification", Toast.LENGTH_LONG).show();
-                                        userEmailEditText.setText("");
-                                        userPasswordEditText.setText("");
-                                        userConPasswordEditText.setText("");
-                                        auth.getInstance().signOut();
-                                    }
-                                });
-                                builder.show();
+                                AlertUtils.openAlertDialog(getContext(),"Email Sent!", "Verification Email sent to your account. Check your Email",
+                                        "Yes", "No", new OnDialogButtonClickListener() {
+                                            @Override
+                                            public void onPositiveButtonClicked() {
+                                                Toast.makeText(getContext(), "Login again after verification", Toast.LENGTH_LONG).show();
+                                                userEmailEditText.setText("");
+                                                userPasswordEditText.setText("");
+                                                userConPasswordEditText.setText("");
+                                                auth.getInstance().signOut();
+                                            }
+
+                                            @Override
+                                            public void onNegativeButtonClicked() {
+
+                                            }
+                                        });
+//                                final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+//                                builder.setTitle("Email Sent!");
+//                                builder.setMessage("Verification Email sent to your account. Check your Email");
+//                                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(DialogInterface dialogInterface, int i) {
+//                                        Toast.makeText(getContext(), "Login again after verification", Toast.LENGTH_LONG).show();
+//                                        userEmailEditText.setText("");
+//                                        userPasswordEditText.setText("");
+//                                        userConPasswordEditText.setText("");
+//                                        auth.getInstance().signOut();
+//                                    }
+//                                });
+//                                builder.show();
 
                             }
                             else{

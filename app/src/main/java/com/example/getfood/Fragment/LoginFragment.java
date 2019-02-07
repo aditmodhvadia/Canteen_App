@@ -22,6 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.getfood.Activity.FoodMenuDisplayActivity;
 import com.example.getfood.R;
+import com.example.getfood.Utils.AlertUtils;
+import com.example.getfood.Utils.OnDialogButtonClickListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -202,19 +204,20 @@ public class LoginFragment extends Fragment {
                                 progressDialog.hide();
                                 //verification email sent successfully
                                 if (task.isSuccessful()) {
-                                    final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                                    builder.setTitle("Verify your Email first!");
-                                    builder.setMessage("Verification Email sent to your account. Check your Email");
-                                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            Toast.makeText(getContext(), "Login again after verification", Toast.LENGTH_LONG).show();
-                                            userLoginPasswordEditText.setText("");
-                                            auth.getInstance().signOut();
-                                        }
-                                    });
-                                    builder.show();
+                                    AlertUtils.openAlertDialog(getContext(), "Verify your Email first!", "Verification Email sent to your account. Check your Email",
+                                            "Ok", null, new OnDialogButtonClickListener() {
+                                                @Override
+                                                public void onPositiveButtonClicked() {
+                                                    Toast.makeText(getContext(), "Login again after verification", Toast.LENGTH_LONG).show();
+                                                    userLoginPasswordEditText.setText("");
+                                                    auth.getInstance().signOut();
+                                                }
 
+                                                @Override
+                                                public void onNegativeButtonClicked() {
+
+                                                }
+                                            });
                                 }
                                 //sending of verification email failed
                                 else {

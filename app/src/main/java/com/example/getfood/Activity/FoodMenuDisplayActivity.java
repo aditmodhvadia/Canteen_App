@@ -33,6 +33,8 @@ import android.widget.Toast;
 
 import com.example.getfood.Fragment.FoodCategoryFragment;
 import com.example.getfood.R;
+import com.example.getfood.Utils.AlertUtils;
+import com.example.getfood.Utils.OnDialogButtonClickListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -325,33 +327,24 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
     }
 
     private void logout() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Logout");
+        AlertUtils.openAlertDialog(this,"Logout", "Are you sure you want to Logout?",
+                "Yes", "No", new OnDialogButtonClickListener() {
+                    @Override
+                    public void onPositiveButtonClicked() {
+                        auth.signOut();
+                        startActivity(new Intent(FoodMenuDisplayActivity.this, LoginActivity.class));
+                        finish();
+                    }
 
-        builder.setMessage("Are you sure you want to Logout?");
+                    @Override
+                    public void onNegativeButtonClicked() {
 
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                auth.signOut();
-                startActivity(new Intent(FoodMenuDisplayActivity.this, LoginActivity.class));
-                finish();
-            }
-        });
-
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        });
-
-        AlertDialog dialog = builder.show();
-
-        Button nbutton = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
-        nbutton.setTextColor(getResources().getColor(R.color.colorPrimary));
-        Button pbutton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-        pbutton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    }
+                });
+//        Button nbutton = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+//        nbutton.setTextColor(getResources().getColor(R.color.colorPrimary));
+//        Button pbutton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+//        pbutton.setTextColor(getResources().getColor(R.color.colorPrimary));
     }
 
     private void showCart() {
