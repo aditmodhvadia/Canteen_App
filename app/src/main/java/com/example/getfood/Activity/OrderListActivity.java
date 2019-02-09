@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.getfood.Adapter.OrderListDisplayAdapter;
 import com.example.getfood.R;
@@ -24,7 +26,7 @@ public class OrderListActivity extends AppCompatActivity {
 
     //    Views
     ListView ordersListView;
-    TextView ordersHeadingTextView;
+//    TextView ordersHeadingTextView;
 
     //    Variables
     Intent data;
@@ -44,7 +46,13 @@ public class OrderListActivity extends AppCompatActivity {
         orderRoot = FirebaseDatabase.getInstance().getReference().child(getString(R.string.order));
 
         ordersListView = findViewById(R.id.ordersListView);
-        ordersHeadingTextView = findViewById(R.id.ordersHeadingTextView);
+//        ordersHeadingTextView = findViewById(R.id.ordersHeadingTextView);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setTitle(getString(R.string.your_orders));
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         orderID = new ArrayList<>();
         orderTime = new ArrayList<>();
@@ -69,7 +77,8 @@ public class OrderListActivity extends AppCompatActivity {
                     getOrderData();
 
                 } else {
-                    ordersHeadingTextView.setText(getString(R.string.no_order));
+//                    ordersHeadingTextView.setText(getString(R.string.no_order));
+                        getSupportActionBar().setTitle(getString(R.string.no_order));
                 }
             }
 
@@ -90,6 +99,21 @@ public class OrderListActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_order_list, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == android.R.id.home)
+            onBackPressed();
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void getOrderData() {

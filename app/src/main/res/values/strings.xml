@@ -123,5 +123,6 @@
     <string name="clear_cart">Clear Cart</string>
     <string name="sure_clear_cart">Are you sure you want to clear the cart?</string>
     <string name="cart_cleared">Cart Cleared</string>
+    <string name="your_orders">Your Orders</string>
 
 </resources>
