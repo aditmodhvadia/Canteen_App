@@ -44,6 +44,7 @@
         </activity>
         <activity
             android:name=".Activity.CartActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.OrderActivity"

@@ -7,6 +7,8 @@
     android:descendantFocusability="blocksDescendants"
     tools:context=".Activity.CartActivity">
 
+    <include layout="@layout/toolbar" />
+
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="match_parent"

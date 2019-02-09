@@ -119,5 +119,9 @@
     <string name="email_in_use">Email ID is already in use</string>
     <string name="rupee_symbol">₹</string>
     <string name="adjust_cart">Cart Adjusted</string>
+    <string name="my_cart">My Cart</string>
+    <string name="clear_cart">Clear Cart</string>
+    <string name="sure_clear_cart">Are you sure you want to clear the cart?</string>
+    <string name="cart_cleared">Cart Cleared</string>
 
 </resources>

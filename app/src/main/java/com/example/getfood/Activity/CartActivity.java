@@ -12,7 +12,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -28,6 +31,8 @@ import com.android.volley.toolbox.Volley;
 import com.example.getfood.Adapter.CartRecyclerViewDisplayAdapter;
 import com.example.getfood.Paytm;
 import com.example.getfood.R;
+import com.example.getfood.Utils.AlertUtils;
+import com.example.getfood.Utils.OnDialogButtonClickListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -86,6 +91,12 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         activity = this;
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setTitle(R.string.my_cart);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         cartRecyclerView = findViewById(R.id.cartRecyclerView);
         cartRecyclerView.setHasFixedSize(true);
@@ -108,6 +119,44 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_cart, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == android.R.id.home)
+            onBackPressed();
+        if(id == R.id.menu_clear_cart){
+            AlertUtils.openAlertDialog(this, getString(R.string.clear_cart),
+                    getString(R.string.sure_clear_cart), getString(R.string.yes), getString(R.string.no), new OnDialogButtonClickListener() {
+                        @Override
+                        public void onPositiveButtonClicked() {
+                            clearCart();
+                        }
+
+                        @Override
+                        public void onNegativeButtonClicked() {
+
+                        }
+                    });
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void clearCart() {
+        FoodMenuDisplayActivity.cartItemQuantity.clear();
+        FoodMenuDisplayActivity.cartItemPrice.clear();
+        FoodMenuDisplayActivity.cartItemName.clear();
+        FoodMenuDisplayActivity.cartItemCategory.clear();
+        makeText(getString(R.string.cart_cleared));
+        onBackPressed();
     }
 
     private void chooseTime() {
