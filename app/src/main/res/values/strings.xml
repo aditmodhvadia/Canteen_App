@@ -19,7 +19,6 @@
     <string name="choose_time">Choose a Time!</string>
     <string name="cancel">Cancel</string>
     <string name="order">Order</string>
-    <string name="email_replace">\@</string>
     <string name="date_format">hh:mm a</string>
     <string name="no_internet">No Internet</string>
     <string name="mid">MID</string>
