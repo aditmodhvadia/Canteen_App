@@ -10,6 +10,7 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
+        app:layout_behavior="com.example.getfood.MoveUpwardsbehavior"
         android:layout_height="match_parent"
         android:descendantFocusability="blocksDescendants">
 

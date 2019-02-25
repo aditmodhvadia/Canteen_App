@@ -1,9 +1,9 @@
 package com.example.getfood.Adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +16,7 @@ import com.example.getfood.Activity.CartActivity;
 import com.example.getfood.Activity.FoodMenuDisplayActivity;
 import com.example.getfood.Models.CartItem;
 import com.example.getfood.R;
+import com.example.getfood.Utils.AppUtils;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -119,15 +120,14 @@ public class CartRecyclerViewDisplayAdapter extends RecyclerView.Adapter<CartRec
         }
         notifyItemRemoved(mRecentlyDeletedItemPosition);
         CartActivity.calcTotal();
-        Toast.makeText(context, context.getString(R.string.adjust_cart), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, context.getString(R.string.adjust_cart), Toast.LENGTH_SHORT).show();
         showUndoSnackbar();
     }
 
     private void showUndoSnackbar() {
-        View view = ((Activity) context).findViewById(R.id.CoordinatorLayoutParent);
-        Snackbar snackbar = Snackbar.make(view, "Undo",
-                Snackbar.LENGTH_LONG);
-        snackbar.setAction("Yes", new View.OnClickListener() {
+        Snackbar snackbar = AppUtils.getSnackbar(context, context.getString(R.string.item_remove));
+        snackbar.setActionTextColor(ContextCompat.getColor(context, R.color.snackbar_yellow));
+        snackbar.setAction(R.string.undo, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 undoDelete();
