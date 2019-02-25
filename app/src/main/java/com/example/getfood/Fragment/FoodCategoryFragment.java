@@ -1,6 +1,5 @@
 package com.example.getfood.Fragment;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,6 +18,7 @@ import android.widget.Toast;
 import com.example.getfood.Activity.FoodMenuDisplayActivity;
 import com.example.getfood.Adapter.MenuDisplayAdapter;
 import com.example.getfood.FoodItem;
+import com.example.getfood.Models.CartItem;
 import com.example.getfood.R;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.database.DataSnapshot;
@@ -32,7 +32,6 @@ import java.util.List;
 
 public class FoodCategoryFragment extends Fragment {
 
-    ProgressDialog progressDialog;
     List<FoodItem> foodItem;
     ArrayList<Integer> colors;
     String CATEGORY = null;
@@ -52,7 +51,6 @@ public class FoodCategoryFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_chinese, container, false);
         shimmerLayout = v.findViewById(R.id.shimmerLayout);
-//        progressDialog = new ProgressDialog(getContext());
         foodItem = new ArrayList<>();
 
         colors = new ArrayList<>();
@@ -109,7 +107,7 @@ public class FoodCategoryFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
 
-                if (FoodMenuDisplayActivity.cartItemName.contains(foodItem.get(i).getItemName())) {
+                if (FoodMenuDisplayActivity.cartItems.contains(new CartItem(foodItem.get(i).getItemName()))) {
                     Toast.makeText(getContext(), getString(R.string.item_in_cart), Toast.LENGTH_SHORT).show();
                 } else {
 
@@ -144,14 +142,12 @@ public class FoodCategoryFragment extends Fragment {
                         public void onClick(DialogInterface dialogInterface, int i1) {
                             int quant = Integer.valueOf(quantitySetTV.getText().toString());
                             if (quant != 0) {
-                                if (FoodMenuDisplayActivity.cartItemName.contains(foodItem.get(i).getItemName())) {
-                                    int pos = FoodMenuDisplayActivity.cartItemName.indexOf(foodItem.get(i).getItemName());
-                                    FoodMenuDisplayActivity.cartItemQuantity.set(pos, FoodMenuDisplayActivity.cartItemQuantity.get(pos) + quant);
+                                if (FoodMenuDisplayActivity.cartItems.contains(new CartItem(foodItem.get(i).getItemName()))) {
+                                    int pos = FoodMenuDisplayActivity.cartItems.indexOf(new CartItem(foodItem.get(i).getItemName()));
+                                    FoodMenuDisplayActivity.cartItems.get(pos).setCartItemQuantity(FoodMenuDisplayActivity.cartItems.get(pos).getCartItemQuantity() + quant);
                                 } else {
-                                    FoodMenuDisplayActivity.cartItemName.add(foodItem.get(i).getItemName());
-                                    FoodMenuDisplayActivity.cartItemQuantity.add(quant);
-                                    FoodMenuDisplayActivity.cartItemPrice.add(Integer.parseInt(foodItem.get(i).getItemPrice()));
-                                    FoodMenuDisplayActivity.cartItemCategory.add(CATEGORY);
+                                    FoodMenuDisplayActivity.cartItems.add(new CartItem(foodItem.get(i).getItemName(), CATEGORY,
+                                            quant, Integer.parseInt(foodItem.get(i).getItemPrice())));
                                 }
                                 Toast.makeText(getContext(), getString(R.string.add_to_cart), Toast.LENGTH_LONG).show();
                             }

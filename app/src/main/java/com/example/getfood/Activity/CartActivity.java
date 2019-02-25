@@ -10,9 +10,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +30,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.getfood.Adapter.CartRecyclerViewDisplayAdapter;
+import com.example.getfood.Callback.SwipeToDeleteCallback;
+import com.example.getfood.Models.CartItem;
 import com.example.getfood.Paytm;
 import com.example.getfood.R;
 import com.example.getfood.Utils.AlertUtils;
@@ -72,10 +75,10 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     String orderTime = null;
 
     public static void calcTotal() {
-        int i = 0;
+//        int i = 0;
         total = 0;
-        for (Integer price : FoodMenuDisplayActivity.cartItemPrice) {
-            total = total + price * FoodMenuDisplayActivity.cartItemQuantity.get(i++);
+        for (CartItem item : FoodMenuDisplayActivity.cartItems) {
+            total = total + item.getCartItemPrice() * item.getCartItemQuantity();
         }
 //        set alpha of total price textview to zero, and then animate it to increase to 1.0
         totalPriceTV.setAlpha(0.0f);
@@ -93,24 +96,27 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if(getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(R.string.my_cart);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         cartRecyclerView = findViewById(R.id.cartRecyclerView);
         cartRecyclerView.setHasFixedSize(true);
-        cartRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        cartRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
         totalPriceTV = findViewById(R.id.totalPriceTV);
         orderButton = findViewById(R.id.orderButton);
 
 //        setDisplayListView(getApplicationContext());
-
-        cartRecyclerDisplayAdapter = new CartRecyclerViewDisplayAdapter(FoodMenuDisplayActivity.cartItemName, FoodMenuDisplayActivity.cartItemQuantity, FoodMenuDisplayActivity.cartItemPrice, this);
+        CartRecyclerViewDisplayAdapter adapter = new CartRecyclerViewDisplayAdapter(FoodMenuDisplayActivity.cartItems, this);
+        cartRecyclerDisplayAdapter = adapter;
         cartRecyclerView.setAdapter(cartRecyclerDisplayAdapter);
         calcTotal();
+        ItemTouchHelper itemTouchHelper = new
+                ItemTouchHelper(new SwipeToDeleteCallback(adapter));
+        itemTouchHelper.attachToRecyclerView(cartRecyclerView);
 
         orderButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,9 +136,9 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(id == android.R.id.home)
+        if (id == android.R.id.home)
             onBackPressed();
-        if(id == R.id.menu_clear_cart){
+        if (id == R.id.menu_clear_cart) {
             AlertUtils.openAlertDialog(this, getString(R.string.clear_cart),
                     getString(R.string.sure_clear_cart), getString(R.string.yes), getString(R.string.no), new OnDialogButtonClickListener() {
                         @Override
@@ -151,10 +157,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void clearCart() {
-        FoodMenuDisplayActivity.cartItemQuantity.clear();
-        FoodMenuDisplayActivity.cartItemPrice.clear();
-        FoodMenuDisplayActivity.cartItemName.clear();
-        FoodMenuDisplayActivity.cartItemCategory.clear();
+        FoodMenuDisplayActivity.cartItems.clear();
         makeText(getString(R.string.cart_cleared));
         onBackPressed();
     }
@@ -242,7 +245,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        if (FoodMenuDisplayActivity.cartItemName.isEmpty()) {
+        if (FoodMenuDisplayActivity.cartItems.isEmpty()) {
             finish();
         }
     }
@@ -259,7 +262,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         auth = FirebaseAuth.getInstance();
         orderRoot = FirebaseDatabase.getInstance().getReference().child(getString(R.string.order));
         String email = auth.getCurrentUser().getEmail();
-        rollNo = email.substring(0, email.indexOf(R.string.email_replace));
+        rollNo = email.substring(0, email.indexOf("@"));
 
         switch (v.getId()) {
             case R.id.firstBreakButton:
@@ -315,10 +318,10 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         orderRoot.child(String.valueOf(orderID)).child(getString(R.string.total_amount)).setValue(String.valueOf(total));
         orderRoot.child(String.valueOf(orderID)).child(getString(R.string.time_to_deliver)).setValue(orderTime);
         orderRoot.child(String.valueOf(orderID)).child(getString(R.string.roll_no)).setValue(rollNo);
-        for (int pos = 0; pos < FoodMenuDisplayActivity.cartItemName.size(); pos++) {
-            orderRoot.child(String.valueOf(orderID)).child(getString(R.string.items)).child(FoodMenuDisplayActivity.cartItemCategory.get(pos)).child(FoodMenuDisplayActivity.cartItemName.get(pos))
-                    .child(getString(R.string.quantity)).setValue(FoodMenuDisplayActivity.cartItemQuantity.get(pos));
-            orderRoot.child(String.valueOf(orderID)).child(getString(R.string.items)).child(FoodMenuDisplayActivity.cartItemCategory.get(pos)).child(FoodMenuDisplayActivity.cartItemName.get(pos))
+        for (int pos = 0; pos < FoodMenuDisplayActivity.cartItems.size(); pos++) {
+            orderRoot.child(String.valueOf(orderID)).child(getString(R.string.items)).child(FoodMenuDisplayActivity.cartItems.get(pos).getCartItemCategory()).child(FoodMenuDisplayActivity.cartItems.get(pos).getCartItemName())
+                    .child(getString(R.string.quantity)).setValue(FoodMenuDisplayActivity.cartItems.get(pos).getCartItemQuantity());
+            orderRoot.child(String.valueOf(orderID)).child(getString(R.string.items)).child(FoodMenuDisplayActivity.cartItems.get(pos).getCartItemCategory()).child(FoodMenuDisplayActivity.cartItems.get(pos).getCartItemName())
                     .child(getString(R.string.status)).setValue(getString(R.string.received));
         }
 //        orderRoot.child(String.valueOf(orderID)).child("Total Amount").setValue(String.valueOf(total));
@@ -336,10 +339,11 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         orderIntent.putExtra(getString(R.string.i_roll_no), rollNo);
         orderIntent.putExtra(getString(R.string.i_total), total);
 
-        FoodMenuDisplayActivity.cartItemName.clear();
-        FoodMenuDisplayActivity.cartItemCategory.clear();
-        FoodMenuDisplayActivity.cartItemQuantity.clear();
-        FoodMenuDisplayActivity.cartItemPrice.clear();
+//        FoodMenuDisplayActivity.cartItemName.clear();
+//        FoodMenuDisplayActivity.cartItemCategory.clear();
+//        FoodMenuDisplayActivity.cartItemQuantity.clear();
+//        FoodMenuDisplayActivity.cartItemPrice.clear();
+        FoodMenuDisplayActivity.cartItems.clear();
 
         startActivity(orderIntent);
 
@@ -432,10 +436,11 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         Log.d("response", "Checksum from Paytm server was " + bundle.getString(getString(R.string.checksum)));
 
 //        reseting the cart
-        FoodMenuDisplayActivity.cartItemName.clear();
-        FoodMenuDisplayActivity.cartItemCategory.clear();
-        FoodMenuDisplayActivity.cartItemQuantity.clear();
-        FoodMenuDisplayActivity.cartItemPrice.clear();
+//        FoodMenuDisplayActivity.cartItemName.clear();
+//        FoodMenuDisplayActivity.cartItemCategory.clear();
+//        FoodMenuDisplayActivity.cartItemQuantity.clear();
+//        FoodMenuDisplayActivity.cartItemPrice.clear();
+        FoodMenuDisplayActivity.cartItems.clear();
 
         startActivity(orderIntent);
     }
