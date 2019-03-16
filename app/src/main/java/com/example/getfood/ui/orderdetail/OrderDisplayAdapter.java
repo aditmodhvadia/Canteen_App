@@ -15,12 +15,12 @@ import java.util.ArrayList;
 
 public class OrderDisplayAdapter extends BaseAdapter {
 
-    ArrayList<String> orderItemName, orderItemStatus;
-    ArrayList<Integer> orderItemQuantity;
-    Context context;
-    LayoutInflater inflater;
+    private ArrayList<String> orderItemName, orderItemStatus;
+    private ArrayList<Integer> orderItemQuantity;
+    private Context context;
+    private LayoutInflater inflater;
 
-    TextView orderItemQuantityTextView, orderItemNameTextView, orderItemStatusTextView;
+    private TextView orderItemQuantityTextView, orderItemNameTextView, orderItemStatusTextView;
 
     public OrderDisplayAdapter(ArrayList<String> orderItemName, ArrayList<Integer> orderItemQuantity, ArrayList<String> orderItemStatus, Context context) {
         this.orderItemName = orderItemName;

@@ -7,22 +7,22 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
-import android.text.method.PasswordTransformationMethod;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.getfood.Activity.FoodMenuDisplayActivity;
+
 import com.example.getfood.ui.foodmenu.FoodMenuDisplayActivity;
 import com.example.getfood.R;
+import com.example.getfood.Utils.AlertUtils;
+import com.example.getfood.Utils.OnDialogButtonClickListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -39,7 +39,7 @@ public class LoginFragment extends Fragment implements LoginView{
     EditText userLoginEmailEditText, userLoginPasswordEditText;
     TextView forgotPasswordTextView;
     ProgressDialog progressDialog;
-    CheckBox showPasswordCheckBox;
+//    CheckBox showPasswordCheckBox;
     private FirebaseAuth auth;
     private boolean timeout = false, success = false;
 
@@ -65,9 +65,9 @@ public class LoginFragment extends Fragment implements LoginView{
         progressDialog.setCanceledOnTouchOutside(false);
         userLoginEmailEditText = v.findViewById(R.id.userLoginEmailEditText);
         userLoginPasswordEditText = v.findViewById(R.id.userLoginPasswordEditText);
-        showPasswordCheckBox = v.findViewById(R.id.showPasswordCheckBox);
+//        showPasswordCheckBox = v.findViewById(R.id.showPasswordCheckBox);
 
-        showPasswordCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        /*showPasswordCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked) {
@@ -76,7 +76,7 @@ public class LoginFragment extends Fragment implements LoginView{
                     userLoginPasswordEditText.setTransformationMethod(new PasswordTransformationMethod());
                 }
             }
-        });
+        });*/
 
         userLoginButton = v.findViewById(R.id.userLoginButton);
         userLoginButton.setOnClickListener(new View.OnClickListener() {
@@ -109,7 +109,6 @@ public class LoginFragment extends Fragment implements LoginView{
                     @Override
                     public void onCancel(DialogInterface dialog) {
 //                        if (listAdapter.isEmpty())
-//                            Toast.makeText(MainActivity.this, "Start with a new List.", Toast.LENGTH_SHORT).show();
                     }
                 });
         progressDialog.setCancelable(false);
@@ -183,9 +182,9 @@ public class LoginFragment extends Fragment implements LoginView{
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 //Succesfull login
-                progressDialog.hide();
                 if (timeout) {
                     success = false;
+                    progressDialog.hide();
 //                    Toast.makeText(getContext(), "Inside timeout check after successful login", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -194,11 +193,11 @@ public class LoginFragment extends Fragment implements LoginView{
                     //user is email verified, hence can proceed further
                     if (auth.getCurrentUser().isEmailVerified()) {
 //                        login successful
-                        userLoginEmailEditText.setText("");
-                        userLoginPasswordEditText.setText("");
+//                        userLoginEmailEditText.setText("");
+//                        userLoginPasswordEditText.setText("");
+                        progressDialog.hide();
 //                        new activity will be opened which will display the food items
-                        Intent i = new Intent(getContext(), FoodMenuDisplayActivity.class);
-                        startActivity(i);
+                        startActivity(new Intent(getContext(), FoodMenuDisplayActivity.class));
 //                        getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
 
@@ -212,19 +211,20 @@ public class LoginFragment extends Fragment implements LoginView{
                                 progressDialog.hide();
                                 //verification email sent successfully
                                 if (task.isSuccessful()) {
-                                    final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                                    builder.setTitle("Verify your Email first!");
-                                    builder.setMessage("Verification Email sent to your account. Check your Email");
-                                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            Toast.makeText(getContext(), "Login again after verification", Toast.LENGTH_LONG).show();
-                                            userLoginPasswordEditText.setText("");
-                                            auth.getInstance().signOut();
-                                        }
-                                    });
-                                    builder.show();
+                                    AlertUtils.openAlertDialog(getContext(), "Verify your Email first!", "Verification Email sent to your account. Check your Email",
+                                            "Ok", null, new OnDialogButtonClickListener() {
+                                                @Override
+                                                public void onPositiveButtonClicked() {
+                                                    Toast.makeText(getContext(), "Login again after verification", Toast.LENGTH_LONG).show();
+                                                    userLoginPasswordEditText.setText("");
+                                                    auth.getInstance().signOut();
+                                                }
 
+                                                @Override
+                                                public void onNegativeButtonClicked() {
+
+                                                }
+                                            });
                                 }
                                 //sending of verification email failed
                                 else {

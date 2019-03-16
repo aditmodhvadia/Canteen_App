@@ -15,12 +15,12 @@ import java.util.List;
 
 public class MenuDisplayAdapter extends BaseAdapter {
 
-    List<FoodItem> foodItem;
-    ArrayList<Integer> colors;
-    Context context;
-    LayoutInflater inflater;
+    private List<FoodItem> foodItem;
+    private ArrayList<Integer> colors;
+    private LayoutInflater inflater;
+    private Context context;
 
-    TextView itemNameTextView, itemPriceTextView, itemRatingTextView;
+    private TextView itemNameTextView, itemPriceTextView, itemRatingTextView;
 
     public MenuDisplayAdapter(List<FoodItem> foodItem, ArrayList<Integer> colors, Context context) {
         this.foodItem = foodItem;
@@ -53,13 +53,13 @@ public class MenuDisplayAdapter extends BaseAdapter {
         itemPriceTextView = vi.findViewById(R.id.itemPriceTextView);
         itemRatingTextView = vi.findViewById(R.id.itemRatingTextView);
         itemNameTextView.setText(foodItem.get(i).getItemName());
-        itemPriceTextView.setText(String.format("₹ %s", foodItem.get(i).getItemPrice()));
+        itemPriceTextView.setText(String.format("%s %s", context.getString(R.string.rupee_symbol), foodItem.get(i).getItemPrice()));
         itemRatingTextView.setText(foodItem.get(i).getItemRating());
-        if(Float.valueOf(foodItem.get(i).getItemRating())<2.0){
+        if (Float.valueOf(foodItem.get(i).getItemRating()) < 2.0) {
             itemRatingTextView.setTextColor(colors.get(2));
-        } else if(Float.valueOf(foodItem.get(i).getItemRating())<3.5){
+        } else if (Float.valueOf(foodItem.get(i).getItemRating()) < 3.5) {
             itemRatingTextView.setTextColor(colors.get(1));
-        } else{
+        } else {
             itemRatingTextView.setTextColor(colors.get(0));
         }
 

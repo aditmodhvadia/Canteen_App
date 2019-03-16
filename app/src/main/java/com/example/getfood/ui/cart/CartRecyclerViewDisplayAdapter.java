@@ -2,6 +2,8 @@ package com.example.getfood.ui.cart;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,21 +12,23 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.getfood.ui.foodmenu.FoodMenuDisplayActivity;
+import com.example.getfood.Models.CartItem;
 import com.example.getfood.R;
+import com.example.getfood.Utils.AppUtils;
+import com.example.getfood.ui.foodmenu.FoodMenuDisplayActivity;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class CartRecyclerViewDisplayAdapter extends RecyclerView.Adapter<CartRecyclerViewDisplayAdapter.ViewHolder> {
 
-    ArrayList<String> cartItemName;
-    ArrayList<Integer> cartItemQuantity, cartItemPrice;
-    Context context;
+    private ArrayList<CartItem> cartItems;
+    private Context context;
+    private CartItem removedItem;
+    private int mRecentlyDeletedItemPosition;
 
-    public CartRecyclerViewDisplayAdapter(ArrayList<String> cartItemName, ArrayList<Integer> cartItemQuantity, ArrayList<Integer> cartItemPrice, Context context) {
-        this.cartItemName = cartItemName;
-        this.cartItemQuantity = cartItemQuantity;
-        this.cartItemPrice = cartItemPrice;
+    public CartRecyclerViewDisplayAdapter(ArrayList<CartItem> cartItems, Context context) {
+        this.cartItems = cartItems;
         this.context = context;
     }
 
@@ -42,22 +46,20 @@ public class CartRecyclerViewDisplayAdapter extends RecyclerView.Adapter<CartRec
     @Override
     public void onBindViewHolder(@NonNull final CartRecyclerViewDisplayAdapter.ViewHolder holder, int position) {
 
-        holder.itemNameTextView.setText(cartItemName.get(position));
-        holder.itemPriceTextView.setText("₹ " + cartItemPrice.get(position));
-        holder.itemQuantityTextView.setText(cartItemQuantity.get(position).toString());
+        holder.itemNameTextView.setText(cartItems.get(position).getCartItemName());
+        holder.itemPriceTextView.setText(String.format(Locale.ENGLISH, "%s%d", context.getString(R.string.rupee_symbol), cartItems.get(position).getCartItemPrice()));
+        holder.itemQuantityTextView.setText(cartItems.get(position).getCartItemQuantity().toString());
 
         holder.increaseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
-                int value = FoodMenuDisplayActivity.cartItemQuantity.get(position);
+                int value = FoodMenuDisplayActivity.cartItems.get(position).getCartItemQuantity();
                 if (value < 10) {
-
-//                    holder.itemQuantityTextView.setText(String.valueOf(value + 1));
-                    FoodMenuDisplayActivity.cartItemQuantity.set(position, value + 1);
+                    FoodMenuDisplayActivity.cartItems.get(position).setCartItemQuantity(value + 1);
                     CartActivity.calcTotal();
                     notifyItemChanged(position);
-                    Toast.makeText(context, "Cart Adjusted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, context.getString(R.string.adjust_cart), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -67,36 +69,26 @@ public class CartRecyclerViewDisplayAdapter extends RecyclerView.Adapter<CartRec
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
 
-                if(position != RecyclerView.NO_POSITION){
+                if (position != RecyclerView.NO_POSITION) {
 
-                    int value = FoodMenuDisplayActivity.cartItemQuantity.get(position);
+                    int value = FoodMenuDisplayActivity.cartItems.get(position).getCartItemQuantity();
 
-//                    check for the error in removing the value of item from the cart
-//                    mismatch in position
                     if (value > 1) {
                         value--;
-                        FoodMenuDisplayActivity.cartItemQuantity.set(position, value);
-//                        CartActivity.cartDisplayAdapter.notifyDataSetChanged();
+                        FoodMenuDisplayActivity.cartItems.get(position).setCartItemQuantity(value);
                         notifyItemChanged(position);
                         CartActivity.calcTotal();
-                        Toast.makeText(context, "Cart Adjusted", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, context.getString(R.string.adjust_cart), Toast.LENGTH_SHORT).show();
                     } else if (value == 1) {
 
-                        FoodMenuDisplayActivity.cartItemQuantity.remove(position);
-                        FoodMenuDisplayActivity.cartItemPrice.remove(position);
-                        FoodMenuDisplayActivity.cartItemName.remove(position);
-                        FoodMenuDisplayActivity.cartItemCategory.remove(position);
-//                            CartActivity.setDisplayListView(context);
-
-                        if (FoodMenuDisplayActivity.cartItemName.size() == 0) {
-//                            finish the activity
-                            Toast.makeText(context, "Cart is Empty", Toast.LENGTH_SHORT).show();
+                        FoodMenuDisplayActivity.cartItems.remove(position);
+                        if (FoodMenuDisplayActivity.cartItems.size() == 0) {
+                            Toast.makeText(context, context.getString(R.string.cart_empty), Toast.LENGTH_SHORT).show();
                             CartActivity.activity.finish();
                         }
-//                                CartActivity.notifyChangeAndCalcTotal(context);
                         notifyItemRemoved(position);
                         CartActivity.calcTotal();
-                        Toast.makeText(context, "Cart Adjusted", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, context.getString(R.string.adjust_cart), Toast.LENGTH_SHORT).show();
 
                     }
                 }
@@ -109,25 +101,59 @@ public class CartRecyclerViewDisplayAdapter extends RecyclerView.Adapter<CartRec
 
     @Override
     public int getItemCount() {
-        return cartItemName.size();
+        return cartItems.size();
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void deleteItem(int position) {
+        mRecentlyDeletedItemPosition = position;
+        removedItem = FoodMenuDisplayActivity.cartItems.get(mRecentlyDeletedItemPosition);
+        FoodMenuDisplayActivity.cartItems.remove(mRecentlyDeletedItemPosition);
+
+        if (FoodMenuDisplayActivity.cartItems.size() == 0) {
+            Toast.makeText(context, context.getString(R.string.cart_empty), Toast.LENGTH_SHORT).show();
+            CartActivity.activity.finish();
+        }
+        notifyItemRemoved(mRecentlyDeletedItemPosition);
+        CartActivity.calcTotal();
+//        Toast.makeText(context, context.getString(R.string.adjust_cart), Toast.LENGTH_SHORT).show();
+        showUndoSnackbar();
+    }
+
+    private void showUndoSnackbar() {
+        Snackbar snackbar = AppUtils.getSnackbar(context, context.getString(R.string.item_remove));
+        snackbar.setActionTextColor(ContextCompat.getColor(context, R.color.snackbar_yellow));
+        snackbar.setAction(R.string.undo, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                undoDelete();
+            }
+        });
+        snackbar.show();
+    }
+
+    private void undoDelete() {
+        FoodMenuDisplayActivity.cartItems.add(mRecentlyDeletedItemPosition, removedItem);
+        CartActivity.calcTotal();
+        notifyItemInserted(mRecentlyDeletedItemPosition);
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView itemQuantityTextView, itemNameTextView, itemPriceTextView;
-        public ImageButton increaseButton, decreaseButton;
+        TextView itemQuantityTextView, itemNameTextView, itemPriceTextView;
+        ImageButton increaseButton, decreaseButton;
 
-
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
-
             itemNameTextView = itemView.findViewById(R.id.itemNameTextView);
             itemPriceTextView = itemView.findViewById(R.id.itemPriceTextView);
             itemQuantityTextView = itemView.findViewById(R.id.itemQuantityTextView);
             increaseButton = itemView.findViewById(R.id.increaseButton);
             decreaseButton = itemView.findViewById(R.id.decreaseButton);
-
         }
     }
 }

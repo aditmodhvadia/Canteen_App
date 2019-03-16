@@ -15,11 +15,11 @@ import java.util.ArrayList;
 
 public class OrderListDisplayAdapter extends BaseAdapter {
 
-    ArrayList<String> orderID, orderTime, orderAmount;
-    Context context;
-    LayoutInflater inflater;
+    private ArrayList<String> orderID, orderTime, orderAmount;
+    private Context context;
+    private LayoutInflater inflater;
 
-    TextView orderIDTextView, orderAmountTextView, orderTimeTextView;
+    private TextView orderIDTextView, orderAmountTextView, orderTimeTextView;
 
     public OrderListDisplayAdapter(ArrayList<String> orderID, ArrayList<String> orderTime, ArrayList<String> orderAmount, Context context) {
         this.orderID = orderID;
@@ -55,7 +55,7 @@ public class OrderListDisplayAdapter extends BaseAdapter {
 
 
 //        Set text for all the TextViews
-        orderIDTextView.setText("Order ID: " +orderID.get(position));
+        orderIDTextView.setText("Order ID: " + orderID.get(position));
         orderAmountTextView.setText(String.format("Amount: ₹ %s", orderAmount.get(position)));
         orderTimeTextView.setText(orderTime.get(position));
 
