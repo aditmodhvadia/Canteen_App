@@ -12,7 +12,7 @@ public class OpeningActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_opening);
+//        setContentView(R.layout.activity_opening);
 
     }
 

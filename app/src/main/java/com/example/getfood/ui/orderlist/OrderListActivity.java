@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -50,7 +49,7 @@ public class OrderListActivity extends AppCompatActivity {
 //        ordersHeadingTextView = findViewById(R.id.ordersHeadingTextView);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if(getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(getString(R.string.your_orders));
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -79,7 +78,7 @@ public class OrderListActivity extends AppCompatActivity {
 
                 } else {
 //                    ordersHeadingTextView.setText(getString(R.string.no_order));
-                        getSupportActionBar().setTitle(getString(R.string.no_order));
+                    getSupportActionBar().setTitle(getString(R.string.no_order));
                 }
             }
 
@@ -92,7 +91,7 @@ public class OrderListActivity extends AppCompatActivity {
         ordersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(OrderListActivity.this, OrderActivity.class);
+                Intent i = new Intent(OrderListActivity.this, OrderDetailActivity.class);
                 i.putExtra(getString(R.string.i_order_id), orderID.get(position));
                 i.putExtra(getString(R.string.i_total), orderAmount.get(position));
                 i.putExtra(getString(R.string.i_roll_no), rollNo);
@@ -111,7 +110,7 @@ public class OrderListActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(id == android.R.id.home)
+        if (id == android.R.id.home)
             onBackPressed();
 
         return super.onOptionsItemSelected(item);

@@ -17,12 +17,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.getfood.Activity.FoodMenuDisplayActivity;
-
-import com.example.getfood.ui.foodmenu.FoodMenuDisplayActivity;
 import com.example.getfood.R;
 import com.example.getfood.Utils.AlertUtils;
 import com.example.getfood.Utils.OnDialogButtonClickListener;
+import com.example.getfood.ui.foodmenu.FoodMenuDisplayActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;

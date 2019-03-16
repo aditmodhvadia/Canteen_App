@@ -1,7 +1,6 @@
 package com.example.getfood.ui.loginregister;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,11 +17,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.getfood.ui.terms.TermsActivity;
-import com.example.getfood.Activity.TermsActivity;
 import com.example.getfood.R;
 import com.example.getfood.Utils.AlertUtils;
 import com.example.getfood.Utils.OnDialogButtonClickListener;
+import com.example.getfood.ui.terms.TermsActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;

@@ -36,6 +36,7 @@ import com.example.getfood.R;
 import com.example.getfood.Utils.AlertUtils;
 import com.example.getfood.Utils.OnDialogButtonClickListener;
 import com.example.getfood.ui.foodmenu.FoodMenuDisplayActivity;
+import com.example.getfood.ui.orderdetail.OrderDetailActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -54,6 +55,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class CartActivity extends AppCompatActivity implements View.OnClickListener, PaytmPaymentTransactionCallback {
@@ -333,7 +335,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         root.child(rollNo).child(String.valueOf(orderID)).child(getString(R.string.status)).setValue(getString(R.string.ordered));
         chooseTimeDialog.hide();
 
-        orderIntent = new Intent(CartActivity.this, OrderActivity.class);
+        orderIntent = new Intent(CartActivity.this, OrderDetailActivity.class);
         orderIntent.putExtra(getString(R.string.i_order_id), String.valueOf(orderID));
         orderIntent.putExtra(getString(R.string.i_roll_no), rollNo);
         orderIntent.putExtra(getString(R.string.i_total), total);

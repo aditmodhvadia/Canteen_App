@@ -101,7 +101,7 @@ public class OrderDetailActivity extends AppCompatActivity {
                         final String itemCategory = orderItemCategory.get(position);
                         if (dataSnapshot.child(itemCategory).child(itemName).child(getString(R.string.status)).getValue().toString().equals(getString(R.string.ready))
                                 && !dataSnapshot.child(itemCategory).child(itemName).child(getString(R.string.rating)).exists()) {
-                            AlertDialog.Builder giveRating = new AlertDialog.Builder(OrderActivity.this);
+                            AlertDialog.Builder giveRating = new AlertDialog.Builder(OrderDetailActivity.this);
                             giveRating.setTitle(R.string.give_rating);
                             View ratingView = getLayoutInflater().inflate(R.layout.choose_rating, null);
                             final RatingBar ratingBar = ratingView.findViewById(R.id.ratingBar);
