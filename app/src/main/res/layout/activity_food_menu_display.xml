@@ -7,14 +7,14 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:nestedScrollingEnabled="true"
-    tools:context=".Activity.FoodMenuDisplayActivity">
+    tools:context=".activity.FoodMenuDisplayActivity">
 
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context=".Activity.FoodMenuDisplayActivity">
+        tools:context=".activity.FoodMenuDisplayActivity">
 
         <FrameLayout
             android:id="@+id/FrameLayoutParent"

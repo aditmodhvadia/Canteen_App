@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:descendantFocusability="blocksDescendants"
-    tools:context=".Activity.CartActivity">
+    tools:context=".activity.CartActivity">
 
     <TextView
         android:id="@+id/titleTextView"

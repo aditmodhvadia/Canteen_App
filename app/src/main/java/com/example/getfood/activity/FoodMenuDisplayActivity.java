@@ -1,4 +1,4 @@
-package com.example.getfood.Activity;
+package com.example.getfood.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,7 +31,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.getfood.Fragment.FoodCategoryFragment;
+import com.example.getfood.fragment.FoodCategoryFragment;
 import com.example.getfood.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

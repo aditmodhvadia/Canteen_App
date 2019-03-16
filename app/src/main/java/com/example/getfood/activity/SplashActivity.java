@@ -1,4 +1,4 @@
-package com.example.getfood.Activity;
+package com.example.getfood.activity;
 
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;

@@ -1,7 +1,6 @@
-package com.example.getfood.Adapter;
+package com.example.getfood.adapter;
 
 import android.content.Context;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,8 +10,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.getfood.Activity.CartActivity;
-import com.example.getfood.Activity.FoodMenuDisplayActivity;
+import com.example.getfood.activity.CartActivity;
+import com.example.getfood.activity.FoodMenuDisplayActivity;
 import com.example.getfood.R;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.example.getfood.Fragment.login;
+package com.example.getfood.fragment.login;
 
 import android.widget.EditText;
 

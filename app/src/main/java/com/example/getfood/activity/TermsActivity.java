@@ -1,13 +1,10 @@
-package com.example.getfood.Activity;
+package com.example.getfood.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
-import com.example.getfood.Fragment.RegisterFragment;
-import com.example.getfood.R;
 
 public class TermsActivity extends AppCompatActivity {
 

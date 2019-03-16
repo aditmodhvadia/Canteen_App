@@ -1,4 +1,4 @@
-package com.example.getfood.Activity;
+package com.example.getfood.activity;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;

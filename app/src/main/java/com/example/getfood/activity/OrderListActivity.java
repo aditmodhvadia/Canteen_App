@@ -1,16 +1,15 @@
-package com.example.getfood.Activity;
+package com.example.getfood.activity;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.getfood.Adapter.OrderListDisplayAdapter;
+import com.example.getfood.adapter.OrderListDisplayAdapter;
 import com.example.getfood.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

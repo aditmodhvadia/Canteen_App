@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.getfood.Activity.LoginActivity;
+import com.example.getfood.activity.LoginActivity;
 
 public class OpeningActivity extends AppCompatActivity {
 
