@@ -93,7 +93,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if(getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(R.string.my_cart);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -130,9 +130,9 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(id == android.R.id.home)
+        if (id == android.R.id.home)
             onBackPressed();
-        if(id == R.id.menu_clear_cart){
+        if (id == R.id.menu_clear_cart) {
             AlertUtils.openAlertDialog(this, getString(R.string.clear_cart),
                     getString(R.string.sure_clear_cart), getString(R.string.yes), getString(R.string.no), new OnDialogButtonClickListener() {
                         @Override

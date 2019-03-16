@@ -49,6 +49,10 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
     ImageButton helpButton;
     private DrawerLayout mDrawerLayout;
 
+    private FoodCategoryFragment chineseFragment;
+    private FoodCategoryFragment southIndianFragment;
+    private FoodCategoryFragment sandwichPizzaFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -312,32 +316,40 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
 
             switch (position) {
                 case 0: {
-                    FoodCategoryFragment fragment = new FoodCategoryFragment();
-                    Bundle args = new Bundle();
-                    args.putString(getString(R.string.cat_type), getString(R.string.chinese));
-                    fragment.setArguments(args);
-                    return fragment;
+                    if (chineseFragment == null) {
+                        chineseFragment = new FoodCategoryFragment();
+                        Bundle args = new Bundle();
+                        args.putString(getString(R.string.cat_type), getString(R.string.chinese));
+                        chineseFragment.setArguments(args);
+                    }
+                    return chineseFragment;
                 }
                 case 1: {
-                    FoodCategoryFragment fragment = new FoodCategoryFragment();
-                    Bundle args = new Bundle();
-                    args.putString(getString(R.string.cat_type), getString(R.string.south_indian));
-                    fragment.setArguments(args);
-                    return fragment;
+                    if (southIndianFragment == null) {
+                        southIndianFragment = new FoodCategoryFragment();
+                        Bundle args = new Bundle();
+                        args.putString(getString(R.string.cat_type), getString(R.string.south_indian));
+                        southIndianFragment.setArguments(args);
+                    }
+                    return southIndianFragment;
                 }
                 case 2: {
-                    FoodCategoryFragment fragment = new FoodCategoryFragment();
-                    Bundle args = new Bundle();
-                    args.putString(getString(R.string.cat_type), getString(R.string.pizza_sandwich));
-                    fragment.setArguments(args);
-                    return fragment;
+                    if (sandwichPizzaFragment == null) {
+                        sandwichPizzaFragment = new FoodCategoryFragment();
+                        Bundle args = new Bundle();
+                        args.putString(getString(R.string.cat_type), getString(R.string.pizza_sandwich));
+                        sandwichPizzaFragment.setArguments(args);
+                    }
+                    return sandwichPizzaFragment;
                 }
                 default: {
-                    FoodCategoryFragment fragment = new FoodCategoryFragment();
-                    Bundle args = new Bundle();
-                    args.putString(getString(R.string.cat_type), getString(R.string.chinese));
-                    fragment.setArguments(args);
-                    return fragment;
+                    if (chineseFragment == null) {
+                        chineseFragment = new FoodCategoryFragment();
+                        Bundle args = new Bundle();
+                        args.putString(getString(R.string.cat_type), getString(R.string.chinese));
+                        chineseFragment.setArguments(args);
+                    }
+                    return chineseFragment;
                 }
             }
         }
