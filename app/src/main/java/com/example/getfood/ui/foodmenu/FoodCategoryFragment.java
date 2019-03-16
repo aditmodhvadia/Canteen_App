@@ -1,4 +1,4 @@
-package com.example.getfood.fragment;
+package com.example.getfood.ui.foodmenu;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -17,8 +17,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.getfood.activity.FoodMenuDisplayActivity;
-import com.example.getfood.adapter.MenuDisplayAdapter;
 import com.example.getfood.FoodItem;
 import com.example.getfood.R;
 import com.facebook.shimmer.ShimmerFrameLayout;

@@ -1,4 +1,4 @@
-package com.example.getfood.activity;
+package com.example.getfood.ui.terms;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

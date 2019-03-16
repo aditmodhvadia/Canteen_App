@@ -1,4 +1,4 @@
-package com.example.getfood.adapter;
+package com.example.getfood.ui.orderlist;
 
 import android.content.Context;
 import android.view.LayoutInflater;

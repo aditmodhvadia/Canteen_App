@@ -1,4 +1,4 @@
-package com.example.getfood.activity;
+package com.example.getfood.ui.orderlist;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -9,8 +9,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.getfood.adapter.OrderListDisplayAdapter;
 import com.example.getfood.R;
+import com.example.getfood.ui.orderdetail.OrderDetailActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -81,7 +81,7 @@ public class OrderListActivity extends AppCompatActivity {
         ordersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(OrderListActivity.this, OrderActivity.class);
+                Intent i = new Intent(OrderListActivity.this, OrderDetailActivity.class);
                 i.putExtra("OrderID", orderID.get(position));
                 i.putExtra("Total", orderAmount.get(position));
                 i.putExtra("RollNo", rollNo);

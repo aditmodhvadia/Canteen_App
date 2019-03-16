@@ -1,4 +1,4 @@
-package com.example.getfood.activity;
+package com.example.getfood.ui.loginregister;
 
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -15,8 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.example.getfood.fragment.login.LoginFragment;
-import com.example.getfood.fragment.RegisterFragment;
+
 import com.example.getfood.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;

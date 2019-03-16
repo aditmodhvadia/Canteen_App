@@ -1,4 +1,4 @@
-package com.example.getfood.activity;
+package com.example.getfood.ui.splash;
 
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
@@ -16,6 +16,8 @@ import android.util.Log;
 import android.widget.Button;
 
 import com.example.getfood.R;
+import com.example.getfood.ui.foodmenu.FoodMenuDisplayActivity;
+import com.example.getfood.ui.loginregister.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

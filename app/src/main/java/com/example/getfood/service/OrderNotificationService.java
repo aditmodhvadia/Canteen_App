@@ -10,7 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 
-import com.example.getfood.activity.OrderActivity;
+import com.example.getfood.ui.orderdetail.OrderDetailActivity;
 import com.example.getfood.R;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -120,7 +120,7 @@ public class OrderNotificationService extends Service {
 
 //        todo: change the display messages to tell user that your order was updated
 
-        Intent i = new Intent(this, OrderActivity.class);
+        Intent i = new Intent(this, OrderDetailActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         i.putExtra("OrderID",ORDER_ID);
         PendingIntent pi = PendingIntent.getActivity(this, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);

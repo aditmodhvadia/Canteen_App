@@ -1,4 +1,4 @@
-package com.example.getfood.activity;
+package com.example.getfood.ui.map;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;

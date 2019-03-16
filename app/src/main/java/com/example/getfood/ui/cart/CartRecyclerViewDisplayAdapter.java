@@ -1,4 +1,4 @@
-package com.example.getfood.adapter;
+package com.example.getfood.ui.cart;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,8 +10,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.getfood.activity.CartActivity;
-import com.example.getfood.activity.FoodMenuDisplayActivity;
+import com.example.getfood.ui.foodmenu.FoodMenuDisplayActivity;
 import com.example.getfood.R;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.example.getfood.fragment;
+package com.example.getfood.ui.loginregister;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -19,7 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.getfood.activity.TermsActivity;
+import com.example.getfood.ui.terms.TermsActivity;
 import com.example.getfood.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;

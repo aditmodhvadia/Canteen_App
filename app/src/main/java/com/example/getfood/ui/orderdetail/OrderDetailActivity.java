@@ -1,4 +1,4 @@
-package com.example.getfood.activity;
+package com.example.getfood.ui.orderdetail;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -17,7 +17,6 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.getfood.adapter.OrderDisplayAdapter;
 import com.example.getfood.R;
 import com.example.getfood.service.OrderNotificationService;
 import com.google.firebase.database.DataSnapshot;
@@ -28,7 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class OrderActivity extends AppCompatActivity {
+public class OrderDetailActivity extends AppCompatActivity {
     //    Layout Views
     TextView testTV, test;
     ListView orderListView;
@@ -102,7 +101,7 @@ public class OrderActivity extends AppCompatActivity {
                         final String itemCategory = orderItemCategory.get(position);
                         if (dataSnapshot.child(itemCategory).child(itemName).child("Status").getValue().toString().equals("Ready")
                                 && !dataSnapshot.child(itemCategory).child(itemName).child("Rating").exists()) {
-                            AlertDialog.Builder giveRating = new AlertDialog.Builder(OrderActivity.this);
+                            AlertDialog.Builder giveRating = new AlertDialog.Builder(OrderDetailActivity.this);
                             giveRating.setTitle("Give a Rating!");
                             View ratingView = getLayoutInflater().inflate(R.layout.choose_rating, null);
                             final RatingBar ratingBar = ratingView.findViewById(R.id.ratingBar);
@@ -122,9 +121,9 @@ public class OrderActivity extends AppCompatActivity {
                             nbutton.setTextColor(getResources().getColor(R.color.colorPrimary));
 
                         } else if (dataSnapshot.child(itemCategory).child(itemName).child("Rating").exists()) {
-                            Toast.makeText(OrderActivity.this, "Item already rated", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(OrderDetailActivity.this, "Item already rated", Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(OrderActivity.this, "Rate the item after it is ready", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(OrderDetailActivity.this, "Rate the item after it is ready", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -132,7 +131,7 @@ public class OrderActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-//                Toast.makeText(OrderActivity.this, databaseError.toString(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(OrderDetailActivity.this, databaseError.toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -151,7 +150,7 @@ public class OrderActivity extends AppCompatActivity {
                 float newRating = (currRating*numberOfRating++ + rating)/numberOfRating;
                 foodItems.child("Rating").setValue(newRating);
                 foodItems.child("NumberOfRating").setValue(numberOfRating);
-                Toast.makeText(OrderActivity.this, "Rating saved", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OrderDetailActivity.this, "Rating saved", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -165,7 +164,7 @@ public class OrderActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        Intent service = new Intent(OrderActivity.this, OrderNotificationService.class);
+        Intent service = new Intent(OrderDetailActivity.this, OrderNotificationService.class);
         service.putExtra("OrderID", orderData.getStringExtra("OrderID"));
         startService(service);
     }
@@ -175,7 +174,7 @@ public class OrderActivity extends AppCompatActivity {
         super.onPause();
 //        todo: call notification before starting service
 //        customNotification();
-        Intent service = new Intent(OrderActivity.this, OrderNotificationService.class);
+        Intent service = new Intent(OrderDetailActivity.this, OrderNotificationService.class);
         service.putExtra("OrderID", orderData.getStringExtra("OrderID"));
         startService(service);
 

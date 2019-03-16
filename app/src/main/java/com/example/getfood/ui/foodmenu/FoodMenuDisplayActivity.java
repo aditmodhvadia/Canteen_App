@@ -1,4 +1,4 @@
-package com.example.getfood.activity;
+package com.example.getfood.ui.foodmenu;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,8 +31,12 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.getfood.fragment.FoodCategoryFragment;
 import com.example.getfood.R;
+import com.example.getfood.ui.loginregister.LoginActivity;
+import com.example.getfood.ui.map.MapsActivity;
+import com.example.getfood.ui.orderlist.OrderListActivity;
+import com.example.getfood.ui.terms.TermsActivity;
+import com.example.getfood.ui.cart.CartActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;

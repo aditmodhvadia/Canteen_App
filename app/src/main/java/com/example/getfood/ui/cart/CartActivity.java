@@ -1,4 +1,4 @@
-package com.example.getfood.activity;
+package com.example.getfood.ui.cart;
 
 import android.app.Activity;
 import android.content.Context;
@@ -24,9 +24,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.getfood.adapter.CartRecyclerViewDisplayAdapter;
 import com.example.getfood.Paytm;
 import com.example.getfood.R;
+import com.example.getfood.ui.foodmenu.FoodMenuDisplayActivity;
+import com.example.getfood.ui.orderdetail.OrderDetailActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -283,7 +284,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         root.child(rollNo).child(String.valueOf(orderID)).child("Status").setValue("Ordered");
         chooseTimeDialog.hide();
 
-        orderIntent = new Intent(CartActivity.this, OrderActivity.class);
+        orderIntent = new Intent(CartActivity.this, OrderDetailActivity.class);
         orderIntent.putExtra("OrderID", String.valueOf(orderID));
         orderIntent.putExtra("RollNo", rollNo);
         orderIntent.putExtra("Total", total);
