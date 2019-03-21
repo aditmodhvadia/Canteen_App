@@ -24,7 +24,7 @@ public class OrderListActivity extends BaseActivity implements OrderListMvpView 
 
     @Override
     public void initViews() {
-
+        showLoading();
         ordersListView = findViewById(R.id.ordersListView);
 //        ordersHeadingTextView = findViewById(R.id.ordersHeadingTextView);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -73,6 +73,7 @@ public class OrderListActivity extends BaseActivity implements OrderListMvpView 
     public void bindListAdapter(final ArrayList<OrderListItem> orderListItems) {
         orderListDisplayAdapter = new OrderListDisplayAdapter(orderListItems, getApplicationContext());
         ordersListView.setAdapter(orderListDisplayAdapter);
+        hideLoading();
 
 //        attach OnItemClickListener
         ordersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

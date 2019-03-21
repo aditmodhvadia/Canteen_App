@@ -32,6 +32,9 @@ public class SplashActivity extends BaseActivity implements SplashMvpView {
         presenter = new SplashPresenter<>();
         presenter.onAttach(this);
 
+//        LoadingDialog loadingDialog = new LoadingDialog();
+//        loadingDialog.show
+
         PackageInfo pInfo;
         vCheck = FirebaseDatabase.getInstance().getReference().child(getString(R.string.version_check));
         try {
