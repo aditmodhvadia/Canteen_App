@@ -1,14 +1,10 @@
 package com.example.getfood.ui.orderdetail;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -18,7 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.getfood.R;
+import com.example.getfood.Utils.AppUtils;
 import com.example.getfood.service.OrderNotificationService;
+import com.example.getfood.ui.base.BaseActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,29 +25,22 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class OrderDetailActivity extends AppCompatActivity {
-    //    Layout Views
-    TextView testTV, test;
-    ListView orderListView;
-    OrderDisplayAdapter orderDisplayAdapter;
-    //    Variables
-    ArrayList<String> orderItemName, orderItemCategory, orderItemStatus;
-    ArrayList<Integer> orderItemPrice, orderItemQuantity;
-    int orderTotal;
-    String orderID, rollNo, orderTime, orderTotalPrice;
-    Intent orderData;
-    //    Firebase Variables
-    DatabaseReference root;
+public class OrderDetailActivity extends BaseActivity implements OrderDetailMvpView {
+    private TextView testTV, test;
+    private ListView orderListView;
+    private OrderDisplayAdapter orderDisplayAdapter;
+    private ArrayList<String> orderItemName, orderItemCategory, orderItemStatus;
+    private ArrayList<Integer> orderItemPrice, orderItemQuantity;
+    private int orderTotal;
+    private String orderID, rollNo, orderTime, orderTotalPrice;
+    private Intent orderData;
+    private DatabaseReference root;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order);
-
+    public void initViews() {
         testTV = findViewById(R.id.testTV);
         orderListView = findViewById(R.id.orderListView);
         test = findViewById(R.id.test);
-//        Initialization
         orderItemName = new ArrayList<>();
         orderItemQuantity = new ArrayList<>();
         orderItemPrice = new ArrayList<>();
@@ -61,7 +52,7 @@ public class OrderDetailActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), getString(R.string.no_data_received), Toast.LENGTH_SHORT).show();
             return;
         }
-        createNotificationChannel();
+        AppUtils.createNotificationChannel(mContext);
 //        Get data from Intent
         orderID = orderData.getExtras().getString(getString(R.string.i_order_id));
         orderTotal = orderData.getExtras().getInt(getString(R.string.i_total));
@@ -139,6 +130,16 @@ public class OrderDetailActivity extends AppCompatActivity {
         testTV.setText(String.format("%s%s", getString(R.string.order_id_is), orderID));
     }
 
+    @Override
+    public void setListeners() {
+
+    }
+
+    @Override
+    public int getLayoutResId() {
+        return R.layout.activity_order_detail;
+    }
+
     private void updateRating(final float rating, String itemName, String itemCategory) {
 
         final DatabaseReference foodItems = FirebaseDatabase.getInstance().getReference().child(getString(R.string.food)).child(itemCategory).child(itemName);
@@ -159,6 +160,11 @@ public class OrderDetailActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public Context getContext() {
+        return mContext;
     }
 
     @Override
@@ -192,18 +198,4 @@ public class OrderDetailActivity extends AppCompatActivity {
         orderData = intent;
     }
 
-    private void createNotificationChannel() {
-
-//        create notification channel only for Builds greater than Oreo(8.0)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = getString(R.string.order_channel);
-            String description = getString(R.string.primary_display_notif);
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel channel = new NotificationChannel(getString(R.string.notif_channel), name, importance);
-            channel.setDescription(description);
-
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-    }
 }
