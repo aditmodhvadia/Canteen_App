@@ -10,8 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
-import com.example.getfood.Adapter.CartRecyclerViewDisplayAdapter;
 import com.example.getfood.R;
+import com.example.getfood.ui.cart.CartRecyclerViewDisplayAdapter;
 
 public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
     private final ColorDrawable background;

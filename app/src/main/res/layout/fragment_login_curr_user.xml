@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_red"
-    tools:context=".Fragment.LoginFragment">
+    tools:context=".ui.loginregister.LoginFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -77,6 +77,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:background="@color/colorPrimaryDark"
+            android:onClick="loginClick"
             android:text="login"
             android:textColor="#fff" />
 
