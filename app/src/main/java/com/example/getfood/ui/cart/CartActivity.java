@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -100,6 +101,8 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(R.string.my_cart);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            Drawable upArrow = getResources().getDrawable(R.drawable.ic_down);
+            getSupportActionBar().setHomeAsUpIndicator(upArrow);
         }
 
         cartRecyclerView = findViewById(R.id.cartRecyclerView);
