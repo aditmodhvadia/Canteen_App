@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.example.getfood.R;
 import com.example.getfood.Utils.AlertUtils;
@@ -23,14 +24,16 @@ import com.google.firebase.database.ValueEventListener;
 
 public class SplashActivity extends BaseActivity implements SplashMvpView {
 
-    private String version;
+    private String versionName;
     private DatabaseReference vCheck;
     private SplashPresenter<SplashActivity> presenter;
+    private TextView tvVersionName;
 
     @Override
     public void initViews() {
         presenter = new SplashPresenter<>();
         presenter.onAttach(this);
+        tvVersionName = findViewById(R.id.tvVersionName);
 
 //        LoadingDialog loadingDialog = new LoadingDialog();
 //        loadingDialog.show
@@ -39,9 +42,11 @@ public class SplashActivity extends BaseActivity implements SplashMvpView {
         vCheck = FirebaseDatabase.getInstance().getReference().child(getString(R.string.version_check));
         try {
             pInfo = getApplicationContext().getPackageManager().getPackageInfo(getPackageName(), 0);
-            version = pInfo.versionName;
+            versionName = pInfo.versionName;
+
+            tvVersionName.setText(versionName);
 //            new ValidateVersionAndUser();
-            vCheck.child(version).addListenerForSingleValueEvent(new ValueEventListener() {
+            vCheck.child(versionName).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.getValue().toString().equals(getString(R.string.yes))) {
@@ -57,7 +62,7 @@ public class SplashActivity extends BaseActivity implements SplashMvpView {
                             finish();
                         }
                     } else {
-                        //deprecated version of app
+                        //deprecated versionName of app
                         AlertUtils.openAlertDialog(SplashActivity.this, getString(R.string.warning), getString(R.string.outdated_version_msg),
                                 getString(R.string.update), "Exit", new OnDialogButtonClickListener() {
                                     @Override
