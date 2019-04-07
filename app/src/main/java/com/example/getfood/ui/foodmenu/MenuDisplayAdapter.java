@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.getfood.FoodItem;
+import com.example.getfood.models.FoodItem;
 import com.example.getfood.R;
 
 import java.util.ArrayList;

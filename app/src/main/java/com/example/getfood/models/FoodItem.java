@@ -1,4 +1,4 @@
-package com.example.getfood;
+package com.example.getfood.models;
 
 public class FoodItem {
 

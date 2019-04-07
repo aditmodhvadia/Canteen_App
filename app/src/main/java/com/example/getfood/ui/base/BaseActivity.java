@@ -1,6 +1,5 @@
 package com.example.getfood.ui.base;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -9,16 +8,13 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import com.example.getfood.R;
+import com.example.getfood.utils.ProgressHandler;
 import com.google.firebase.auth.FirebaseAuth;
-import com.wang.avi.AVLoadingIndicatorView;
 
 public abstract class BaseActivity extends AppCompatActivity implements BaseView {
 
     public Context mContext;
     public FirebaseAuth mAuth;
-    private Dialog loading;
-    private AVLoadingIndicatorView avl;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,21 +48,12 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
     @Override
     public void showLoading() {
-        loading = new Dialog(mContext);
-        loading.setContentView(R.layout.layout_loading_dialog);
-        loading.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        loading.setCancelable(false);
-        avl = loading.findViewById(R.id.avl);
-        avl.smoothToShow();
-        loading.show();
+        ProgressHandler.showProgress(mContext, "", "");
     }
 
     @Override
     public void hideLoading() {
-        if (loading != null && loading.isShowing()) {
-            avl.smoothToHide();
-            loading.hide();
-        }
+        ProgressHandler.hideProgress();
     }
 
     @Override

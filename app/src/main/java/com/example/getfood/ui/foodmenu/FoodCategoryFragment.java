@@ -15,7 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.getfood.FoodItem;
+import com.example.getfood.models.FoodItem;
 import com.example.getfood.models.CartItem;
 import com.example.getfood.R;
 import com.facebook.shimmer.ShimmerFrameLayout;
