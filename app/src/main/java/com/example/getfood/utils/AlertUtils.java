@@ -1,4 +1,4 @@
-package com.example.getfood.Utils;
+package com.example.getfood.utils;
 
 import android.content.Context;
 import android.content.DialogInterface;

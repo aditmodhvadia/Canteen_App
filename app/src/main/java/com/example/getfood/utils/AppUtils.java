@@ -1,4 +1,4 @@
-package com.example.getfood.Utils;
+package com.example.getfood.utils;
 
 import android.app.Activity;
 import android.app.NotificationChannel;

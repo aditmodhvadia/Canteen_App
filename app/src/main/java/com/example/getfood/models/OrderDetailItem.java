@@ -1,4 +1,4 @@
-package com.example.getfood.Models;
+package com.example.getfood.models;
 
 public class OrderDetailItem {
     private String orderItemName, orderItemPrice, orderItemCategory,

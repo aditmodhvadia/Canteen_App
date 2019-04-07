@@ -12,9 +12,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.getfood.Models.CartItem;
+import com.example.getfood.models.CartItem;
 import com.example.getfood.R;
-import com.example.getfood.Utils.AppUtils;
+import com.example.getfood.utils.AppUtils;
 import com.example.getfood.ui.foodmenu.FoodMenuDisplayActivity;
 
 import java.util.ArrayList;

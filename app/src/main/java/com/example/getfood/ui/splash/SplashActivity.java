@@ -11,8 +11,8 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.example.getfood.R;
-import com.example.getfood.Utils.AlertUtils;
-import com.example.getfood.Utils.OnDialogButtonClickListener;
+import com.example.getfood.utils.AlertUtils;
+import com.example.getfood.utils.OnDialogButtonClickListener;
 import com.example.getfood.ui.base.BaseActivity;
 import com.example.getfood.ui.foodmenu.FoodMenuDisplayActivity;
 import com.example.getfood.ui.loginregister.LoginActivity;

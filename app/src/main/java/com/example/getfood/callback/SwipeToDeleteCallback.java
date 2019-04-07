@@ -1,4 +1,4 @@
-package com.example.getfood.Callback;
+package com.example.getfood.callback;
 
 import android.graphics.Canvas;
 import android.graphics.Color;

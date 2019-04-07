@@ -3,7 +3,7 @@ package com.example.getfood.ui.orderlist;
 import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 
-import com.example.getfood.Models.OrderListItem;
+import com.example.getfood.models.OrderListItem;
 import com.example.getfood.R;
 import com.example.getfood.ui.base.BasePresenter;
 import com.google.firebase.database.DataSnapshot;

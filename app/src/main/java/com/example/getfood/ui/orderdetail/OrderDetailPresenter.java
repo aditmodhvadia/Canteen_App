@@ -2,7 +2,7 @@ package com.example.getfood.ui.orderdetail;
 
 import android.support.annotation.NonNull;
 
-import com.example.getfood.Models.OrderDetailItem;
+import com.example.getfood.models.OrderDetailItem;
 import com.example.getfood.R;
 import com.example.getfood.ui.base.BasePresenter;
 import com.google.firebase.database.DataSnapshot;

@@ -2,7 +2,7 @@ package com.example.getfood.ui.orderdetail;
 
 import android.content.Context;
 
-import com.example.getfood.Models.OrderDetailItem;
+import com.example.getfood.models.OrderDetailItem;
 import com.example.getfood.ui.base.BaseView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

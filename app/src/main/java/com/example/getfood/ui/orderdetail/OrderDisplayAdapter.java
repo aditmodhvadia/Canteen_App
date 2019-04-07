@@ -9,7 +9,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.getfood.Models.OrderDetailItem;
+import com.example.getfood.models.OrderDetailItem;
 import com.example.getfood.R;
 
 import java.util.ArrayList;

@@ -12,9 +12,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.getfood.Models.OrderDetailItem;
+import com.example.getfood.models.OrderDetailItem;
 import com.example.getfood.R;
-import com.example.getfood.Utils.AppUtils;
+import com.example.getfood.utils.AppUtils;
 import com.example.getfood.service.OrderNotificationService;
 import com.example.getfood.ui.base.BaseActivity;
 import com.google.firebase.database.DataSnapshot;

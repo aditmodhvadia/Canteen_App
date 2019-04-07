@@ -26,10 +26,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.getfood.Models.CartItem;
+import com.example.getfood.models.CartItem;
 import com.example.getfood.R;
-import com.example.getfood.Utils.AlertUtils;
-import com.example.getfood.Utils.OnDialogButtonClickListener;
+import com.example.getfood.utils.AlertUtils;
+import com.example.getfood.utils.OnDialogButtonClickListener;
 import com.example.getfood.ui.cart.CartActivity;
 import com.example.getfood.ui.loginregister.LoginActivity;
 import com.example.getfood.ui.map.MapsActivity;

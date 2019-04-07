@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.example.getfood.Models.OrderListItem;
+import com.example.getfood.models.OrderListItem;
 import com.example.getfood.R;
 import com.example.getfood.ui.base.BaseActivity;
 import com.example.getfood.ui.orderdetail.OrderDetailActivity;

@@ -18,8 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.getfood.R;
-import com.example.getfood.Utils.AlertUtils;
-import com.example.getfood.Utils.OnDialogButtonClickListener;
+import com.example.getfood.utils.AlertUtils;
+import com.example.getfood.utils.OnDialogButtonClickListener;
 import com.example.getfood.ui.terms.TermsActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;

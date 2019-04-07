@@ -1,4 +1,4 @@
-package com.example.getfood.Models;
+package com.example.getfood.models;
 
 public class OrderListItem {
     private String orderID, orderTime, orderAmount;
