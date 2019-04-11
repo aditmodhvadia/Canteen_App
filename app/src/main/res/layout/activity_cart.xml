@@ -2,17 +2,17 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:id="@+id/CoordinatorLayoutParent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:descendantFocusability="blocksDescendants"
     tools:context=".ui.cart.CartActivity">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        app:layout_behavior="com.example.getfood.MoveUpwardsbehavior"
         android:layout_height="match_parent"
-        android:descendantFocusability="blocksDescendants">
+        android:descendantFocusability="blocksDescendants"
+        app:layout_behavior="com.example.getfood.MoveUpwardsbehavior">
 
         <include layout="@layout/toolbar" />
 

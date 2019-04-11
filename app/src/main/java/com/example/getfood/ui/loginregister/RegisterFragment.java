@@ -1,5 +1,6 @@
 package com.example.getfood.ui.loginregister;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -18,9 +19,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.getfood.R;
-import com.example.getfood.utils.AlertUtils;
-import com.example.getfood.utils.OnDialogButtonClickListener;
 import com.example.getfood.ui.terms.TermsActivity;
+import com.example.getfood.utils.AlertUtils;
+import com.example.getfood.utils.AppUtils;
+import com.example.getfood.utils.OnDialogButtonClickListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -143,6 +145,8 @@ public class RegisterFragment extends Fragment {
             userConPasswordEditText.setText("");
             return;
         }
+
+        AppUtils.getInstance().hideKeyboard((Activity) getContext());
 
         progressDialog.setMessage(getString(R.string.registering));
         progressDialog.show();

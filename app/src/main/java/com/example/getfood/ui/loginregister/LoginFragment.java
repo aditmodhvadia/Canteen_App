@@ -1,5 +1,6 @@
 package com.example.getfood.ui.loginregister;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,9 +19,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.getfood.R;
-import com.example.getfood.utils.AlertUtils;
-import com.example.getfood.utils.OnDialogButtonClickListener;
 import com.example.getfood.ui.foodmenu.FoodMenuDisplayActivity;
+import com.example.getfood.utils.AlertUtils;
+import com.example.getfood.utils.AppUtils;
+import com.example.getfood.utils.OnDialogButtonClickListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -169,6 +171,8 @@ public class LoginFragment extends Fragment implements LoginView{
             userLoginPasswordEditText.requestFocus();
             return;
         }
+
+        AppUtils.getInstance().hideKeyboard((Activity) getContext());
 
 //        progressDialog.setMessage("Logging In");
 //        progressDialog.setCanceledOnTouchOutside(false);

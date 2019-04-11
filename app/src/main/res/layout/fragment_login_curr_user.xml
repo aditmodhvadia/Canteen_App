@@ -28,6 +28,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:imeOptions="actionNext"
+                android:singleLine="true"
                 android:textColor="#fff" />
         </android.support.design.widget.TextInputLayout>
 
@@ -49,7 +51,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:imeOptions="actionDone"
                 android:inputType="textPassword"
+                android:singleLine="true"
                 android:textColor="#fff"
                 android:textColorHint="#d3d3d3" />
         </android.support.design.widget.TextInputLayout>

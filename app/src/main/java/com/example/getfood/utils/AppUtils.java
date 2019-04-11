@@ -7,10 +7,13 @@ import android.content.Context;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.example.getfood.R;
 
 public class AppUtils {
+
+    private static AppUtils mInstance;
 
     public static Snackbar getSnackbar(Context context, String msg) {
         View view = ((Activity) context).findViewById(R.id.CoordinatorLayoutParent);
@@ -31,5 +34,23 @@ public class AppUtils {
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
+    }
+
+    public void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public static AppUtils getInstance() {
+        if (mInstance == null) {
+            mInstance = new AppUtils();
+        }
+        return mInstance;
     }
 }
