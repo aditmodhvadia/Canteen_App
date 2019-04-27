@@ -72,6 +72,7 @@
                 android:layout_gravity="center"
                 android:background="@color/colorPrimaryDark"
                 android:elevation="2.0dp"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:paddingLeft="40dp"
                 android:paddingTop="20dp"
                 android:paddingRight="40dp"

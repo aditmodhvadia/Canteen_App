@@ -93,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
-                android:text="I accept the"
+                android:text="I accept the "
                 android:textColor="#fff" />
 
             <TextView
@@ -105,7 +105,7 @@
                 android:paddingTop="10dp"
                 android:paddingEnd="10dp"
                 android:paddingBottom="10dp"
-                android:text=" Terms and Conditions"
+                android:text="Terms and Conditions"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#372fb4" />
 
@@ -118,6 +118,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="15dp"
             android:background="@color/colorPrimaryDark"
+            android:foreground="?android:attr/selectableItemBackground"
             android:gravity="center"
             android:paddingLeft="40dp"
             android:paddingRight="40dp"
