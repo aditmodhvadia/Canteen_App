@@ -10,6 +10,11 @@ import android.view.View;
 
 import com.example.getfood.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 public class AppUtils {
 
     public static Snackbar getSnackbar(Context context, String msg) {
@@ -31,5 +36,11 @@ public class AppUtils {
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
+    }
+
+    public static String getTodaysDate() {
+        Date date = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMMM-yyyy", Locale.US);
+        return df.format(date);
     }
 }

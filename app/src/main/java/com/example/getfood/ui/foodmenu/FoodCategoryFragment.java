@@ -15,9 +15,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.getfood.models.FoodItem;
-import com.example.getfood.models.CartItem;
 import com.example.getfood.R;
+import com.example.getfood.models.CartItem;
+import com.example.getfood.models.FoodItem;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -77,6 +77,7 @@ public class FoodCategoryFragment extends Fragment {
 
                     if (dsp.child(getString(R.string.available)).getValue().toString().equals(getString(R.string.yes))) {
                         FoodItem newItem = new FoodItem(dsp.getKey(), dsp.child(getString(R.string.price)).getValue().toString(), dsp.child(getString(R.string.rating)).getValue().toString());
+//                        TODO: parse FoodItem model directly
                         foodItem.add(newItem);
                     }
                 }

@@ -30,14 +30,15 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.getfood.callback.SwipeToDeleteCallback;
-import com.example.getfood.models.CartItem;
 import com.example.getfood.Paytm;
 import com.example.getfood.R;
-import com.example.getfood.utils.AlertUtils;
-import com.example.getfood.utils.OnDialogButtonClickListener;
+import com.example.getfood.callback.SwipeToDeleteCallback;
+import com.example.getfood.models.CartItem;
 import com.example.getfood.ui.foodmenu.FoodMenuDisplayActivity;
 import com.example.getfood.ui.orderdetail.OrderDetailActivity;
+import com.example.getfood.utils.AlertUtils;
+import com.example.getfood.utils.AppUtils;
+import com.example.getfood.utils.OnDialogButtonClickListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -75,6 +76,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     FirebaseAuth auth;
     String rollNo;
     String orderTime = null;
+    private TextView tvCurrentDate;
 
     public static void calcTotal() {
 //        int i = 0;
@@ -174,10 +176,12 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         secondBreakButton = chooseTimeView.findViewById(R.id.secondBreakButton);
         lastBreakButton = chooseTimeView.findViewById(R.id.lastBreakButton);
         nowButton = chooseTimeView.findViewById(R.id.nowButton);
+        tvCurrentDate = chooseTimeView.findViewById(R.id.tvCurrentDate);
 
 //        TODO: Confirm timings with Canteen
         Calendar currTime;
         currTime = Calendar.getInstance();
+        tvCurrentDate.setText(AppUtils.getTodaysDate());
 //        check if it is a sunday, then ordering is closed TODO: confirm with docs for the value of Sunday in Calendar
         currTime.set(Calendar.DAY_OF_WEEK, currTime.get(Calendar.DAY_OF_WEEK) - 1);
 //        if (currTime.get(Calendar.DAY_OF_WEEK) == 7) {
