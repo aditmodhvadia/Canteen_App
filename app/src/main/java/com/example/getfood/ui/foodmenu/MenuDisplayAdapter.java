@@ -5,38 +5,38 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.getfood.models.FoodItem;
 import com.example.getfood.R;
+import com.example.getfood.models.FoodItem;
+import com.example.getfood.utils.AppUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MenuDisplayAdapter extends BaseAdapter {
 
-    private List<FoodItem> foodItem;
-    private ArrayList<Integer> colors;
+    private List<FoodItem> foodItemList;
     private LayoutInflater inflater;
     private Context context;
 
     private TextView itemNameTextView, itemPriceTextView, itemRatingTextView;
+    private ImageView ivRatingStar;
 
-    public MenuDisplayAdapter(List<FoodItem> foodItem, ArrayList<Integer> colors, Context context) {
-        this.foodItem = foodItem;
-        this.colors = colors;
+    public MenuDisplayAdapter(List<FoodItem> foodItemList, Context context) {
+        this.foodItemList = foodItemList;
         this.context = context;
         this.inflater = LayoutInflater.from(context);
     }
 
     @Override
     public int getCount() {
-        return foodItem.size();
+        return foodItemList.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return null;
+        return foodItemList.get(i);
     }
 
     @Override
@@ -52,15 +52,17 @@ public class MenuDisplayAdapter extends BaseAdapter {
         itemNameTextView = vi.findViewById(R.id.itemNameTextView);
         itemPriceTextView = vi.findViewById(R.id.itemPriceTextView);
         itemRatingTextView = vi.findViewById(R.id.itemRatingTextView);
-        itemNameTextView.setText(foodItem.get(i).getItemName());
-        itemPriceTextView.setText(String.format("%s %s", context.getString(R.string.rupee_symbol), foodItem.get(i).getItemPrice()));
-        itemRatingTextView.setText(foodItem.get(i).getItemRating());
-        if (Float.valueOf(foodItem.get(i).getItemRating()) < 2.0) {
-            itemRatingTextView.setTextColor(colors.get(2));
-        } else if (Float.valueOf(foodItem.get(i).getItemRating()) < 3.5) {
-            itemRatingTextView.setTextColor(colors.get(1));
+        ivRatingStar = vi.findViewById(R.id.ivRatingStar);
+
+        itemNameTextView.setText(foodItemList.get(i).getItemName());
+        itemPriceTextView.setText(String.format("%s %s", context.getString(R.string.rupee_symbol), foodItemList.get(i).getItemPrice()));
+        if (foodItemList.get(i).getItemRating() != null) {
+            itemRatingTextView.setText(foodItemList.get(i).getItemRating());
+            itemRatingTextView.setTextColor(AppUtils.getColorForRating(context, foodItemList.get(i).getItemRating()));
+
         } else {
-            itemRatingTextView.setTextColor(colors.get(0));
+            itemRatingTextView.setVisibility(View.INVISIBLE);
+            ivRatingStar.setVisibility(View.INVISIBLE);
         }
 
         return vi;

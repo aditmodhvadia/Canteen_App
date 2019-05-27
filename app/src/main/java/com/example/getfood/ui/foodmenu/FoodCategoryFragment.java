@@ -31,7 +31,6 @@ import java.util.List;
 public class FoodCategoryFragment extends Fragment {
 
     List<FoodItem> foodItem;
-    ArrayList<Integer> colors;
     String CATEGORY = null;
     Button alertPlus, alertMinus;
     TextView quantitySetTV;
@@ -49,14 +48,8 @@ public class FoodCategoryFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_chinese, container, false);
         shimmerLayout = v.findViewById(R.id.shimmerLayout);
-        foodItem = new ArrayList<>();
-
-        colors = new ArrayList<>();
-
-        colors.add(getResources().getColor(R.color.colorGoodRating));
-        colors.add(getResources().getColor(R.color.colorMediumRating));
-        colors.add(getResources().getColor(R.color.colorBadRating));
         chineseDisplayListView = v.findViewById(R.id.chineseDisplayListView);
+        foodItem = new ArrayList<>();
 
         Bundle args = this.getArguments();
 
@@ -75,8 +68,13 @@ public class FoodCategoryFragment extends Fragment {
                 foodItem.clear();
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
 
-                    if (dsp.child(getString(R.string.available)).getValue().toString().equals(getString(R.string.yes))) {
-                        FoodItem newItem = new FoodItem(dsp.getKey(), dsp.child(getString(R.string.price)).getValue().toString(), dsp.child(getString(R.string.rating)).getValue().toString());
+                    if (dsp.hasChild(getString(R.string.available)) &&
+                            dsp.child(getString(R.string.available)).getValue().toString().equals(getString(R.string.yes))) {
+                        FoodItem newItem = new FoodItem(dsp.getKey(),
+                                dsp.hasChild(getString(R.string.price)) ?
+                                        dsp.child(getString(R.string.price)).getValue().toString() : null,
+                                dsp.hasChild(getString(R.string.rating)) ?
+                                        dsp.child(getString(R.string.rating)).getValue().toString() : null, CATEGORY);
 //                        TODO: parse FoodItem model directly
                         foodItem.add(newItem);
                     }
@@ -86,7 +84,7 @@ public class FoodCategoryFragment extends Fragment {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        displayAdapter = new MenuDisplayAdapter(foodItem, colors, getContext());
+                        displayAdapter = new MenuDisplayAdapter(foodItem, getContext());
                         chineseDisplayListView.setAdapter(displayAdapter);
                         shimmerLayout.stopShimmer();
                         shimmerLayout.setVisibility(View.GONE);

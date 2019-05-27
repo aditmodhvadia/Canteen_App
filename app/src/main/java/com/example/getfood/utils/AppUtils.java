@@ -5,6 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
@@ -17,12 +18,39 @@ import java.util.Locale;
 
 public class AppUtils {
 
-    public static Snackbar getSnackbar(Context context, String msg) {
+    private static AppUtils mInstance;
+
+    /**
+     * Call to initialize App Variables
+     *
+     * @param context
+     * @return Instance of AppUtils class
+     */
+    public static AppUtils getInstance(Context context) {
+        if (mInstance == null) {
+            mInstance = new AppUtils();
+        }
+        return mInstance;
+    }
+
+    /**
+     * Call to display a SnackBar in the bottom of the screen with the message.
+     *
+     * @param context Context over which SnackBar will be drawn
+     * @param msg     Message to be shown
+     * @return
+     */
+    public static Snackbar getSnackBar(@NonNull Context context, String msg) {
         View view = ((Activity) context).findViewById(R.id.CoordinatorLayoutParent);
         return Snackbar.make(view, msg,
                 Snackbar.LENGTH_LONG);
     }
 
+    /**
+     * Call to create notification channel for Order Display
+     *
+     * @param context Current context
+     */
     public static void createNotificationChannel(Context context) {
 
 //        create notification channel only for Builds greater than Oreo(8.0)
@@ -38,9 +66,26 @@ public class AppUtils {
         }
     }
 
+    /**
+     * Call to get today's date in full month format
+     *
+     * @return Current Date
+     */
     public static String getTodaysDate() {
         Date date = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("dd-MMMM-yyyy", Locale.US);
         return df.format(date);
+    }
+
+    public static int getColorForRating(Context context, String itemRating) {
+        int ratingColor;
+        if (Float.valueOf(itemRating) < 2.0) {
+            ratingColor = context.getResources().getColor(R.color.colorBadRating);
+        } else if (Float.valueOf(itemRating) < 3.5) {
+            ratingColor = context.getResources().getColor(R.color.colorMediumRating);
+        } else {
+            ratingColor = context.getResources().getColor(R.color.colorGoodRating);
+        }
+        return ratingColor;
     }
 }

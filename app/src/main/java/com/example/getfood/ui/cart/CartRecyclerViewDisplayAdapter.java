@@ -12,10 +12,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.getfood.models.CartItem;
 import com.example.getfood.R;
-import com.example.getfood.utils.AppUtils;
+import com.example.getfood.models.CartItem;
 import com.example.getfood.ui.foodmenu.FoodMenuDisplayActivity;
+import com.example.getfood.utils.AppUtils;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -124,7 +124,7 @@ public class CartRecyclerViewDisplayAdapter extends RecyclerView.Adapter<CartRec
     }
 
     private void showUndoSnackbar() {
-        Snackbar snackbar = AppUtils.getSnackbar(context, context.getString(R.string.item_remove));
+        Snackbar snackbar = AppUtils.getSnackBar(context, context.getString(R.string.item_remove));
         snackbar.setActionTextColor(ContextCompat.getColor(context, R.color.snackbar_yellow));
         snackbar.setAction(R.string.undo, new View.OnClickListener() {
             @Override

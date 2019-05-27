@@ -2,35 +2,30 @@ package com.example.getfood.models;
 
 public class FoodItem {
 
-    private String itemName, itemPrice, itemRating;
+    private String itemName, itemPrice, itemRating, itemCategory;
 
-    public FoodItem(String itemName, String itemPrice, String itemRating) {
+    public FoodItem(String itemName, String itemPrice, String itemRating, String itemCategory) {
         this.itemName = itemName;
         this.itemPrice = itemPrice;
         this.itemRating = itemRating;
+        this.itemCategory = itemCategory;
+    }
+
+    public String getItemCategory() {
+        return itemCategory;
     }
 
     public String getItemName() {
         return itemName;
     }
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
 
     public String getItemPrice() {
         return itemPrice;
     }
 
-    public void setItemPrice(String itemPrice) {
-        this.itemPrice = itemPrice;
-    }
 
     public String getItemRating() {
         return itemRating;
-    }
-
-    public void setItemRating(String itemRating) {
-        this.itemRating = itemRating;
     }
 }
