@@ -10,8 +10,11 @@ import android.support.design.widget.Snackbar;
 import android.view.View;
 
 import com.example.getfood.R;
+import com.example.getfood.models.CartItem;
+import com.example.getfood.models.FoodItem;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -87,5 +90,21 @@ public class AppUtils {
             ratingColor = context.getResources().getColor(R.color.colorGoodRating);
         }
         return ratingColor;
+    }
+
+    /**
+     * Call to determine whether FoodItem is present in List of CartItems
+     *
+     * @param cartItems List of Cart Items where item is to be found
+     * @param foodItem  Item to be found in the Cart List
+     * @return position of the food item if found in cart or else -1
+     */
+    public static int isItemInCart(ArrayList<CartItem> cartItems, FoodItem foodItem) {
+        for (int i = 0; i < cartItems.size(); i++) {
+            if (cartItems.get(i).getFoodItem().equals(foodItem)) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

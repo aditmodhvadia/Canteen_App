@@ -2,34 +2,20 @@ package com.example.getfood.models;
 
 public class CartItem {
 
-    private String cartItemName, cartItemCategory;
-    private Integer cartItemQuantity, cartItemPrice;
+    private Integer cartItemQuantity;
+    private FoodItem foodItem;
 
-    public CartItem(String cartItemName, String cartItemCategory, Integer cartItemQuantity, Integer cartItemPrice) {
-        this.cartItemName = cartItemName;
-        this.cartItemCategory = cartItemCategory;
+    public CartItem(FoodItem foodItem, Integer cartItemQuantity) {
         this.cartItemQuantity = cartItemQuantity;
-        this.cartItemPrice = cartItemPrice;
+        this.foodItem = foodItem;
     }
 
-    public CartItem(String itemName){
-        this.cartItemName = itemName;
+    public FoodItem getFoodItem() {
+        return foodItem;
     }
 
     public String getCartItemName() {
-        return cartItemName;
-    }
-
-    public void setCartItemName(String cartItemName) {
-        this.cartItemName = cartItemName;
-    }
-
-    public String getCartItemCategory() {
-        return cartItemCategory;
-    }
-
-    public void setCartItemCategory(String cartItemCategory) {
-        this.cartItemCategory = cartItemCategory;
+        return foodItem.getItemName();
     }
 
     public Integer getCartItemQuantity() {
@@ -38,13 +24,5 @@ public class CartItem {
 
     public void setCartItemQuantity(Integer cartItemQuantity) {
         this.cartItemQuantity = cartItemQuantity;
-    }
-
-    public Integer getCartItemPrice() {
-        return cartItemPrice;
-    }
-
-    public void setCartItemPrice(Integer cartItemPrice) {
-        this.cartItemPrice = cartItemPrice;
     }
 }

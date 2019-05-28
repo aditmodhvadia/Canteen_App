@@ -47,7 +47,8 @@ public class CartRecyclerViewDisplayAdapter extends RecyclerView.Adapter<CartRec
     public void onBindViewHolder(@NonNull final CartRecyclerViewDisplayAdapter.ViewHolder holder, int position) {
 
         holder.itemNameTextView.setText(cartItems.get(position).getCartItemName());
-        holder.itemPriceTextView.setText(String.format(Locale.ENGLISH, "%s%d", context.getString(R.string.rupee_symbol), cartItems.get(position).getCartItemPrice()));
+        holder.itemPriceTextView.setText(String.format(Locale.ENGLISH, "%s%d", context.getString(R.string.rupee_symbol),
+                Integer.parseInt(cartItems.get(position).getFoodItem().getItemPrice())));
         holder.itemQuantityTextView.setText(cartItems.get(position).getCartItemQuantity().toString());
 
         holder.increaseButton.setOnClickListener(new View.OnClickListener() {

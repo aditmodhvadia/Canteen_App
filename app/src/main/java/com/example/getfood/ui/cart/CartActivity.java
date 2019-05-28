@@ -82,7 +82,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 //        int i = 0;
         total = 0;
         for (CartItem item : FoodMenuDisplayActivity.cartItems) {
-            total = total + item.getCartItemPrice() * item.getCartItemQuantity();
+            total = total + Integer.parseInt(item.getFoodItem().getItemPrice()) * item.getCartItemQuantity();
         }
 //        set alpha of total price textview to zero, and then animate it to increase to 1.0
         totalPriceTV.setAlpha(0.0f);
@@ -327,9 +327,13 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         orderRoot.child(String.valueOf(orderID)).child(getString(R.string.time_to_deliver)).setValue(orderTime);
         orderRoot.child(String.valueOf(orderID)).child(getString(R.string.roll_no)).setValue(rollNo);
         for (int pos = 0; pos < FoodMenuDisplayActivity.cartItems.size(); pos++) {
-            orderRoot.child(String.valueOf(orderID)).child(getString(R.string.items)).child(FoodMenuDisplayActivity.cartItems.get(pos).getCartItemCategory()).child(FoodMenuDisplayActivity.cartItems.get(pos).getCartItemName())
+            orderRoot.child(String.valueOf(orderID)).child(getString(R.string.items))
+                    .child(FoodMenuDisplayActivity.cartItems.get(pos).getFoodItem().getItemCategory())
+                    .child(FoodMenuDisplayActivity.cartItems.get(pos).getCartItemName())
                     .child(getString(R.string.quantity)).setValue(FoodMenuDisplayActivity.cartItems.get(pos).getCartItemQuantity());
-            orderRoot.child(String.valueOf(orderID)).child(getString(R.string.items)).child(FoodMenuDisplayActivity.cartItems.get(pos).getCartItemCategory()).child(FoodMenuDisplayActivity.cartItems.get(pos).getCartItemName())
+            orderRoot.child(String.valueOf(orderID)).child(getString(R.string.items))
+                    .child(FoodMenuDisplayActivity.cartItems.get(pos).getFoodItem().getItemCategory())
+                    .child(FoodMenuDisplayActivity.cartItems.get(pos).getCartItemName())
                     .child(getString(R.string.status)).setValue(getString(R.string.received));
         }
 //        orderRoot.child(String.valueOf(orderID)).child("Total Amount").setValue(String.valueOf(total));

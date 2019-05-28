@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.getfood.R;
 import com.example.getfood.models.CartItem;
 import com.example.getfood.models.FoodItem;
+import com.example.getfood.utils.AppUtils;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -102,9 +103,9 @@ public class FoodCategoryFragment extends Fragment {
 
         chineseDisplayListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, final int position, long l) {
 
-                if (FoodMenuDisplayActivity.cartItems.contains(new CartItem(foodItem.get(i).getItemName()))) {
+                if (AppUtils.isItemInCart(FoodMenuDisplayActivity.cartItems, foodItem.get(position)) != -1) {
                     Toast.makeText(getContext(), getString(R.string.item_in_cart), Toast.LENGTH_SHORT).show();
                 } else {
 
@@ -132,19 +133,20 @@ public class FoodCategoryFragment extends Fragment {
                     });
 
                     builder.setTitle(R.string.select_quantity);
-                    builder.setMessage(foodItem.get(i).getItemName());
+                    builder.setMessage(foodItem.get(position).getItemName());
                     builder.setView(quantityAlert);
                     builder.setPositiveButton(R.string.add_to_cart, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i1) {
                             int quant = Integer.valueOf(quantitySetTV.getText().toString());
                             if (quant != 0) {
-                                if (FoodMenuDisplayActivity.cartItems.contains(new CartItem(foodItem.get(i).getItemName()))) {
-                                    int pos = FoodMenuDisplayActivity.cartItems.indexOf(new CartItem(foodItem.get(i).getItemName()));
-                                    FoodMenuDisplayActivity.cartItems.get(pos).setCartItemQuantity(FoodMenuDisplayActivity.cartItems.get(pos).getCartItemQuantity() + quant);
+                                int probablePosition = AppUtils.isItemInCart(FoodMenuDisplayActivity.cartItems, foodItem.get(position));
+                                if (probablePosition != -1) {
+                                    FoodMenuDisplayActivity.cartItems.get(probablePosition)
+                                            .setCartItemQuantity(FoodMenuDisplayActivity.cartItems
+                                                    .get(probablePosition).getCartItemQuantity() + quant);
                                 } else {
-                                    FoodMenuDisplayActivity.cartItems.add(new CartItem(foodItem.get(i).getItemName(), CATEGORY,
-                                            quant, Integer.parseInt(foodItem.get(i).getItemPrice())));
+                                    FoodMenuDisplayActivity.cartItems.add(new CartItem(foodItem.get(position), quant));
                                 }
                                 Toast.makeText(getContext(), getString(R.string.add_to_cart), Toast.LENGTH_LONG).show();
                             }
