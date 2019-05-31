@@ -1,6 +1,8 @@
 package com.example.getfood.models;
 
-public class FoodItem {
+import java.io.Serializable;
+
+public class FoodItem implements Serializable {
 
     private String itemName, itemPrice, itemRating, itemCategory;
 
@@ -9,6 +11,9 @@ public class FoodItem {
         this.itemPrice = itemPrice;
         this.itemRating = itemRating;
         this.itemCategory = itemCategory;
+    }
+
+    public FoodItem() {
     }
 
     public String getItemCategory() {

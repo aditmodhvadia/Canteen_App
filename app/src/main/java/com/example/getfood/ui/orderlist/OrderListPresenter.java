@@ -1,10 +1,9 @@
 package com.example.getfood.ui.orderlist;
 
-import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 
-import com.example.getfood.models.OrderListItem;
 import com.example.getfood.R;
+import com.example.getfood.models.FullOrder;
 import com.example.getfood.ui.base.BasePresenter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -15,32 +14,35 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class OrderListPresenter<V extends OrderListMvpView> extends BasePresenter<V> implements OrderListMvpPresenter<V> {
-    private DatabaseReference orderData, orderRoot;
-    private ArrayList<String> orderID;
-    private ArrayList<OrderListItem> orderListItems;
+    private DatabaseReference orderData, orderRoot, userOrderData;
+    //    private ArrayList<String> orderID;
+//    private ArrayList<OrderListItem> orderListItems;
+    private ArrayList<FullOrder> orderListItems;
 
     public OrderListPresenter() {
     }
 
     @Override
     public void fetchOrderList(String rollNo) {
+
         orderData = FirebaseDatabase.getInstance().getReference().child(getMvpView().getContext().getString(R.string.order_data));
         orderRoot = FirebaseDatabase.getInstance().getReference().child(getMvpView().getContext().getString(R.string.order));
+        userOrderData = FirebaseDatabase.getInstance().getReference().child("UserOrderData");
 
-        orderID = new ArrayList<>();
+//        orderID = new ArrayList<>();
         orderListItems = new ArrayList<>();
 
-        orderData.child(rollNo).addValueEventListener(new ValueEventListener() {
-            @SuppressLint("SetTextI18n")
+        userOrderData.child(rollNo).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
 
-                    orderID.clear();
+                    orderListItems.clear();
                     for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                        orderID.add(dsp.getKey());
+                        orderListItems.add(dsp.getValue(FullOrder.class));
                     }
-                    getOrderData();
+                    getMvpView().bindListAdapter(orderListItems);
+//                    getOrderData();
                 }
             }
 
@@ -51,7 +53,7 @@ public class OrderListPresenter<V extends OrderListMvpView> extends BasePresente
         });
     }
 
-    private void getOrderData() {
+    /*private void getOrderData() {
 
 //        fetch order data of corresponding order IDs
         orderRoot.addValueEventListener(new ValueEventListener() {
@@ -76,5 +78,5 @@ public class OrderListPresenter<V extends OrderListMvpView> extends BasePresente
             }
         });
 
-    }
+    }*/
 }

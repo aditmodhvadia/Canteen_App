@@ -34,11 +34,14 @@ import com.example.getfood.Paytm;
 import com.example.getfood.R;
 import com.example.getfood.callback.SwipeToDeleteCallback;
 import com.example.getfood.models.CartItem;
+import com.example.getfood.models.FullOrder;
 import com.example.getfood.ui.foodmenu.FoodMenuDisplayActivity;
 import com.example.getfood.ui.orderdetail.OrderDetailActivity;
 import com.example.getfood.utils.AlertUtils;
 import com.example.getfood.utils.AppUtils;
 import com.example.getfood.utils.OnDialogButtonClickListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -55,6 +58,8 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -72,7 +77,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     //    choose time views
     Button firstBreakButton, secondBreakButton, lastBreakButton, nowButton;
     AlertDialog chooseTimeDialog;
-    DatabaseReference orderRoot, root;
+    DatabaseReference orderRoot, userOrderData;
     FirebaseAuth auth;
     String rollNo;
     String orderTime = null;
@@ -190,7 +195,8 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 //        }
         int hour = currTime.get(Calendar.HOUR_OF_DAY);
         int mins = currTime.get(Calendar.MINUTE);
-//        hour = 12; mins =15;
+        hour = 12;
+        mins = 15;
         if (hour <= 8 && mins <= 20) {
             Log.d("Debug", "Before Ordering time");
             makeText("Cannot place order now, Order after 08:20 AM");
@@ -271,6 +277,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         orderRoot = FirebaseDatabase.getInstance().getReference().child(getString(R.string.order));
         String email = auth.getCurrentUser().getEmail();
         rollNo = email.substring(0, email.indexOf("@"));
+        userOrderData = FirebaseDatabase.getInstance().getReference().child("UserOrderData").child(rollNo);
 
         switch (v.getId()) {
             case R.id.firstBreakButton:
@@ -321,8 +328,46 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void generateOrder(long orderID) {
+    private void generateOrder(final long orderID) {
 
+//        TODO: make object of FullOrder with all the fields
+        Collections.sort(FoodMenuDisplayActivity.cartItems, new Comparator<CartItem>() {
+            @Override
+            public int compare(CartItem o1, CartItem o2) {
+                return o1.getFoodItem().getItemCategory().length() - o2.getFoodItem().getItemCategory().length();
+            }
+        });
+
+        final String orderId = userOrderData.push().getKey();
+        FullOrder fullOrder = new FullOrder(FoodMenuDisplayActivity.cartItems, String.valueOf(total), orderTime, rollNo, orderId, null);
+
+        userOrderData.child(orderId).setValue(fullOrder).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isComplete()) {
+                    userOrderData.child(orderId).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            FullOrder order = dataSnapshot.getValue(FullOrder.class);
+                            if (order != null) {
+                                for (CartItem item : order.getCartItems()) {
+                                    Log.d("##DebugData", "\n" + item.getCartItemName() + " " + item.getCartItemQuantity() + " " + item.getFoodItem().getItemCategory());
+                                }
+                                orderIntent = new Intent(CartActivity.this, OrderDetailActivity.class);
+                                orderIntent.putExtra("TestOrderData", order);
+                                startActivity(orderIntent);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+        });
+        /*
         orderRoot.child(String.valueOf(orderID)).child(getString(R.string.total_amount)).setValue(String.valueOf(total));
         orderRoot.child(String.valueOf(orderID)).child(getString(R.string.time_to_deliver)).setValue(orderTime);
         orderRoot.child(String.valueOf(orderID)).child(getString(R.string.roll_no)).setValue(rollNo);
@@ -345,11 +390,11 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
         root.child(rollNo).child(String.valueOf(orderID)).child(getString(R.string.status)).setValue(getString(R.string.ordered));
         chooseTimeDialog.hide();
-
-        orderIntent = new Intent(CartActivity.this, OrderDetailActivity.class);
+*/
+        /*orderIntent = new Intent(CartActivity.this, OrderDetailActivity.class);
         orderIntent.putExtra(getString(R.string.i_order_id), String.valueOf(orderID));
         orderIntent.putExtra(getString(R.string.i_roll_no), rollNo);
-        orderIntent.putExtra(getString(R.string.i_total), total);
+        orderIntent.putExtra(getString(R.string.i_total), total);*/
 
 //        FoodMenuDisplayActivity.cartItemName.clear();
 //        FoodMenuDisplayActivity.cartItemCategory.clear();
@@ -357,7 +402,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 //        FoodMenuDisplayActivity.cartItemPrice.clear();
         FoodMenuDisplayActivity.cartItems.clear();
 
-        startActivity(orderIntent);
+//        startActivity(orderIntent);
 
 //        generateCheckSumVoley();
 //        generate checksum from server and pass all details to paytm

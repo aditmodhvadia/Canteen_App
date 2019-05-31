@@ -1,23 +1,17 @@
 package com.example.getfood.ui.orderdetail;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.getfood.models.OrderDetailItem;
 import com.example.getfood.R;
-import com.example.getfood.utils.AppUtils;
+import com.example.getfood.models.FullOrder;
+import com.example.getfood.models.OrderDetailItem;
 import com.example.getfood.service.OrderNotificationService;
 import com.example.getfood.ui.base.BaseActivity;
-import com.google.firebase.database.DataSnapshot;
+import com.example.getfood.utils.AppUtils;
 import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
@@ -50,16 +44,28 @@ public class OrderDetailActivity extends BaseActivity implements OrderDetailMvpV
         }
         AppUtils.createNotificationChannel(mContext);
 //        Get data from Intent
-        orderID = orderData.getExtras().getString(getString(R.string.i_order_id));
-        orderTotal = orderData.getExtras().getInt(getString(R.string.i_total));
-        rollNo = orderData.getExtras().getString(getString(R.string.i_roll_no));
+//        orderID = orderData.getExtras().getString(getString(R.string.i_order_id));
+//        orderTotal = orderData.getExtras().getInt(getString(R.string.i_total));
+//        rollNo = orderData.getExtras().getString(getString(R.string.i_roll_no));
 
-        orderDetailItems = new ArrayList<>();
-        orderDisplayAdapter = new OrderDisplayAdapter(orderDetailItems, getApplicationContext());
-        orderListView.setAdapter(orderDisplayAdapter);
+//        orderDetailItems = new ArrayList<>();
+//        orderDisplayAdapter = new OrderDisplayAdapter(orderDetailItems, getApplicationContext());
+//        orderListView.setAdapter(orderDisplayAdapter);
         showLoading();
-        presenter.fetchOrderDetails(orderID);
+//        presenter.fetchOrderDetails(orderID);
+        FullOrder fullOrder = (FullOrder) getIntent().getSerializableExtra("TestOrderData");
+//        TODO: Bind data to listview and call presenter's valuelistener method for change
 
+        orderDisplayAdapter = new OrderDisplayAdapter(fullOrder, mContext);
+        orderListView.setAdapter(orderDisplayAdapter);
+//        TODO: Change this method to reflect new changes
+//        presenter.fetchOrderDetails(orderID);
+        presenter.fetchOrderDetails(fullOrder);
+
+        /*Log.d("##DebugData", fullOrder.getOrderId() + " " + fullOrder.getOrderStatus());
+        for (CartItem item : fullOrder.getCartItems()) {
+            Log.d("##DebugData", "\n" + item.getCartItemName() + " " + item.getCartItemQuantity() + " " + item.getFoodItem().getItemCategory());
+        }*/
 
         testTV.setText(String.format("%s%s", getString(R.string.order_id_is), orderID));
     }
@@ -102,11 +108,15 @@ public class OrderDetailActivity extends BaseActivity implements OrderDetailMvpV
     }
 
     @Override
-    public void bindOrderDetailAdapter(final ArrayList<OrderDetailItem> orderDetailItems, final DataSnapshot dataSnapshot) {
+    public void bindOrderDetailAdapter(FullOrder updatedOrder) {
         hideLoading();
-        orderDisplayAdapter.updateOrderList(orderDetailItems);
+//        orderDisplayAdapter.updateOrderList(orderDetailItems);
+        if(updatedOrder.getDisplayID() != null){
+            testTV.setText(String.format("%s%s", getString(R.string.order_id_is), updatedOrder.getDisplayID()));
+        }
+        orderDisplayAdapter.updateOrderData(updatedOrder);
 
-        orderListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*orderListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 //                        final String itemName = orderItemName.get(position);
@@ -144,7 +154,7 @@ public class OrderDetailActivity extends BaseActivity implements OrderDetailMvpV
                     Toast.makeText(OrderDetailActivity.this, getString(R.string.rate_after_ready), Toast.LENGTH_SHORT).show();
                 }
             }
-        });
+        });*/
     }
 
     @Override
@@ -165,9 +175,9 @@ public class OrderDetailActivity extends BaseActivity implements OrderDetailMvpV
     @Override
     protected void onStop() {
         super.onStop();
-        Intent service = new Intent(OrderDetailActivity.this, OrderNotificationService.class);
+        /*Intent service = new Intent(OrderDetailActivity.this, OrderNotificationService.class);
         service.putExtra(getString(R.string.i_order_id), orderData.getStringExtra(getString(R.string.i_order_id)));
-        startService(service);
+        startService(service);*/
     }
 
     @Override
@@ -175,9 +185,9 @@ public class OrderDetailActivity extends BaseActivity implements OrderDetailMvpV
         super.onPause();
 //        todo: call notification before starting service
 //        customNotification();
-        Intent service = new Intent(OrderDetailActivity.this, OrderNotificationService.class);
+        /*Intent service = new Intent(OrderDetailActivity.this, OrderNotificationService.class);
         service.putExtra(getString(R.string.i_order_id), orderData.getStringExtra(getString(R.string.i_order_id)));
-        startService(service);
+        startService(service);*/
 
     }
 

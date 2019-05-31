@@ -9,20 +9,19 @@ import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.getfood.models.OrderDetailItem;
 import com.example.getfood.R;
-
-import java.util.ArrayList;
+import com.example.getfood.models.FullOrder;
 
 public class OrderDisplayAdapter extends BaseAdapter {
 
     private Context context;
     private LayoutInflater inflater;
-    private ArrayList<OrderDetailItem> orderDetailItems;
+    //    private ArrayList<OrderDetailItem> orderDetailItems;
+    private FullOrder orderDetailItems;
 
     private TextView orderItemQuantityTextView, orderItemNameTextView, orderItemStatusTextView;
 
-    public OrderDisplayAdapter(ArrayList<OrderDetailItem> orderDetailItems, Context context) {
+    public OrderDisplayAdapter(FullOrder orderDetailItems, Context context) {
         this.orderDetailItems = orderDetailItems;
         this.context = context;
         this.inflater = LayoutInflater.from(context);
@@ -30,7 +29,7 @@ public class OrderDisplayAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return orderDetailItems.size();
+        return orderDetailItems.getCartItems().size();
     }
 
     @Override
@@ -52,9 +51,17 @@ public class OrderDisplayAdapter extends BaseAdapter {
         orderItemNameTextView = v.findViewById(R.id.orderItemNameTextView);
         orderItemStatusTextView = v.findViewById(R.id.orderItemStatusTextView);
 
-        orderItemNameTextView.setText(orderDetailItems.get(position).getOrderItemName());
-        orderItemQuantityTextView.setText(String.valueOf(orderDetailItems.get(position).getOrederItemQuantity()));
-        orderItemStatusTextView.setText(orderDetailItems.get(position).getOrderItemStatus());
+        if (orderDetailItems != null) {
+            if (orderDetailItems.getCartItems().get(position) != null && orderDetailItems.getCartItems().get(position).getCartItemName() != null) {
+                orderItemNameTextView.setText(orderDetailItems.getCartItems().get(position).getCartItemName());
+            }
+            if (orderDetailItems.getCartItems().get(position) != null && orderDetailItems.getCartItems().get(position).getCartItemQuantity() != null) {
+                orderItemQuantityTextView.setText(String.valueOf(orderDetailItems.getCartItems().get(position).getCartItemQuantity()));
+            }
+            if (orderDetailItems.getCartItems().get(position) != null && orderDetailItems.getCartItems().get(position).getItemStatus() != null) {
+                orderItemStatusTextView.setText(orderDetailItems.getCartItems().get(position).getItemStatus());
+            }
+        }
 
         Animation animation = AnimationUtils.loadAnimation(context, R.anim.fade_in);
         animation.setStartOffset(position * 10);
@@ -63,8 +70,18 @@ public class OrderDisplayAdapter extends BaseAdapter {
         return v;
     }
 
-    public void updateOrderList(ArrayList<OrderDetailItem> orderDetailItems) {
+    /*public void updateOrderList(ArrayList<OrderDetailItem> orderDetailItems) {
         this.orderDetailItems = orderDetailItems;
+        notifyDataSetChanged();
+    }*/
+
+    public void updateOrderListNew(FullOrder orderDetailItems) {
+        this.orderDetailItems = orderDetailItems;
+        notifyDataSetChanged();
+    }
+
+    void updateOrderData(FullOrder updatedOrder) {
+        orderDetailItems = updatedOrder;
         notifyDataSetChanged();
     }
 }

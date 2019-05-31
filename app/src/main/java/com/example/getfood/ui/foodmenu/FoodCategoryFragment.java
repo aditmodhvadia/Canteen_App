@@ -146,7 +146,7 @@ public class FoodCategoryFragment extends Fragment {
                                             .setCartItemQuantity(FoodMenuDisplayActivity.cartItems
                                                     .get(probablePosition).getCartItemQuantity() + quant);
                                 } else {
-                                    FoodMenuDisplayActivity.cartItems.add(new CartItem(foodItem.get(position), quant));
+                                    FoodMenuDisplayActivity.cartItems.add(new CartItem(foodItem.get(position), "In-Cart", quant));
                                 }
                                 Toast.makeText(getContext(), getString(R.string.add_to_cart), Toast.LENGTH_LONG).show();
                             }
