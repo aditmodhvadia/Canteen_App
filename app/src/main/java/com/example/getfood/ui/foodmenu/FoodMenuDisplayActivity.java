@@ -26,15 +26,15 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.getfood.models.CartItem;
 import com.example.getfood.R;
-import com.example.getfood.utils.AlertUtils;
-import com.example.getfood.utils.OnDialogButtonClickListener;
+import com.example.getfood.models.CartItem;
 import com.example.getfood.ui.cart.CartActivity;
 import com.example.getfood.ui.loginregister.LoginActivity;
 import com.example.getfood.ui.map.MapsActivity;
 import com.example.getfood.ui.orderlist.OrderListActivity;
 import com.example.getfood.ui.terms.TermsActivity;
+import com.example.getfood.utils.AlertUtils;
+import com.example.getfood.utils.OnDialogButtonClickListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -120,11 +120,7 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
                             else
                                 showCart();
                         } else if (menuItem.getItemId() == R.id.nav_order) {
-                            Intent orders = new Intent(FoodMenuDisplayActivity.this, OrderListActivity.class);
-                            String email = auth.getCurrentUser().getEmail();
-                            String rollNo = email.substring(0, email.indexOf("@"));
-                            orders.putExtra(getString(R.string.i_roll_no), rollNo);
-                            startActivity(orders);
+                            startActivity(new Intent(FoodMenuDisplayActivity.this, OrderListActivity.class));
                         } else if (menuItem.getItemId() == R.id.nav_terms) {
                             startActivity(new Intent(FoodMenuDisplayActivity.this, TermsActivity.class));
                         } else if (menuItem.getItemId() == R.id.nav_map) {

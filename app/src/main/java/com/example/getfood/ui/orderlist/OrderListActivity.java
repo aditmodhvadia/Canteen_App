@@ -18,7 +18,6 @@ import java.util.ArrayList;
 public class OrderListActivity extends BaseActivity implements OrderListMvpView {
 
     private ListView ordersListView;
-    private String rollNo;
     private OrderListDisplayAdapter orderListDisplayAdapter;
     private OrderListPresenter<OrderListActivity> presenter;
 
@@ -38,11 +37,8 @@ public class OrderListActivity extends BaseActivity implements OrderListMvpView 
         presenter = new OrderListPresenter<>();
         presenter.onAttach(this);
 
-        Intent data = getIntent();
-        rollNo = data.getStringExtra(getString(R.string.i_roll_no));
-
         //        fetch all the order IDs of the user first
-        presenter.fetchOrderList(rollNo);
+        presenter.fetchOrderList(mRollNo);
     }
 
     @Override
