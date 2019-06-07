@@ -46,18 +46,18 @@ public class CartRecyclerViewDisplayAdapter extends RecyclerView.Adapter<CartRec
     @Override
     public void onBindViewHolder(@NonNull final CartRecyclerViewDisplayAdapter.ViewHolder holder, int position) {
 
-        holder.itemNameTextView.setText(cartItems.get(position).getCartItemName());
+        holder.itemNameTextView.setText(cartItems.get(position).getItemName());
         holder.itemPriceTextView.setText(String.format(Locale.ENGLISH, "%s%d", context.getString(R.string.rupee_symbol),
-                Integer.parseInt(cartItems.get(position).getFoodItem().getItemPrice())));
-        holder.itemQuantityTextView.setText(cartItems.get(position).getCartItemQuantity().toString());
+                Integer.parseInt(cartItems.get(position).getItemPrice())));
+        holder.itemQuantityTextView.setText(cartItems.get(position).getItemQuantity().toString());
 
         holder.increaseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
-                int value = FoodMenuDisplayActivity.cartItems.get(position).getCartItemQuantity();
+                int value = FoodMenuDisplayActivity.cartItems.get(position).getItemQuantity();
                 if (value < 10) {
-                    FoodMenuDisplayActivity.cartItems.get(position).setCartItemQuantity(value + 1);
+                    FoodMenuDisplayActivity.cartItems.get(position).increaseQuantity();
                     CartActivity.calcTotal();
                     notifyItemChanged(position);
                     Toast.makeText(context, context.getString(R.string.adjust_cart), Toast.LENGTH_SHORT).show();
@@ -72,11 +72,10 @@ public class CartRecyclerViewDisplayAdapter extends RecyclerView.Adapter<CartRec
 
                 if (position != RecyclerView.NO_POSITION) {
 
-                    int value = FoodMenuDisplayActivity.cartItems.get(position).getCartItemQuantity();
+                    int value = FoodMenuDisplayActivity.cartItems.get(position).getItemQuantity();
 
                     if (value > 1) {
-                        value--;
-                        FoodMenuDisplayActivity.cartItems.get(position).setCartItemQuantity(value);
+                        FoodMenuDisplayActivity.cartItems.get(position).decreaseQuantity();
                         notifyItemChanged(position);
                         CartActivity.calcTotal();
                         Toast.makeText(context, context.getString(R.string.adjust_cart), Toast.LENGTH_SHORT).show();

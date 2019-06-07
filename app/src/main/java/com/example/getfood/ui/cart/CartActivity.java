@@ -10,7 +10,6 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -35,14 +34,14 @@ import com.example.getfood.R;
 import com.example.getfood.callback.SwipeToDeleteCallback;
 import com.example.getfood.models.CartItem;
 import com.example.getfood.models.FullOrder;
+import com.example.getfood.ui.base.BaseActivity;
 import com.example.getfood.ui.foodmenu.FoodMenuDisplayActivity;
 import com.example.getfood.ui.orderdetail.OrderDetailActivity;
 import com.example.getfood.utils.AlertUtils;
 import com.example.getfood.utils.AppUtils;
-import com.example.getfood.utils.OnDialogButtonClickListener;
+import com.example.getfood.utils.DialogConfirmation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -65,7 +64,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public class CartActivity extends AppCompatActivity implements View.OnClickListener, PaytmPaymentTransactionCallback {
+public class CartActivity extends BaseActivity implements View.OnClickListener, PaytmPaymentTransactionCallback {
 
     public static Activity activity = null;
     public static int total;
@@ -73,21 +72,18 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     RecyclerView cartRecyclerView;
     RecyclerView.Adapter cartRecyclerDisplayAdapter;
     Button orderButton;
-    Intent orderIntent;
     //    choose time views
     Button firstBreakButton, secondBreakButton, lastBreakButton, nowButton;
-    AlertDialog chooseTimeDialog;
     DatabaseReference orderRoot, userOrderData;
-    FirebaseAuth auth;
-    String rollNo;
     String orderTime = null;
+    private AlertDialog chooseTimeDialog;
     private TextView tvCurrentDate;
 
     public static void calcTotal() {
 //        int i = 0;
         total = 0;
         for (CartItem item : FoodMenuDisplayActivity.cartItems) {
-            total = total + Integer.parseInt(item.getFoodItem().getItemPrice()) * item.getCartItemQuantity();
+            total = total + Integer.parseInt(item.getItemPrice()) * item.getItemQuantity();
         }
 //        set alpha of total price textview to zero, and then animate it to increase to 1.0
         totalPriceTV.setAlpha(0.0f);
@@ -97,9 +93,12 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cart);
+    public int getLayoutResId() {
+        return R.layout.activity_cart;
+    }
+
+    @Override
+    public void initViews() {
         activity = this;
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -128,14 +127,11 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         ItemTouchHelper itemTouchHelper = new
                 ItemTouchHelper(new SwipeToDeleteCallback(adapter));
         itemTouchHelper.attachToRecyclerView(cartRecyclerView);
+    }
 
-        orderButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chooseTime();
-            }
-        });
-
+    @Override
+    public void setListeners() {
+        orderButton.setOnClickListener(this);
     }
 
     @Override
@@ -150,8 +146,8 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         if (id == android.R.id.home)
             onBackPressed();
         if (id == R.id.menu_clear_cart) {
-            AlertUtils.openAlertDialog(this, getString(R.string.clear_cart),
-                    getString(R.string.sure_clear_cart), getString(R.string.yes), getString(R.string.no), new OnDialogButtonClickListener() {
+            AlertUtils.showConfirmationDialog(mContext, getString(R.string.clear_cart),
+                    getString(R.string.sure_clear_cart), getString(R.string.yes), getString(R.string.no), new DialogConfirmation.ConfirmationDialogListener() {
                         @Override
                         public void onPositiveButtonClicked() {
                             clearCart();
@@ -266,36 +262,41 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-
-        //Before placing the order, PayTM Gateway will be called and the code will be shifted into it's method
-        placeOrder(v);
-    }
-
-    private void placeOrder(View v) {
-
-        auth = FirebaseAuth.getInstance();
-        orderRoot = FirebaseDatabase.getInstance().getReference().child(getString(R.string.order));
-        String email = auth.getCurrentUser().getEmail();
-        rollNo = email.substring(0, email.indexOf("@"));
-        userOrderData = FirebaseDatabase.getInstance().getReference().child("UserOrderData").child(rollNo);
-
         switch (v.getId()) {
+            case R.id.orderButton:
+                chooseTime();
+                break;
             case R.id.firstBreakButton:
                 orderTime = firstBreakButton.getText().toString();
+                placeOrder();
                 break;
             case R.id.secondBreakButton:
                 orderTime = secondBreakButton.getText().toString();
+                placeOrder();
                 break;
             case R.id.lastBreakButton:
                 orderTime = lastBreakButton.getText().toString();
+                placeOrder();
                 break;
             case R.id.nowButton:
                 Date date = new Date();
                 String strDateFormat = getString(R.string.date_format);
                 DateFormat dateFormat = new SimpleDateFormat(strDateFormat, Locale.ENGLISH);
                 orderTime = dateFormat.format(date);
+                placeOrder();
+                break;
+            default:
+                chooseTime();
                 break;
         }
+        //Before placing the order, PayTM Gateway will be called and the code will be shifted into it's method
+    }
+
+    private void placeOrder() {
+        chooseTimeDialog.dismiss();
+        showLoading();
+        orderRoot = FirebaseDatabase.getInstance().getReference().child(getString(R.string.order));
+        userOrderData = FirebaseDatabase.getInstance().getReference().child("UserOrderData").child(mRollNo);
 
         orderRoot.keepSynced(true);
 
@@ -324,6 +325,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             });
 
         } else {
+            hideLoading();
             makeText(getString(R.string.no_internet));
         }
     }
@@ -334,39 +336,44 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         Collections.sort(FoodMenuDisplayActivity.cartItems, new Comparator<CartItem>() {
             @Override
             public int compare(CartItem o1, CartItem o2) {
-                return o1.getFoodItem().getItemCategory().length() - o2.getFoodItem().getItemCategory().length();
+                return o1.getItemCategory().length() - o2.getItemCategory().length();
             }
         });
 
         final String orderId = userOrderData.push().getKey();
-        FullOrder fullOrder = new FullOrder(FoodMenuDisplayActivity.cartItems, String.valueOf(total), orderTime, rollNo, orderId, null);
+        FullOrder fullOrder = new FullOrder(FoodMenuDisplayActivity.cartItems, String.valueOf(total), orderTime, mRollNo, orderId, null);
 
-        userOrderData.child(orderId).setValue(fullOrder).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isComplete()) {
-                    userOrderData.child(orderId).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            FullOrder order = dataSnapshot.getValue(FullOrder.class);
-                            if (order != null) {
-                                for (CartItem item : order.getCartItems()) {
-                                    Log.d("##DebugData", "\n" + item.getCartItemName() + " " + item.getCartItemQuantity() + " " + item.getFoodItem().getItemCategory());
+        if (orderId != null) {
+            userOrderData.child(orderId).setValue(fullOrder).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isComplete()) {
+                        userOrderData.child(orderId).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                FullOrder order = dataSnapshot.getValue(FullOrder.class);
+                                if (order != null) {
+                                    for (CartItem item : order.getOrderItems()) {
+                                        Log.d("##DebugData", "\n" + item.getItemName() + " " + item.getItemQuantity() + " " + item.getItemCategory());
+                                    }
+                                    hideLoading();
+                                    Intent orderIntent = new Intent(CartActivity.this, OrderDetailActivity.class);
+                                    orderIntent.putExtra("TestOrderData", order);
+                                    startActivity(orderIntent);
                                 }
-                                orderIntent = new Intent(CartActivity.this, OrderDetailActivity.class);
-                                orderIntent.putExtra("TestOrderData", order);
-                                startActivity(orderIntent);
                             }
-                        }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                hideLoading();
+                            }
+                        });
+                    } else {
+                        hideLoading();
+                    }
                 }
-            }
-        });
+            });
+        }
         /*
         orderRoot.child(String.valueOf(orderID)).child(getString(R.string.total_amount)).setValue(String.valueOf(total));
         orderRoot.child(String.valueOf(orderID)).child(getString(R.string.time_to_deliver)).setValue(orderTime);
@@ -375,7 +382,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             orderRoot.child(String.valueOf(orderID)).child(getString(R.string.items))
                     .child(FoodMenuDisplayActivity.cartItems.get(pos).getFoodItem().getItemCategory())
                     .child(FoodMenuDisplayActivity.cartItems.get(pos).getCartItemName())
-                    .child(getString(R.string.quantity)).setValue(FoodMenuDisplayActivity.cartItems.get(pos).getCartItemQuantity());
+                    .child(getString(R.string.quantity)).setValue(FoodMenuDisplayActivity.cartItems.get(pos).getItemQuantity());
             orderRoot.child(String.valueOf(orderID)).child(getString(R.string.items))
                     .child(FoodMenuDisplayActivity.cartItems.get(pos).getFoodItem().getItemCategory())
                     .child(FoodMenuDisplayActivity.cartItems.get(pos).getCartItemName())
@@ -499,7 +506,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 //        FoodMenuDisplayActivity.cartItemPrice.clear();
         FoodMenuDisplayActivity.cartItems.clear();
 
-        startActivity(orderIntent);
+//        startActivity(orderIntent);
     }
 
     @Override

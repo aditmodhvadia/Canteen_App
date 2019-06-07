@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class FoodItem implements Serializable {
 
-    private String itemName, itemPrice, itemRating, itemCategory;
+    protected String itemName, itemPrice, itemRating, itemCategory;
 
     public FoodItem(String itemName, String itemPrice, String itemRating, String itemCategory) {
         this.itemName = itemName;
@@ -24,11 +24,9 @@ public class FoodItem implements Serializable {
         return itemName;
     }
 
-
     public String getItemPrice() {
         return itemPrice;
     }
-
 
     public String getItemRating() {
         return itemRating;

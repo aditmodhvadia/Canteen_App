@@ -34,7 +34,7 @@ import com.example.getfood.ui.map.MapsActivity;
 import com.example.getfood.ui.orderlist.OrderListActivity;
 import com.example.getfood.ui.terms.TermsActivity;
 import com.example.getfood.utils.AlertUtils;
-import com.example.getfood.utils.OnDialogButtonClickListener;
+import com.example.getfood.utils.DialogConfirmation;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -227,8 +227,8 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
     }
 
     private void logout() {
-        AlertUtils.openAlertDialog(this, getString(R.string.logout), getString(R.string.sure_logout),
-                getString(R.string.yes), getString(R.string.no), new OnDialogButtonClickListener() {
+        AlertUtils.showConfirmationDialog(this, getString(R.string.logout), getString(R.string.sure_logout),
+                getString(R.string.yes), getString(R.string.no), new DialogConfirmation.ConfirmationDialogListener() {
                     @Override
                     public void onPositiveButtonClicked() {
                         auth.signOut();

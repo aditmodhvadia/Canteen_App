@@ -54,7 +54,13 @@ public class OrderListDisplayAdapter extends BaseAdapter {
 
 
 //        Set text for all the TextViews
-        orderIDTextView.setText(String.format("Order ID: %s", orderListItems.get(position).getOrderId()));
+        String orderId;
+        if (orderListItems.get(position).getDisplayID() != null && !orderListItems.get(position).getDisplayID().isEmpty()) {
+            orderId = orderListItems.get(position).getDisplayID();
+        } else {
+            orderId = orderListItems.get(position).getOrderId();
+        }
+        orderIDTextView.setText(String.format("Order ID: %s", orderId));
         orderAmountTextView.setText(String.format("Amount: ₹ %s", orderListItems.get(position).getOrderAmount()));
         orderTimeTextView.setText(orderListItems.get(position).getTimeToDeliver());
 

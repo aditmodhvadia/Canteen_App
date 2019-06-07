@@ -101,7 +101,7 @@ public class AppUtils {
      */
     public static int isItemInCart(ArrayList<CartItem> cartItems, FoodItem foodItem) {
         for (int i = 0; i < cartItems.size(); i++) {
-            if (cartItems.get(i).getFoodItem().equals(foodItem)) {
+            if (cartItems.get(i).getItemName().equals(foodItem.getItemName())) {
                 return i;
             }
         }

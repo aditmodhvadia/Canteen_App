@@ -1,58 +1,79 @@
 package com.example.getfood.utils;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
-import android.widget.Button;
+import android.support.design.widget.Snackbar;
+import android.view.View;
+import android.widget.Toast;
 
+
+/**
+ * To show dialog, toast, snack-bar or any other alert
+ */
 public class AlertUtils {
 
+
     /**
-     * Return an alert dialog
+     * To get simple alert box
      *
-     * @param message         message for the alert dialog
-     * @param listener        listener to trigger selection methods
-     * @param title           title for the alert dialog
-     * @param context         context to display the alert dialog
-     * @param positiveBtnText positiveBtnText to display positive button text
-     * @param positiveBtnText negativeBtnText to display negative button text
+     * @param context    App context
+     * @param title      Title
+     * @param desc       Desc
+     * @param buttonText Button text
+     * @param listener   callback
+     * @return @{@link DialogSimple}
      */
-    public static void openAlertDialog(Context context, String title, String message, String positiveBtnText, String negativeBtnText,
-                                       final OnDialogButtonClickListener listener) {
+    public static DialogSimple getAlertBox(Context context, String title, String desc, String buttonText, DialogSimple.AlertDialogListener listener) {
+        DialogSimple simpleDialog = new DialogSimple(context, title, desc, buttonText);
+        simpleDialog.setAlertDialogListener(listener);
+        simpleDialog.setCancelable(false);
+        return simpleDialog;
+    }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        if (title != null) {
-            builder.setTitle(title);
-        }
-        if (message != null) {
-            builder.setMessage(message);
-        }
-        if (positiveBtnText != null) {
-            builder.setPositiveButton(positiveBtnText, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    listener.onPositiveButtonClicked();
+    /**
+     * To show @{@link DialogSimple}
+     *
+     * @param context    App context
+     * @param title      Title
+     * @param desc       Desc
+     * @param buttonText Button text
+     * @param listener   callback
+     */
+    public static void showAlertBox(Context context, String title, String desc, String buttonText, DialogSimple.AlertDialogListener listener) {
+        DialogSimple simpleDialog = getAlertBox(context, title, desc, buttonText, listener);
+        simpleDialog.show();
+    }
 
-                }
-            });
-        }
+    public static DialogConfirmation getConfirmationDialog(Context context, String title, String desc, String positiveBtnText, String negativeBtnText, DialogConfirmation.ConfirmationDialogListener listener) {
+        DialogConfirmation dialogConfirmation = new DialogConfirmation(context, title, desc);
+        dialogConfirmation.setPositiveButtonText(positiveBtnText);
+        dialogConfirmation.setNegativeButtonText(negativeBtnText);
+        dialogConfirmation.setConfirmationDialogListener(listener);
+        dialogConfirmation.setCancelable(false);
+        return dialogConfirmation;
+    }
 
-        if (negativeBtnText != null) {
-            builder.setNegativeButton(negativeBtnText, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    listener.onNegativeButtonClicked();
+    public static void showConfirmationDialog(Context context, String title, String desc, String positiveBtnText, String negativeBtnText,
+                                              DialogConfirmation.ConfirmationDialogListener listener) {
+        DialogConfirmation dialogConfirmation = getConfirmationDialog(context, title, desc, positiveBtnText, negativeBtnText, listener);
+        dialogConfirmation.show();
+    }
 
-                }
-            });
-        }
-        builder.setCancelable(false);
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-        Button button = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
-//        button.setBackgroundColor(context.getResources().getColor(R.color.colorBadRating)   );
+    public static void displaySnackBar(View view, String message) {
+        Snackbar.make(view, message, Snackbar.LENGTH_LONG).show();
+    }
+
+    public static void showToast(Context context, String message) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
+
+    public static Snackbar getSnackBar(View view, String message, String action, View.OnClickListener clickListener) {
+        return Snackbar.make(view, message, Snackbar.LENGTH_LONG).setAction(action, clickListener);
 
     }
+
+    public static void displaySnackBarWithTime(View view, String message, String action, int timeMilliSecond, View.OnClickListener clickListener) {
+        Snackbar.make(view, message, timeMilliSecond).setAction(action, clickListener).show();
+
+    }
+
 }

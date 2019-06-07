@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class FullOrder implements Serializable {
-    private ArrayList<CartItem> cartItems;
+    private ArrayList<CartItem> orderItems;
     private String orderAmount;
     private String timeToDeliver;
     private String rollNo;
@@ -13,7 +13,7 @@ public class FullOrder implements Serializable {
     private String displayID;
 
     public FullOrder(ArrayList<CartItem> cartItems, String orderAmount, String timeToDeliver, String rollNo, String orderId, String status) {
-        this.cartItems = cartItems;
+        this.orderItems = cartItems;
         this.orderAmount = orderAmount;
         this.timeToDeliver = timeToDeliver;
         this.rollNo = rollNo;
@@ -32,8 +32,8 @@ public class FullOrder implements Serializable {
         return orderStatus;
     }
 
-    public ArrayList<CartItem> getCartItems() {
-        return cartItems;
+    public ArrayList<CartItem> getOrderItems() {
+        return orderItems;
     }
 
     public String getOrderId() {

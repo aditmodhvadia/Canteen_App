@@ -29,7 +29,7 @@ public class OrderDisplayAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return orderDetailItems.getCartItems().size();
+        return orderDetailItems.getOrderItems().size();
     }
 
     @Override
@@ -52,14 +52,14 @@ public class OrderDisplayAdapter extends BaseAdapter {
         orderItemStatusTextView = v.findViewById(R.id.orderItemStatusTextView);
 
         if (orderDetailItems != null) {
-            if (orderDetailItems.getCartItems().get(position) != null && orderDetailItems.getCartItems().get(position).getCartItemName() != null) {
-                orderItemNameTextView.setText(orderDetailItems.getCartItems().get(position).getCartItemName());
+            if (orderDetailItems.getOrderItems().get(position) != null && orderDetailItems.getOrderItems().get(position).getItemName() != null) {
+                orderItemNameTextView.setText(orderDetailItems.getOrderItems().get(position).getItemName());
             }
-            if (orderDetailItems.getCartItems().get(position) != null && orderDetailItems.getCartItems().get(position).getCartItemQuantity() != null) {
-                orderItemQuantityTextView.setText(String.valueOf(orderDetailItems.getCartItems().get(position).getCartItemQuantity()));
+            if (orderDetailItems.getOrderItems().get(position) != null && orderDetailItems.getOrderItems().get(position).getItemQuantity() != null) {
+                orderItemQuantityTextView.setText(String.valueOf(orderDetailItems.getOrderItems().get(position).getItemQuantity()));
             }
-            if (orderDetailItems.getCartItems().get(position) != null && orderDetailItems.getCartItems().get(position).getItemStatus() != null) {
-                orderItemStatusTextView.setText(orderDetailItems.getCartItems().get(position).getItemStatus());
+            if (orderDetailItems.getOrderItems().get(position) != null && orderDetailItems.getOrderItems().get(position).getItemStatus() != null) {
+                orderItemStatusTextView.setText(orderDetailItems.getOrderItems().get(position).getItemStatus());
             }
         }
 

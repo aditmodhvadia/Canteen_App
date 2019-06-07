@@ -11,7 +11,9 @@ import com.example.getfood.models.FullOrder;
 import com.example.getfood.models.OrderDetailItem;
 import com.example.getfood.service.OrderNotificationService;
 import com.example.getfood.ui.base.BaseActivity;
+import com.example.getfood.utils.AlertUtils;
 import com.example.getfood.utils.AppUtils;
+import com.example.getfood.utils.DialogSimple;
 import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
@@ -21,8 +23,6 @@ public class OrderDetailActivity extends BaseActivity implements OrderDetailMvpV
     private TextView testTV, test;
     private ListView orderListView;
     private OrderDisplayAdapter orderDisplayAdapter;
-    private int orderTotal;
-    private String orderID, rollNo, orderTime, orderTotalPrice;
     private Intent orderData;
     private OrderDetailPresenter<OrderDetailActivity> presenter;
     private ArrayList<OrderDetailItem> orderDetailItems;
@@ -38,8 +38,14 @@ public class OrderDetailActivity extends BaseActivity implements OrderDetailMvpV
 
 //        Getting data from the calling activity/Intent
         orderData = getIntent();
-        if (orderData.getExtras().isEmpty()) {
-            Toast.makeText(getApplicationContext(), getString(R.string.no_data_received), Toast.LENGTH_SHORT).show();
+        if (orderData.getExtras() == null || orderData.getExtras().isEmpty()) {
+            AlertUtils.showAlertBox(mContext, getString(R.string.std_error_title), getString(R.string.std_error_msg),
+                    getString(R.string.ok), new DialogSimple.AlertDialogListener() {
+                        @Override
+                        public void onButtonClicked() {
+                            finish();
+                        }
+                    });
             return;
         }
         AppUtils.createNotificationChannel(mContext);
@@ -63,11 +69,11 @@ public class OrderDetailActivity extends BaseActivity implements OrderDetailMvpV
         presenter.fetchOrderDetails(fullOrder);
 
         /*Log.d("##DebugData", fullOrder.getOrderId() + " " + fullOrder.getOrderStatus());
-        for (CartItem item : fullOrder.getCartItems()) {
-            Log.d("##DebugData", "\n" + item.getCartItemName() + " " + item.getCartItemQuantity() + " " + item.getFoodItem().getItemCategory());
+        for (CartItem item : fullOrder.getOrderItems()) {
+            Log.d("##DebugData", "\n" + item.getCartItemName() + " " + item.getItemQuantity() + " " + item.getFoodItem().getItemCategory());
         }*/
 
-        testTV.setText(String.format("%s%s", getString(R.string.order_id_is), orderID));
+//        testTV.setText(String.format("%s%s", getString(R.string.order_id_is), orderID));
     }
 
     @Override
@@ -111,8 +117,8 @@ public class OrderDetailActivity extends BaseActivity implements OrderDetailMvpV
     public void bindOrderDetailAdapter(FullOrder updatedOrder) {
         hideLoading();
 //        orderDisplayAdapter.updateOrderList(orderDetailItems);
-        if(updatedOrder.getDisplayID() != null){
-            testTV.setText(String.format("%s%s", getString(R.string.order_id_is), updatedOrder.getDisplayID()));
+        if (updatedOrder.getDisplayID() != null) {
+            testTV.setText(String.format("%s %s", getString(R.string.order_id_is), updatedOrder.getDisplayID()));
         }
         orderDisplayAdapter.updateOrderData(updatedOrder);
 

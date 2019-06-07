@@ -2,16 +2,20 @@ package com.example.getfood.models;
 
 import java.io.Serializable;
 
-public class CartItem implements Serializable {
+public class CartItem extends FoodItem implements Serializable {
 
-    private Integer cartItemQuantity;
+    private Integer itemQuantity;
     private String itemStatus;
-    private FoodItem foodItem;
+//    private FoodItem foodItem;
 
     public CartItem(FoodItem foodItem, String itemStatus, Integer cartItemQuantity) {
-        this.cartItemQuantity = cartItemQuantity;
+        super(foodItem.getItemName(), foodItem.getItemPrice(), null, foodItem.getItemCategory());
+        this.itemQuantity = cartItemQuantity;
         this.itemStatus = itemStatus;
-        this.foodItem = foodItem;
+//        this.foodItem = foodItem;
+//        setItemCategory(foodItem.getItemCategory());
+//        setItemName(foodItem.getItemName());
+//        setItemPrice(foodItem.getItemPrice());
     }
 
     public CartItem() {
@@ -21,19 +25,23 @@ public class CartItem implements Serializable {
         return itemStatus;
     }
 
-    public FoodItem getFoodItem() {
+    /*public FoodItem getFoodItem() {
         return foodItem;
+    }*/
+
+    public Integer getItemQuantity() {
+        return itemQuantity;
     }
 
-    public String getCartItemName() {
-        return foodItem.getItemName();
+    public void setItemQuantity(Integer itemQuantity) {
+        this.itemQuantity = itemQuantity;
     }
 
-    public Integer getCartItemQuantity() {
-        return cartItemQuantity;
+    public void increaseQuantity() {
+        this.itemQuantity++;
     }
 
-    public void setCartItemQuantity(Integer cartItemQuantity) {
-        this.cartItemQuantity = cartItemQuantity;
+    public void decreaseQuantity() {
+        this.itemQuantity--;
     }
 }

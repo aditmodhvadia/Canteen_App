@@ -143,10 +143,10 @@ public class FoodCategoryFragment extends Fragment {
                                 int probablePosition = AppUtils.isItemInCart(FoodMenuDisplayActivity.cartItems, foodItem.get(position));
                                 if (probablePosition != -1) {
                                     FoodMenuDisplayActivity.cartItems.get(probablePosition)
-                                            .setCartItemQuantity(FoodMenuDisplayActivity.cartItems
-                                                    .get(probablePosition).getCartItemQuantity() + quant);
+                                            .setItemQuantity(FoodMenuDisplayActivity.cartItems
+                                                    .get(probablePosition).getItemQuantity() + quant);
                                 } else {
-                                    FoodMenuDisplayActivity.cartItems.add(new CartItem(foodItem.get(position), "In-Cart", quant));
+                                    FoodMenuDisplayActivity.cartItems.add(new CartItem(foodItem.get(position), "Order-Placed", quant));
                                 }
                                 Toast.makeText(getContext(), getString(R.string.add_to_cart), Toast.LENGTH_LONG).show();
                             }
