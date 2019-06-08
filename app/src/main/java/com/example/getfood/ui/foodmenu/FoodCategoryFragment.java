@@ -1,6 +1,5 @@
 package com.example.getfood.ui.foodmenu;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -10,15 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.getfood.R;
 import com.example.getfood.models.CartItem;
 import com.example.getfood.models.FoodItem;
+import com.example.getfood.utils.AlertUtils;
 import com.example.getfood.utils.AppUtils;
+import com.example.getfood.utils.DialogAddToCart;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,9 +32,7 @@ public class FoodCategoryFragment extends Fragment {
 
     List<FoodItem> foodItem;
     String CATEGORY = null;
-    Button alertPlus, alertMinus;
-    TextView quantitySetTV;
-    ListView chineseDisplayListView;
+    ListView foodDisplayListView;
     MenuDisplayAdapter displayAdapter;
     ShimmerFrameLayout shimmerLayout;
 
@@ -49,7 +46,7 @@ public class FoodCategoryFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_chinese, container, false);
         shimmerLayout = v.findViewById(R.id.shimmerLayout);
-        chineseDisplayListView = v.findViewById(R.id.chineseDisplayListView);
+        foodDisplayListView = v.findViewById(R.id.chineseDisplayListView);
         foodItem = new ArrayList<>();
 
         Bundle args = this.getArguments();
@@ -86,7 +83,7 @@ public class FoodCategoryFragment extends Fragment {
                     @Override
                     public void run() {
                         displayAdapter = new MenuDisplayAdapter(foodItem, getContext());
-                        chineseDisplayListView.setAdapter(displayAdapter);
+                        foodDisplayListView.setAdapter(displayAdapter);
                         shimmerLayout.stopShimmer();
                         shimmerLayout.setVisibility(View.GONE);
                     }
@@ -101,71 +98,46 @@ public class FoodCategoryFragment extends Fragment {
             }
         });
 
-        chineseDisplayListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        foodDisplayListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int position, long l) {
 
                 if (AppUtils.isItemInCart(FoodMenuDisplayActivity.cartItems, foodItem.get(position)) != -1) {
                     Toast.makeText(getContext(), getString(R.string.item_in_cart), Toast.LENGTH_SHORT).show();
                 } else {
+                    AlertUtils.showAddToCartDialog(getContext(), foodItem.get(position), new DialogAddToCart.AddToCartDialogListener() {
 
-                    android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getContext());
-
-                    View quantityAlert = getLayoutInflater().inflate(R.layout.adjust_quantity_display, null);
-                    alertPlus = quantityAlert.findViewById(R.id.alertPlus);
-                    alertMinus = quantityAlert.findViewById(R.id.alertMinus);
-                    quantitySetTV = quantityAlert.findViewById(R.id.quantitySetTextView);
-                    alertPlus.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View view) {
-                            if (Integer.parseInt(quantitySetTV.getText().toString()) < 5) {
-                                quantitySetTV.setText(String.valueOf(Integer.valueOf(quantitySetTV.getText().toString()) + 1));
-                            }
-                        }
-                    });
-                    alertMinus.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            if (Integer.parseInt(quantitySetTV.getText().toString()) > 0) {
-                                quantitySetTV.setText(String.valueOf(Integer.valueOf(quantitySetTV.getText().toString()) - 1));
-                            }
-                        }
-                    });
-
-                    builder.setTitle(R.string.select_quantity);
-                    builder.setMessage(foodItem.get(position).getItemName());
-                    builder.setView(quantityAlert);
-                    builder.setPositiveButton(R.string.add_to_cart, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i1) {
-                            int quant = Integer.valueOf(quantitySetTV.getText().toString());
-                            if (quant != 0) {
+                        public void onAddToCartClicked(int quantity) {
+                            if (quantity != 0) {
                                 int probablePosition = AppUtils.isItemInCart(FoodMenuDisplayActivity.cartItems, foodItem.get(position));
                                 if (probablePosition != -1) {
                                     FoodMenuDisplayActivity.cartItems.get(probablePosition)
                                             .setItemQuantity(FoodMenuDisplayActivity.cartItems
-                                                    .get(probablePosition).getItemQuantity() + quant);
+                                                    .get(probablePosition).getItemQuantity() + quantity);
                                 } else {
-                                    FoodMenuDisplayActivity.cartItems.add(new CartItem(foodItem.get(position), "Order-Placed", quant));
+                                    FoodMenuDisplayActivity.cartItems.add(new CartItem(foodItem.get(position),
+                                            "Order-Placed", quantity));
                                 }
                                 Toast.makeText(getContext(), getString(R.string.add_to_cart), Toast.LENGTH_LONG).show();
                             }
                         }
-                    });
 
-                    builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
+                        public void onCancelClicked() {
+
+                        }
+
+                        @Override
+                        public void onIncreaseQuantityClicked() {
+
+                        }
+
+                        @Override
+                        public void onDecreaseQuantityClicked() {
 
                         }
                     });
-
-                    android.support.v7.app.AlertDialog dialog = builder.show();
-                    Button nbutton = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
-                    nbutton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                    Button pbutton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-                    pbutton.setTextColor(getResources().getColor(R.color.colorPrimary));
-
                 }
             }
         });

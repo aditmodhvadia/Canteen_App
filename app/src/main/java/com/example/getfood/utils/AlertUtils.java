@@ -5,6 +5,9 @@ import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.getfood.R;
+import com.example.getfood.models.FoodItem;
+
 
 /**
  * To show dialog, toast, snack-bar or any other alert
@@ -55,6 +58,21 @@ public class AlertUtils {
     public static void showConfirmationDialog(Context context, String title, String desc, String positiveBtnText, String negativeBtnText,
                                               DialogConfirmation.ConfirmationDialogListener listener) {
         DialogConfirmation dialogConfirmation = getConfirmationDialog(context, title, desc, positiveBtnText, negativeBtnText, listener);
+        dialogConfirmation.show();
+    }
+
+    public static DialogAddToCart getAddToCartDialog(Context context, String title, String desc, String positiveBtnText, String negativeBtnText, DialogAddToCart.AddToCartDialogListener listener) {
+        DialogAddToCart dialogConfirmation = new DialogAddToCart(context, title, desc);
+        dialogConfirmation.setPositiveButtonText(positiveBtnText);
+        dialogConfirmation.setNegativeButtonText(negativeBtnText);
+        dialogConfirmation.setAddToCartDialogListener(listener);
+        dialogConfirmation.setCancelable(false);
+        return dialogConfirmation;
+    }
+
+    public static void showAddToCartDialog(Context context, FoodItem foodItem, DialogAddToCart.AddToCartDialogListener listener) {
+        DialogAddToCart dialogConfirmation = getAddToCartDialog(context, context.getString(R.string.select_quantity),
+                foodItem.getItemName(), context.getString(R.string.add_to_cart), context.getString(R.string.no), listener);
         dialogConfirmation.show();
     }
 
