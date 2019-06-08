@@ -15,4 +15,6 @@ public interface BaseView {
     Context getContext();
 
     FirebaseAuth getFirebaseAuth();
+
+    String getRollNo();
 }

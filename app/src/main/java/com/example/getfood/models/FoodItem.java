@@ -1,36 +1,34 @@
 package com.example.getfood.models;
 
-public class FoodItem {
+import java.io.Serializable;
 
-    private String itemName, itemPrice, itemRating;
+public class FoodItem implements Serializable {
 
-    public FoodItem(String itemName, String itemPrice, String itemRating) {
+    protected String itemName, itemPrice, itemRating, itemCategory;
+
+    public FoodItem(String itemName, String itemPrice, String itemRating, String itemCategory) {
         this.itemName = itemName;
         this.itemPrice = itemPrice;
         this.itemRating = itemRating;
+        this.itemCategory = itemCategory;
+    }
+
+    public FoodItem() {
+    }
+
+    public String getItemCategory() {
+        return itemCategory;
     }
 
     public String getItemName() {
         return itemName;
     }
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
-
     public String getItemPrice() {
         return itemPrice;
     }
 
-    public void setItemPrice(String itemPrice) {
-        this.itemPrice = itemPrice;
-    }
-
     public String getItemRating() {
         return itemRating;
-    }
-
-    public void setItemRating(String itemRating) {
-        this.itemRating = itemRating;
     }
 }

@@ -1,50 +1,47 @@
 package com.example.getfood.models;
 
-public class CartItem {
+import java.io.Serializable;
 
-    private String cartItemName, cartItemCategory;
-    private Integer cartItemQuantity, cartItemPrice;
+public class CartItem extends FoodItem implements Serializable {
 
-    public CartItem(String cartItemName, String cartItemCategory, Integer cartItemQuantity, Integer cartItemPrice) {
-        this.cartItemName = cartItemName;
-        this.cartItemCategory = cartItemCategory;
-        this.cartItemQuantity = cartItemQuantity;
-        this.cartItemPrice = cartItemPrice;
+    private Integer itemQuantity;
+    private String itemStatus;
+//    private FoodItem foodItem;
+
+    public CartItem(FoodItem foodItem, String itemStatus, Integer cartItemQuantity) {
+        super(foodItem.getItemName(), foodItem.getItemPrice(), null, foodItem.getItemCategory());
+        this.itemQuantity = cartItemQuantity;
+        this.itemStatus = itemStatus;
+//        this.foodItem = foodItem;
+//        setItemCategory(foodItem.getItemCategory());
+//        setItemName(foodItem.getItemName());
+//        setItemPrice(foodItem.getItemPrice());
     }
 
-    public CartItem(String itemName){
-        this.cartItemName = itemName;
+    public CartItem() {
     }
 
-    public String getCartItemName() {
-        return cartItemName;
+    public String getItemStatus() {
+        return itemStatus;
     }
 
-    public void setCartItemName(String cartItemName) {
-        this.cartItemName = cartItemName;
+    /*public FoodItem getFoodItem() {
+        return foodItem;
+    }*/
+
+    public Integer getItemQuantity() {
+        return itemQuantity;
     }
 
-    public String getCartItemCategory() {
-        return cartItemCategory;
+    public void setItemQuantity(Integer itemQuantity) {
+        this.itemQuantity = itemQuantity;
     }
 
-    public void setCartItemCategory(String cartItemCategory) {
-        this.cartItemCategory = cartItemCategory;
+    public void increaseQuantity() {
+        this.itemQuantity++;
     }
 
-    public Integer getCartItemQuantity() {
-        return cartItemQuantity;
-    }
-
-    public void setCartItemQuantity(Integer cartItemQuantity) {
-        this.cartItemQuantity = cartItemQuantity;
-    }
-
-    public Integer getCartItemPrice() {
-        return cartItemPrice;
-    }
-
-    public void setCartItemPrice(Integer cartItemPrice) {
-        this.cartItemPrice = cartItemPrice;
+    public void decreaseQuantity() {
+        this.itemQuantity--;
     }
 }

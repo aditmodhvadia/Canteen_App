@@ -15,12 +15,19 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
     public Context mContext;
     public FirebaseAuth mAuth;
+    public String mRollNo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
         mAuth = FirebaseAuth.getInstance();
+        if (mAuth != null && mAuth.getCurrentUser() != null && mAuth.getCurrentUser().getEmail() != null) {
+            mRollNo = mAuth.getCurrentUser().getEmail().substring(0,
+                    mAuth.getCurrentUser().getEmail().indexOf("@"));
+        } else {
+            mRollNo = null;
+        }
         setContentView(getLayoutResId());
     }
 
@@ -74,6 +81,11 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     @Override
     public FirebaseAuth getFirebaseAuth() {
         return mAuth;
+    }
+
+    @Override
+    public String getRollNo() {
+        return mRollNo;
     }
 
     @Override
