@@ -1,44 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:layout_margin="15dp"
-    android:orientation="horizontal">
-
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="49dp"
-        android:layout_gravity="start"
-        android:layout_weight="0.35" />
-
-    <Button
-        android:id="@+id/alertMinus"
-        android:layout_width="45dp"
-        android:layout_height="wrap_content"
-        android:background="#fff"
-        android:drawableStart="@drawable/ic_minus" />
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="16dp"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="15dp">
 
     <TextView
-        android:id="@+id/quantitySetTextView"
+        android:id="@+id/txtDialogTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:text="1"
-        android:textAlignment="center"
-        android:textSize="28sp" />
+        android:layout_gravity="center"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        tools:text="Add to Cart" />
 
-    <Button
-        android:id="@+id/alertPlus"
-        android:layout_width="45dp"
-        android:layout_height="wrap_content"
-        android:background="#fff"
-        android:drawableStart="@drawable/ic_add" />
-
-    <View
+    <TextView
+        android:id="@+id/txtDialogMessage"
         android:layout_width="wrap_content"
-        android:layout_height="49dp"
-        android:layout_gravity="end"
-        android:layout_weight="0.35" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="21sp"
+        tools:text="Manchurian" />
+
+    <LinearLayout
+        android:id="@+id/llHolder"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="15dp"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="49dp"
+            android:layout_gravity="start"
+            android:layout_weight="0.35" />
+
+        <ImageButton
+            android:id="@+id/btnDecreaseQuantity"
+            android:layout_width="45dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:padding="16dp"
+            android:src="@drawable/ic_minus" />
+
+        <TextView
+            android:id="@+id/quantitySetTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="1"
+            android:textAlignment="center"
+            android:textSize="28sp" />
+
+        <ImageButton
+            android:id="@+id/btnIncreaseQuantity"
+            android:layout_width="45dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:padding="16dp"
+            android:src="@drawable/ic_add" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="49dp"
+            android:layout_gravity="end"
+            android:layout_weight="0.35" />
+    </LinearLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/no"
+            app:layout_constraintEnd_toStartOf="@+id/btnAddToCart"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btnAddToCart" />
+
+        <Button
+            android:id="@+id/btnAddToCart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/add_to_cart"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btnCancel" />
+    </android.support.constraint.ConstraintLayout>
 </LinearLayout>

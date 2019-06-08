@@ -125,5 +125,8 @@
     <string name="cart_cleared">Cart Cleared</string>
     <string name="your_orders">Your Orders History</string>
     <string name="undo">Undo</string>
+    <string name="ok">OK</string>
+    <string name="std_error_title">Something went wrong!</string>
+    <string name="std_error_msg">Try again later</string>
 
 </resources>

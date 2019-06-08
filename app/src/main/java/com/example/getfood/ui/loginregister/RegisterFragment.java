@@ -18,9 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.getfood.R;
-import com.example.getfood.utils.AlertUtils;
-import com.example.getfood.utils.OnDialogButtonClickListener;
 import com.example.getfood.ui.terms.TermsActivity;
+import com.example.getfood.utils.AlertUtils;
+import com.example.getfood.utils.DialogConfirmation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -161,15 +161,17 @@ public class RegisterFragment extends Fragment {
                             if (task.isSuccessful()) {
                                 auth.getCurrentUser().sendEmailVerification();
 //                    Toast.makeText(getContext(),"Email sent for Verification",Toast.LENGTH_LONG).show();
-                                AlertUtils.openAlertDialog(getContext(), getString(R.string.email_sent), "Verification Email sent to your account. Check your Email",
-                                        getString(R.string.yes), getString(R.string.no), new OnDialogButtonClickListener() {
+                                AlertUtils.showConfirmationDialog(getContext(), getString(R.string.email_sent), "Verification Email sent to your account. Check your Email",
+                                        getString(R.string.yes), getString(R.string.no), new DialogConfirmation.ConfirmationDialogListener() {
                                             @Override
                                             public void onPositiveButtonClicked() {
                                                 Toast.makeText(getContext(), "Login again after verification", Toast.LENGTH_LONG).show();
                                                 userEmailEditText.setText("");
                                                 userPasswordEditText.setText("");
                                                 userConPasswordEditText.setText("");
-                                                auth.getInstance().signOut();
+                                                if (FirebaseAuth.getInstance() != null) {
+                                                    FirebaseAuth.getInstance().signOut();
+                                                }
                                             }
 
                                             @Override

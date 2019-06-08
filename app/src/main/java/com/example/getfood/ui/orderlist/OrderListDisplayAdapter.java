@@ -9,20 +9,20 @@ import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.getfood.models.OrderListItem;
 import com.example.getfood.R;
+import com.example.getfood.models.FullOrder;
 
 import java.util.ArrayList;
 
 public class OrderListDisplayAdapter extends BaseAdapter {
 
-    private ArrayList<OrderListItem> orderListItems;
+    private ArrayList<FullOrder> orderListItems;
     private Context context;
     private LayoutInflater inflater;
 
     private TextView orderIDTextView, orderAmountTextView, orderTimeTextView;
 
-    public OrderListDisplayAdapter(ArrayList<OrderListItem> orderListItems, Context context) {
+    public OrderListDisplayAdapter(ArrayList<FullOrder> orderListItems, Context context) {
         this.orderListItems = orderListItems;
         this.context = context;
         this.inflater = LayoutInflater.from(context);
@@ -54,9 +54,15 @@ public class OrderListDisplayAdapter extends BaseAdapter {
 
 
 //        Set text for all the TextViews
-        orderIDTextView.setText(String.format("Order ID: %s", orderListItems.get(position).getOrderID()));
+        String orderId;
+        if (orderListItems.get(position).getDisplayID() != null && !orderListItems.get(position).getDisplayID().isEmpty()) {
+            orderId = orderListItems.get(position).getDisplayID();
+        } else {
+            orderId = orderListItems.get(position).getOrderId();
+        }
+        orderIDTextView.setText(String.format("Order ID: %s", orderId));
         orderAmountTextView.setText(String.format("Amount: ₹ %s", orderListItems.get(position).getOrderAmount()));
-        orderTimeTextView.setText(orderListItems.get(position).getOrderTime());
+        orderTimeTextView.setText(orderListItems.get(position).getTimeToDeliver());
 
 //        Start animation on individual list items
         Animation animation = AnimationUtils.loadAnimation(context, R.anim.fade_in);

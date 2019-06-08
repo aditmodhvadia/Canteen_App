@@ -11,11 +11,11 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.example.getfood.R;
-import com.example.getfood.utils.AlertUtils;
-import com.example.getfood.utils.OnDialogButtonClickListener;
 import com.example.getfood.ui.base.BaseActivity;
 import com.example.getfood.ui.foodmenu.FoodMenuDisplayActivity;
 import com.example.getfood.ui.loginregister.LoginActivity;
+import com.example.getfood.utils.AlertUtils;
+import com.example.getfood.utils.DialogConfirmation;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -63,8 +63,8 @@ public class SplashActivity extends BaseActivity implements SplashMvpView {
                         }
                     } else {
                         //deprecated versionName of app
-                        AlertUtils.openAlertDialog(SplashActivity.this, getString(R.string.warning), getString(R.string.outdated_version_msg),
-                                getString(R.string.update), "Exit", new OnDialogButtonClickListener() {
+                        AlertUtils.showConfirmationDialog(SplashActivity.this, getString(R.string.warning), getString(R.string.outdated_version_msg),
+                                getString(R.string.update), "Exit", new DialogConfirmation.ConfirmationDialogListener() {
                                     @Override
                                     public void onPositiveButtonClicked() {
                                         String url = getString(R.string.release_url);

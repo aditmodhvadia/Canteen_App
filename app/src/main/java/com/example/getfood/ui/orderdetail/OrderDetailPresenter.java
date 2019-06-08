@@ -2,8 +2,9 @@ package com.example.getfood.ui.orderdetail;
 
 import android.support.annotation.NonNull;
 
-import com.example.getfood.models.OrderDetailItem;
 import com.example.getfood.R;
+import com.example.getfood.models.FullOrder;
+import com.example.getfood.models.OrderDetailItem;
 import com.example.getfood.ui.base.BasePresenter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -11,24 +12,23 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-
 public class OrderDetailPresenter<V extends OrderDetailMvpView> extends BasePresenter<V> implements OrderDetailMvpPresenter<V> {
 
     private DatabaseReference root;
-    private ArrayList<OrderDetailItem> orderDetailItems;
-    private String orderID, rollNo, orderTime, orderTotalPrice;
+//    private ArrayList<OrderDetailItem> orderDetailItems;
+//    private String orderID, rollNo, orderTime, orderTotalPrice;
 
     public OrderDetailPresenter() {
     }
 
 
     @Override
-    public void fetchOrderDetails(String orderID) {
-        orderDetailItems = new ArrayList<>();
-        root = FirebaseDatabase.getInstance().getReference().child(getMvpView().getContext().getString(R.string.order))
-                .child(orderID).child(getMvpView().getContext().getString(R.string.items));
-        root.addValueEventListener(new ValueEventListener() {
+    public void fetchOrderDetails(FullOrder fullOrder) {
+
+//        orderDetailItems = new ArrayList<>();
+        root = FirebaseDatabase.getInstance().getReference().child("UserOrderData")
+                .child(fullOrder.getRollNo()).child(fullOrder.getOrderId());
+        /*root.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
                 orderDetailItems.clear();
@@ -50,6 +50,19 @@ public class OrderDetailPresenter<V extends OrderDetailMvpView> extends BasePres
                     }
                     getMvpView().bindOrderDetailAdapter(orderDetailItems, dataSnapshot);
                 }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                getMvpView().onDatabaseError(databaseError);
+            }
+        });*/
+
+        root.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                FullOrder updatedOrder = dataSnapshot.getValue(FullOrder.class);
+                getMvpView().bindOrderDetailAdapter(updatedOrder);
             }
 
             @Override
