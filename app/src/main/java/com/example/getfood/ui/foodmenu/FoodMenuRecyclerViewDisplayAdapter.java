@@ -22,7 +22,6 @@ import java.util.List;
 public class FoodMenuRecyclerViewDisplayAdapter extends RecyclerView.Adapter<FoodMenuRecyclerViewDisplayAdapter.ViewHolder> {
 
     private List<FoodItem> foodItemList;
-    private LayoutInflater inflater;
     private Context context;
 
     public FoodMenuRecyclerViewDisplayAdapter(List<FoodItem> foodItemList, Context context) {

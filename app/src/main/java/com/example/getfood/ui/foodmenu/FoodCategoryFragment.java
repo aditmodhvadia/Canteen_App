@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -29,7 +30,7 @@ public class FoodCategoryFragment extends Fragment {
     List<FoodItem> foodItem;
     String CATEGORY = null;
     ShimmerFrameLayout shimmerLayout;
-    private RecyclerView foodDisplayListView;
+    private RecyclerView foodRecyclerView;
     private FoodMenuRecyclerViewDisplayAdapter mAdapter;
 
     public FoodCategoryFragment() {
@@ -42,8 +43,10 @@ public class FoodCategoryFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_food_category, container, false);
         shimmerLayout = v.findViewById(R.id.shimmerLayout);
-        foodDisplayListView = v.findViewById(R.id.foodDisplayListView);
-        foodDisplayListView.setLayoutManager(new LinearLayoutManager(getContext()));
+        foodRecyclerView = v.findViewById(R.id.foodDisplayListView);
+        foodRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        foodRecyclerView.addItemDecoration(new DividerItemDecoration(foodRecyclerView.getContext(), LinearLayoutManager.VERTICAL));
+
         foodItem = new ArrayList<>();
 
 //        Log.d("##DebugData", AppUtils.getInstance(getContext()).generateString());
@@ -81,7 +84,7 @@ public class FoodCategoryFragment extends Fragment {
                     @Override
                     public void run() {
                         mAdapter = new FoodMenuRecyclerViewDisplayAdapter(foodItem, getContext());
-                        foodDisplayListView.setAdapter(mAdapter);
+                        foodRecyclerView.setAdapter(mAdapter);
                         shimmerLayout.stopShimmer();
                         shimmerLayout.setVisibility(View.GONE);
                     }
