@@ -121,7 +121,6 @@ public class CartActivity extends BaseActivity implements View.OnClickListener, 
         totalPriceTV = findViewById(R.id.totalPriceTV);
         orderButton = findViewById(R.id.orderButton);
 
-//        setDisplayListView(getApplicationContext());
         CartRecyclerViewDisplayAdapter adapter = new CartRecyclerViewDisplayAdapter(FoodMenuDisplayActivity.cartItems, this);
         cartRecyclerDisplayAdapter = adapter;
         cartRecyclerView.setAdapter(cartRecyclerDisplayAdapter);

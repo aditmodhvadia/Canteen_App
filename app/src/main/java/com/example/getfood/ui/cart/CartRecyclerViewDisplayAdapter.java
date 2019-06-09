@@ -37,7 +37,7 @@ public class CartRecyclerViewDisplayAdapter extends RecyclerView.Adapter<CartRec
     public CartRecyclerViewDisplayAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.cart_display_customlistview, parent, false);
+                .inflate(R.layout.cart_display_view_item, parent, false);
 
         return new ViewHolder(v);
 

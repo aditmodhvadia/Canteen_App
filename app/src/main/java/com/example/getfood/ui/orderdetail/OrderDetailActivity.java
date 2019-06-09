@@ -30,7 +30,7 @@ public class OrderDetailActivity extends BaseActivity implements OrderDetailMvpV
     @Override
     public void initViews() {
         testTV = findViewById(R.id.testTV);
-        orderRecyclerView = findViewById(R.id.orderListView);
+        orderRecyclerView = findViewById(R.id.orderDetailRecyclerView);
         orderRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         orderRecyclerView.addItemDecoration(new DividerItemDecoration(orderRecyclerView.getContext(), LinearLayoutManager.VERTICAL));
         test = findViewById(R.id.test);

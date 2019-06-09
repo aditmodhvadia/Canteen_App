@@ -30,7 +30,7 @@ public class OrderListRecyclerViewDisplayAdapter extends RecyclerView.Adapter<Or
     public OrderListRecyclerViewDisplayAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.order_list_display_customlistview, parent, false);
+                .inflate(R.layout.order_list_display_view_item, parent, false);
 
         return new ViewHolder(v);
 

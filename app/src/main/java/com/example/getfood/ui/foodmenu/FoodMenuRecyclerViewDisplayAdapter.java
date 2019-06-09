@@ -34,7 +34,7 @@ public class FoodMenuRecyclerViewDisplayAdapter extends RecyclerView.Adapter<Foo
     public FoodMenuRecyclerViewDisplayAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.food_menu_display_custom_listview, parent, false);
+                .inflate(R.layout.food_menu_display_view_item, parent, false);
 
         return new ViewHolder(v);
 

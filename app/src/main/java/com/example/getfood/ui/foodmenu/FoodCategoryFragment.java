@@ -43,7 +43,7 @@ public class FoodCategoryFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_food_category, container, false);
         shimmerLayout = v.findViewById(R.id.shimmerLayout);
-        foodRecyclerView = v.findViewById(R.id.foodDisplayListView);
+        foodRecyclerView = v.findViewById(R.id.foodDisplayRecyclerView);
         foodRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         foodRecyclerView.addItemDecoration(new DividerItemDecoration(foodRecyclerView.getContext(), LinearLayoutManager.VERTICAL));
 

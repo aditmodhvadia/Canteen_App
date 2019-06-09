@@ -39,7 +39,7 @@
     </com.facebook.shimmer.ShimmerFrameLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/foodDisplayListView"
+        android:id="@+id/foodDisplayRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:listSelector="@drawable/list_selector" />
