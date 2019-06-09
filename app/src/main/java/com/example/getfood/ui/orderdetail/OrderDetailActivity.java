@@ -6,20 +6,18 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.getfood.R;
 import com.example.getfood.models.FullOrder;
-import com.example.getfood.models.OrderDetailItem;
 import com.example.getfood.service.OrderNotificationService;
 import com.example.getfood.ui.base.BaseActivity;
 import com.example.getfood.utils.AlertUtils;
 import com.example.getfood.utils.AppUtils;
 import com.example.getfood.utils.DialogSimple;
 import com.google.firebase.database.DatabaseError;
-
-import java.util.ArrayList;
 
 public class OrderDetailActivity extends BaseActivity implements OrderDetailMvpView {
 
@@ -28,7 +26,6 @@ public class OrderDetailActivity extends BaseActivity implements OrderDetailMvpV
     private OrderDetailRecyclerViewDisplayAdapter orderDisplayAdapter;
     private Intent orderData;
     private OrderDetailPresenter<OrderDetailActivity> presenter;
-    private ArrayList<OrderDetailItem> orderDetailItems;
 
     @Override
     public void initViews() {
@@ -53,24 +50,18 @@ public class OrderDetailActivity extends BaseActivity implements OrderDetailMvpV
                     });
             return;
         }
-        AppUtils.createNotificationChannel(mContext);
-//        Get data from Intent
-//        orderID = orderData.getExtras().getString(getString(R.string.i_order_id));
-//        orderTotal = orderData.getExtras().getInt(getString(R.string.i_total));
-//        rollNo = orderData.getExtras().getString(getString(R.string.i_roll_no));
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
-//        orderDetailItems = new ArrayList<>();
-//        orderDisplayAdapter = new OrderDisplayAdapter(orderDetailItems, getApplicationContext());
-//        orderRecyclerView.setAdapter(orderDisplayAdapter);
+        AppUtils.createNotificationChannel(mContext);
         showLoading();
-//        presenter.fetchOrderDetails(orderID);
+//        Get data from Intent
         FullOrder fullOrder = (FullOrder) getIntent().getSerializableExtra("TestOrderData");
-//        TODO: Bind data to listview and call presenter's valuelistener method for change
 
         orderDisplayAdapter = new OrderDetailRecyclerViewDisplayAdapter(fullOrder, mContext);
 
         orderRecyclerView.setAdapter(orderDisplayAdapter);
-//        TODO: Change this method to reflect new changes
         Log.d("##DebugData", fullOrder.toString());
         presenter.fetchOrderDetails(fullOrder);
     }
@@ -209,4 +200,12 @@ public class OrderDetailActivity extends BaseActivity implements OrderDetailMvpV
         orderData = intent;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home)
+            onBackPressed();
+
+        return super.onOptionsItemSelected(item);
+    }
 }

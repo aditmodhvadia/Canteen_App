@@ -15,8 +15,8 @@
     <!--android:text="@string/your_orders"-->
     <!--android:textAlignment="center" />-->
 
-    <ListView
-        android:id="@+id/ordersListView"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/ordersListRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

@@ -25,38 +25,8 @@ public class OrderDetailPresenter<V extends OrderDetailMvpView> extends BasePres
     @Override
     public void fetchOrderDetails(FullOrder fullOrder) {
 
-//        orderDetailItems = new ArrayList<>();
         root = FirebaseDatabase.getInstance().getReference().child("UserOrderData")
                 .child(fullOrder.getRollNo()).child(fullOrder.getOrderId());
-        /*root.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-                orderDetailItems.clear();
-                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                    if (dsp.getKey().equals(getMvpView().getContext().getString(R.string.time_to_deliver))) {
-                        orderTime = dsp.getKey();
-                    } else if (dsp.getKey().equals(getMvpView().getContext().getString(R.string.total_amount))) {
-                        orderTotalPrice = dsp.getKey();
-                    } else if (dsp.getKey().equals(getMvpView().getContext().getString(R.string.roll_no))) {
-
-                    } else {
-                        for (DataSnapshot dspInner : dsp.getChildren()) {
-                            orderDetailItems.add(new OrderDetailItem(dspInner.getKey(), "",
-                                    Integer.valueOf(dspInner.child(getMvpView().getContext()
-                                            .getString(R.string.quantity)).getValue().toString()),
-                                    dsp.getKey(), dspInner.child(getMvpView().getContext()
-                                    .getString(R.string.status)).getValue().toString()));
-                        }
-                    }
-                    getMvpView().bindOrderDetailAdapter(orderDetailItems, dataSnapshot);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                getMvpView().onDatabaseError(databaseError);
-            }
-        });*/
 
         root.addValueEventListener(new ValueEventListener() {
             @Override
