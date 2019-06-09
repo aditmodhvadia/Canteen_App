@@ -10,6 +10,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -114,12 +115,12 @@ public class CartActivity extends BaseActivity implements View.OnClickListener, 
         cartRecyclerView = findViewById(R.id.cartRecyclerView);
         cartRecyclerView.setHasFixedSize(true);
         cartRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        cartRecyclerView.addItemDecoration(new DividerItemDecoration(cartRecyclerView.getContext(), LinearLayoutManager.VERTICAL));
 
 
         totalPriceTV = findViewById(R.id.totalPriceTV);
         orderButton = findViewById(R.id.orderButton);
 
-//        setDisplayListView(getApplicationContext());
         CartRecyclerViewDisplayAdapter adapter = new CartRecyclerViewDisplayAdapter(FoodMenuDisplayActivity.cartItems, this);
         cartRecyclerDisplayAdapter = adapter;
         cartRecyclerView.setAdapter(cartRecyclerDisplayAdapter);

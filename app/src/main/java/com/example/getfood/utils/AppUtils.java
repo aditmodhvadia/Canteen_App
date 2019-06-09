@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 
 public class AppUtils {
 
@@ -106,5 +107,10 @@ public class AppUtils {
             }
         }
         return -1;
+    }
+
+    public String generateString() {
+        String uuid = UUID.randomUUID().toString();
+        return uuid.replaceAll("-", "");
     }
 }

@@ -1,30 +1,31 @@
 package com.example.getfood.ui.orderlist;
 
-import android.content.Intent;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 import com.example.getfood.R;
 import com.example.getfood.models.FullOrder;
 import com.example.getfood.ui.base.BaseActivity;
-import com.example.getfood.ui.orderdetail.OrderDetailActivity;
 
 import java.util.ArrayList;
 
 public class OrderListActivity extends BaseActivity implements OrderListMvpView {
 
-    private ListView ordersListView;
-    private OrderListDisplayAdapter orderListDisplayAdapter;
+    private RecyclerView ordersListRecyclerView;
+    private OrderListRecyclerViewDisplayAdapter orderListDisplayAdapter;
     private OrderListPresenter<OrderListActivity> presenter;
 
     @Override
     public void initViews() {
         showLoading();
-        ordersListView = findViewById(R.id.ordersListView);
+        ordersListRecyclerView = findViewById(R.id.ordersListRecyclerView);
+        ordersListRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        ordersListRecyclerView.addItemDecoration(new DividerItemDecoration(ordersListRecyclerView.getContext(), LinearLayoutManager.VERTICAL));
+
 //        ordersHeadingTextView = findViewById(R.id.ordersHeadingTextView);
         Toolbar toolbar = findViewById(R.id.toolbar);
 
@@ -67,21 +68,18 @@ public class OrderListActivity extends BaseActivity implements OrderListMvpView 
 
     @Override
     public void bindListAdapter(final ArrayList<FullOrder> orderListItems) {
-        orderListDisplayAdapter = new OrderListDisplayAdapter(orderListItems, getApplicationContext());
-        ordersListView.setAdapter(orderListDisplayAdapter);
+        orderListDisplayAdapter = new OrderListRecyclerViewDisplayAdapter(orderListItems, mContext);
+        ordersListRecyclerView.setAdapter(orderListDisplayAdapter);
         hideLoading();
 
 //        attach OnItemClickListener
-        ordersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*ordersListRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent i = new Intent(OrderListActivity.this, OrderDetailActivity.class);
-//                i.putExtra(getString(R.string.i_order_id), orderListItems.get(position).getOrderId());
-//                i.putExtra(getString(R.string.i_total), orderListItems.get(position).getOrderAmount());
-//                i.putExtra(getString(R.string.i_roll_no), rollNo);
                 i.putExtra("TestOrderData", orderListItems.get(position));
                 startActivity(i);
             }
-        });
+        });*/
     }
 }
