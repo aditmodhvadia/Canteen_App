@@ -1,5 +1,6 @@
 package com.example.getfood.models;
 
+//TODO: Remove class and its usages
 public class OrderDetailItem {
     private String orderItemName, orderItemPrice, orderItemCategory,
             orderItemStatus;

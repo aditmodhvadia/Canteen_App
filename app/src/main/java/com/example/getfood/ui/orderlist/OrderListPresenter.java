@@ -15,8 +15,6 @@ import java.util.ArrayList;
 
 public class OrderListPresenter<V extends OrderListMvpView> extends BasePresenter<V> implements OrderListMvpPresenter<V> {
     private DatabaseReference orderData, orderRoot, userOrderData;
-    //    private ArrayList<String> orderID;
-//    private ArrayList<OrderListItem> orderListItems;
     private ArrayList<FullOrder> orderListItems;
 
     public OrderListPresenter() {
@@ -29,7 +27,6 @@ public class OrderListPresenter<V extends OrderListMvpView> extends BasePresente
         orderRoot = FirebaseDatabase.getInstance().getReference().child(getMvpView().getContext().getString(R.string.order));
         userOrderData = FirebaseDatabase.getInstance().getReference().child("UserOrderData");
 
-//        orderID = new ArrayList<>();
         orderListItems = new ArrayList<>();
 
         userOrderData.child(rollNo).addValueEventListener(new ValueEventListener() {
@@ -42,7 +39,6 @@ public class OrderListPresenter<V extends OrderListMvpView> extends BasePresente
                         orderListItems.add(dsp.getValue(FullOrder.class));
                     }
                     getMvpView().bindListAdapter(orderListItems);
-//                    getOrderData();
                 }
             }
 
@@ -52,31 +48,4 @@ public class OrderListPresenter<V extends OrderListMvpView> extends BasePresente
             }
         });
     }
-
-    /*private void getOrderData() {
-
-//        fetch order data of corresponding order IDs
-        orderRoot.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (String ID : orderID) {
-                    if (dataSnapshot.child(ID).exists()) {
-                        orderListItems.add(new OrderListItem(ID, dataSnapshot.child(ID)
-                                .child(getMvpView().getContext().getString(R.string.time_to_deliver))
-                                .getValue().toString(),
-                                dataSnapshot.child(ID).child(getMvpView().getContext().getString(R.string.total_amount))
-                                        .getValue().toString()));
-                    }
-                }
-//                set adapter
-                getMvpView().bindListAdapter(orderListItems);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-    }*/
 }
