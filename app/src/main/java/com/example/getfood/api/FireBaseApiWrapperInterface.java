@@ -8,9 +8,15 @@ import com.google.firebase.database.ValueEventListener;
 
 public interface FireBaseApiWrapperInterface {
 
+//    Database read functions
     void singleValueEventListener(@NonNull DatabaseReference mDatabaseReference, final ValueEventListener singleValueEventListener);
 
     void childEventListener(@NonNull DatabaseReference mDatabaseReference, final ChildEventListener childEventListener);
 
     void valueEventListener(@NonNull DatabaseReference mDatabaseReference, final ValueEventListener eventListener);
+
+//    FireBase Auth functions
+    void signOutUser();
+
+    boolean isUserVerified();
 }

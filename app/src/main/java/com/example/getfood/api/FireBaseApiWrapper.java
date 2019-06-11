@@ -3,6 +3,7 @@ package com.example.getfood.api;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -107,5 +108,18 @@ class FireBaseApiWrapper implements FireBaseApiWrapperInterface {
                 singleValueEventListener.onCancelled(databaseError);
             }
         });
+    }
+
+    /**
+     * Signs out user
+     */
+    @Override
+    public void signOutUser() {
+        FirebaseAuth.getInstance().signOut();
+    }
+
+    @Override
+    public boolean isUserVerified() {
+        return FirebaseAuth.getInstance().getCurrentUser() != null && FirebaseAuth.getInstance().getCurrentUser().isEmailVerified();
     }
 }

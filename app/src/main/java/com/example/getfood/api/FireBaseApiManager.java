@@ -94,8 +94,22 @@ public class FireBaseApiManager {
                 eventListener.onCancelled(databaseError);
             }
         });
-
     }
+
+    public void forceSignOutUser() {
+//        todo: log analytics event
+        apiWrapper.signOutUser();
+    }
+
+    /**
+     * To determine whether user has verifies their email address or not
+     *
+     * @return boolean value for user email verification
+     */
+    public boolean isUserEmailVerified() {
+        return apiWrapper.isUserVerified();
+    }
+
 
     public static class BaseUrl {
         // Declare the constants

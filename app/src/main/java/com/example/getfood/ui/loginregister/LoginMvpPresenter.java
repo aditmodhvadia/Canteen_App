@@ -1,9 +1,10 @@
 package com.example.getfood.ui.loginregister;
 
-import android.widget.EditText;
+import com.example.getfood.ui.base.BaseMvpPresenter;
 
-public interface LoginMvpPresenter {
+public interface LoginMvpPresenter<V extends LoginMvpView> extends BaseMvpPresenter<V> {
 
-    void performLogin(String userEmail, String userPassword, EditText email, EditText password);
+    void performSignOut();
 
+    boolean isUserEmailVerified();
 }

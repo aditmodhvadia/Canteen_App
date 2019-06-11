@@ -3,14 +3,10 @@ package com.example.getfood.ui.loginregister;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.util.Patterns;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.getfood.R;
+import com.example.getfood.ui.base.BaseFragment;
 import com.example.getfood.ui.foodmenu.FoodMenuDisplayActivity;
 import com.example.getfood.utils.AlertUtils;
 import com.example.getfood.utils.DialogConfirmation;
@@ -31,13 +28,14 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 
 
-public class LoginFragment extends Fragment implements LoginView {
+public class LoginFragment extends BaseFragment implements LoginMvpView {
 
     Button userLoginButton;
     EditText userLoginEmailEditText, userLoginPasswordEditText;
     TextView forgotPasswordTextView;
     ProgressDialog progressDialog;
-    LoginPresenter presenter;
+    private LoginPresenter<LoginFragment> presenter;
+
     //    CheckBox showPasswordCheckBox;
     private FirebaseAuth auth;
     private boolean timeout = false, success = false;
@@ -46,50 +44,45 @@ public class LoginFragment extends Fragment implements LoginView {
         // Required empty public constructor
     }
 
+    @Override
+    public int getLayoutResId() {
+        return R.layout.fragment_login_curr_user;
+    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public void initViews(View view) {
         auth = FirebaseAuth.getInstance();
-
-        // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_login_curr_user, container, false);
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-        presenter = new LoginPresenter(LoginFragment.this);
+        presenter = new LoginPresenter<>();
+        presenter.onAttach(this);
+
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setCanceledOnTouchOutside(false);
-        userLoginEmailEditText = v.findViewById(R.id.userLoginEmailEditText);
-        userLoginPasswordEditText = v.findViewById(R.id.userLoginPasswordEditText);
-//        showPasswordCheckBox = v.findViewById(R.id.showPasswordCheckBox);
+        userLoginEmailEditText = view.findViewById(R.id.userLoginEmailEditText);
+        userLoginPasswordEditText = view.findViewById(R.id.userLoginPasswordEditText);
+        userLoginButton = view.findViewById(R.id.userLoginButton);
+        forgotPasswordTextView = view.findViewById(R.id.forgotPasswordTextView);
 
-        /*showPasswordCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (isChecked) {
-                    userLoginPasswordEditText.setTransformationMethod(null);
-                } else {
-                    userLoginPasswordEditText.setTransformationMethod(new PasswordTransformationMethod());
-                }
-            }
-        });*/
-
-        userLoginButton = v.findViewById(R.id.userLoginButton);
         userLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 loginUser();
             }
         });
-        forgotPasswordTextView = v.findViewById(R.id.forgotPasswordTextView);
         forgotPasswordTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                todo: Hide keyboard
                 forgotPassword();
             }
         });
-        return v;
+    }
+
+    @Override
+    public void setListeners(View view) {
+
     }
 
 //    timeout progress dialog
@@ -130,7 +123,7 @@ public class LoginFragment extends Fragment implements LoginView {
         String userEmail = userLoginEmailEditText.getText().toString().trim().toLowerCase();
         String userPassword = userLoginPasswordEditText.getText().toString().trim();
 
-        presenter.performLogin(userEmail, userPassword, userLoginEmailEditText, userLoginPasswordEditText);
+//        presenter.performLogin(userEmail, userPassword, userLoginEmailEditText, userLoginPasswordEditText);
     }
 
     private void loginUser() {
@@ -178,7 +171,7 @@ public class LoginFragment extends Fragment implements LoginView {
 
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                //Succesfull login
+                //Successful login
                 if (timeout) {
                     success = false;
                     progressDialog.hide();
@@ -188,7 +181,7 @@ public class LoginFragment extends Fragment implements LoginView {
                 success = true;
                 if (task.isSuccessful()) {
                     //user is email verified, hence can proceed further
-                    if (auth.getCurrentUser().isEmailVerified()) {
+                    if (presenter.isUserEmailVerified()) {
 //                        login successful
 //                        userLoginEmailEditText.setText("");
 //                        userLoginPasswordEditText.setText("");
@@ -214,7 +207,7 @@ public class LoginFragment extends Fragment implements LoginView {
                                                 public void onPositiveButtonClicked() {
                                                     Toast.makeText(getContext(), "Login again after verification", Toast.LENGTH_LONG).show();
                                                     userLoginPasswordEditText.setText("");
-                                                    auth.getInstance().signOut();
+                                                    presenter.performSignOut();
                                                 }
 
                                                 @Override
@@ -304,16 +297,5 @@ public class LoginFragment extends Fragment implements LoginView {
             }
         });
 
-    }
-
-    @Override
-    public void loginSuccess() {
-
-    }
-
-    @Override
-    public void loginErrror(String errmsg, EditText editText) {
-        editText.setError(errmsg);
-        editText.requestFocus();
     }
 }

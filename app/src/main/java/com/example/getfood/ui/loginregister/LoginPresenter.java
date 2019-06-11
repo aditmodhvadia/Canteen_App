@@ -1,20 +1,20 @@
 package com.example.getfood.ui.loginregister;
 
-import android.widget.EditText;
+import com.example.getfood.ui.base.BasePresenter;
 
-public class LoginPresenter implements LoginMvpPresenter{
+public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V> implements LoginMvpPresenter<V> {
 
-    LoginView loginView;
-
-    public LoginPresenter(LoginView loginView) {
-        this.loginView = loginView;
+    public LoginPresenter() {
     }
 
 
     @Override
-    public void performLogin(String userEmail, String userPassword, EditText email, EditText password) {
+    public void performSignOut() {
+        apiManager.forceSignOutUser();
+    }
 
-//        loginView.loginErrror();
-
+    @Override
+    public boolean isUserEmailVerified() {
+        return apiManager.isUserEmailVerified();
     }
 }
