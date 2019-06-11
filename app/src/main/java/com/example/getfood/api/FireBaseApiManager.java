@@ -1,12 +1,16 @@
 package com.example.getfood.api;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.StringDef;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 public class FireBaseApiManager {
 
@@ -36,7 +40,7 @@ public class FireBaseApiManager {
     public void orderDetailListener(@NonNull String rollNo, @NonNull String orderID, final ValueEventListener eventListener) {
 
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference()
-                .child(BaseUrl.USER_ORDER.url).child(rollNo).child(orderID);
+                .child(BaseUrl.USER_ORDER).child(rollNo).child(orderID);
 
         apiWrapper.valueEventListener(dbRef, new ValueEventListener() {
             @Override
@@ -60,7 +64,7 @@ public class FireBaseApiManager {
     public void orderListListener(@NonNull String rollNo, final ValueEventListener eventListener) {
 
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference()
-                .child(BaseUrl.USER_ORDER.url).child(rollNo);
+                .child(BaseUrl.USER_ORDER).child(rollNo);
 
         apiWrapper.valueEventListener(dbRef, new ValueEventListener() {
             @Override
@@ -75,18 +79,45 @@ public class FireBaseApiManager {
         });
     }
 
-    enum BaseUrl {
-        USER_ORDER("UserOrderData"),
-        DEV("https://dev.domain.com:21323/");
+    public void foodMenuListener(@NonNull String category, final ValueEventListener eventListener) {
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference()
+                .child(BaseUrl.FOOD_MENU).child(category);
 
-        private String url;
+        apiWrapper.valueEventListener(dbRef, new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                eventListener.onDataChange(dataSnapshot);
+            }
 
-        BaseUrl(String path) {
-            this.url = path;
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                eventListener.onCancelled(databaseError);
+            }
+        });
+
+    }
+
+    public static class BaseUrl {
+        // Declare the constants
+        static final String USER_ORDER = "UserOrderData";
+        static final String FOOD_MENU = "Food";
+
+        @Retention(RetentionPolicy.SOURCE)
+        @StringDef({USER_ORDER, FOOD_MENU})
+        public @interface BaseUrlDef {
         }
+    }
 
-        public String getUrl() {
-            return url;
+    public static class FoodMenuDetails {
+        // Declare the constants
+        public static final String AVAILABLE = "Available";
+        public static final String PRICE = "Price";
+        public static final String RATING = "Rating";
+
+        @Retention(RetentionPolicy.SOURCE)
+        @StringDef({AVAILABLE, PRICE, RATING})
+        // Create an interface for validating String types
+        public @interface FilterColorDef {
         }
     }
 }

@@ -17,6 +17,7 @@ import com.example.getfood.utils.AlertUtils;
 import com.example.getfood.utils.AppUtils;
 import com.example.getfood.utils.DialogAddToCart;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FoodMenuRecyclerViewDisplayAdapter extends RecyclerView.Adapter<FoodMenuRecyclerViewDisplayAdapter.ViewHolder> {
@@ -41,14 +42,14 @@ public class FoodMenuRecyclerViewDisplayAdapter extends RecyclerView.Adapter<Foo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final FoodMenuRecyclerViewDisplayAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final FoodMenuRecyclerViewDisplayAdapter.ViewHolder holder, int pos) {
 
 
-        holder.itemNameTextView.setText(foodItemList.get(position).getItemName());
-        holder.itemPriceTextView.setText(String.format("%s %s", context.getString(R.string.rupee_symbol), foodItemList.get(position).getItemPrice()));
-        if (foodItemList.get(position).getItemRating() != null) {
-            holder.itemRatingTextView.setText(foodItemList.get(position).getItemRating());
-            holder.itemRatingTextView.setTextColor(AppUtils.getColorForRating(context, foodItemList.get(position).getItemRating()));
+        holder.itemNameTextView.setText(foodItemList.get(holder.getAdapterPosition()).getItemName());
+        holder.itemPriceTextView.setText(String.format("%s %s", context.getString(R.string.rupee_symbol), foodItemList.get(holder.getAdapterPosition()).getItemPrice()));
+        if (foodItemList.get(holder.getAdapterPosition()).getItemRating() != null) {
+            holder.itemRatingTextView.setText(foodItemList.get(holder.getAdapterPosition()).getItemRating());
+            holder.itemRatingTextView.setTextColor(AppUtils.getColorForRating(context, foodItemList.get(holder.getAdapterPosition()).getItemRating()));
 
         } else {
             holder.itemRatingTextView.setVisibility(View.INVISIBLE);
@@ -58,21 +59,21 @@ public class FoodMenuRecyclerViewDisplayAdapter extends RecyclerView.Adapter<Foo
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (AppUtils.isItemInCart(FoodMenuDisplayActivity.cartItems, foodItemList.get(position)) != -1) {
+                if (AppUtils.isItemInCart(FoodMenuDisplayActivity.cartItems, foodItemList.get(holder.getAdapterPosition())) != -1) {
                     Toast.makeText(context, context.getString(R.string.item_in_cart), Toast.LENGTH_SHORT).show();
                 } else {
-                    AlertUtils.showAddToCartDialog(context, foodItemList.get(position), new DialogAddToCart.AddToCartDialogListener() {
+                    AlertUtils.showAddToCartDialog(context, foodItemList.get(holder.getAdapterPosition()), new DialogAddToCart.AddToCartDialogListener() {
 
                         @Override
                         public void onAddToCartClicked(int quantity) {
                             if (quantity != 0) {
-                                int probablePosition = AppUtils.isItemInCart(FoodMenuDisplayActivity.cartItems, foodItemList.get(position));
+                                int probablePosition = AppUtils.isItemInCart(FoodMenuDisplayActivity.cartItems, foodItemList.get(holder.getAdapterPosition()));
                                 if (probablePosition != -1) {
                                     FoodMenuDisplayActivity.cartItems.get(probablePosition)
                                             .setItemQuantity(FoodMenuDisplayActivity.cartItems
                                                     .get(probablePosition).getItemQuantity() + quantity);
                                 } else {
-                                    FoodMenuDisplayActivity.cartItems.add(new CartItem(foodItemList.get(position),
+                                    FoodMenuDisplayActivity.cartItems.add(new CartItem(foodItemList.get(holder.getAdapterPosition()),
                                             "Order-Placed", quantity));
                                 }
                                 Toast.makeText(context, context.getString(R.string.add_to_cart), Toast.LENGTH_LONG).show();
@@ -107,6 +108,11 @@ public class FoodMenuRecyclerViewDisplayAdapter extends RecyclerView.Adapter<Foo
 
     public Context getContext() {
         return context;
+    }
+
+    void updateFoodItems(ArrayList<FoodItem> foodItems) {
+        this.foodItemList = foodItems;
+        notifyDataSetChanged();
     }
 
 
