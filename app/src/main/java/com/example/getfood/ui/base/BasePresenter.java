@@ -1,9 +1,11 @@
 package com.example.getfood.ui.base;
 
+import com.example.getfood.api.FireBaseApiManager;
+
 public abstract class BasePresenter<V extends BaseView> implements BaseMvpPresenter<V> {
 
     private static final String TAG = "BasePresenter";
-
+    public FireBaseApiManager apiManager;
 
     private V mMvpView;
 
@@ -13,6 +15,11 @@ public abstract class BasePresenter<V extends BaseView> implements BaseMvpPresen
     @Override
     public void onAttach(V mvpView) {
         mMvpView = mvpView;
+        apiManager = FireBaseApiManager.getInstance();
+    }
+
+    public FireBaseApiManager getApiManager() {
+        return apiManager;
     }
 
     @Override
@@ -33,6 +40,7 @@ public abstract class BasePresenter<V extends BaseView> implements BaseMvpPresen
     public void checkViewAttached() {
         if (!isViewAttached()) throw new MvpViewNotAttachedException();
     }
+
     public static class MvpViewNotAttachedException extends RuntimeException {
         public MvpViewNotAttachedException() {
             super("Please call Presenter.onAttach(MvpView) before" +
