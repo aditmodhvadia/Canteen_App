@@ -40,13 +40,13 @@ class FireBaseApiWrapper implements FireBaseApiWrapperInterface {
      * Parameters
      * listener
      *
-     * @param path               Path to which Child events to listen to
+     * @param mDatabaseReference Path to which Child events to listen to
      * @param childEventListener The listener to be called with changes
      *                           Return A reference to the listener provided. Save this to remove the listener later.
      */
     @Override
-    public void childEventListener(@NonNull String path, final ChildEventListener childEventListener) {
-        mDatabase.child(path).addChildEventListener(new ChildEventListener() {
+    public void childEventListener(@NonNull DatabaseReference mDatabaseReference, final ChildEventListener childEventListener) {
+        mDatabaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 childEventListener.onChildAdded(dataSnapshot, s);
@@ -75,8 +75,8 @@ class FireBaseApiWrapper implements FireBaseApiWrapperInterface {
     }
 
     @Override
-    public void valueEventListener(@NonNull String path, final ValueEventListener eventListener) {
-        mDatabase.child(path).addValueEventListener(new ValueEventListener() {
+    public void valueEventListener(@NonNull DatabaseReference mDatabaseReference, final ValueEventListener eventListener) {
+        mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 eventListener.onDataChange(dataSnapshot);
@@ -91,12 +91,12 @@ class FireBaseApiWrapper implements FireBaseApiWrapperInterface {
     }
 
     /**
-     * @param path
+     * @param mDatabaseReference
      * @param singleValueEventListener
      */
     @Override
-    public void singleValueEventListener(@NonNull String path, final ValueEventListener singleValueEventListener) {
-        mDatabase.child(path).addListenerForSingleValueEvent(new ValueEventListener() {
+    public void singleValueEventListener(@NonNull DatabaseReference mDatabaseReference, final ValueEventListener singleValueEventListener) {
+        mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 singleValueEventListener.onDataChange(dataSnapshot);

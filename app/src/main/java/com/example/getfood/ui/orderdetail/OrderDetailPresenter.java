@@ -1,6 +1,7 @@
 package com.example.getfood.ui.orderdetail;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.example.getfood.R;
 import com.example.getfood.models.FullOrder;
@@ -14,24 +15,19 @@ import com.google.firebase.database.ValueEventListener;
 
 public class OrderDetailPresenter<V extends OrderDetailMvpView> extends BasePresenter<V> implements OrderDetailMvpPresenter<V> {
 
-    private DatabaseReference root;
-//    private ArrayList<OrderDetailItem> orderDetailItems;
-//    private String orderID, rollNo, orderTime, orderTotalPrice;
-
     public OrderDetailPresenter() {
     }
 
 
     @Override
     public void fetchOrderDetails(FullOrder fullOrder) {
-
-        root = FirebaseDatabase.getInstance().getReference().child("UserOrderData")
-                .child(fullOrder.getRollNo()).child(fullOrder.getOrderId());
-
-        root.addValueEventListener(new ValueEventListener() {
+        apiManager.orderDetailListener(fullOrder.getRollNo(), fullOrder.getOrderId(), new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 FullOrder updatedOrder = dataSnapshot.getValue(FullOrder.class);
+                if (updatedOrder != null) {
+                    Log.d("##DebugData", updatedOrder.toString());
+                }
                 getMvpView().bindOrderDetailAdapter(updatedOrder);
             }
 
@@ -44,9 +40,9 @@ public class OrderDetailPresenter<V extends OrderDetailMvpView> extends BasePres
 
     @Override
     public void setRatingValue(final String ratingValue, OrderDetailItem orderDetailItem) {
-        root.child(orderDetailItem.getOrderItemCategory()).child(orderDetailItem.getOrderItemName())
-                .child(getMvpView().getContext().getString(R.string.rating))
-                .setValue(ratingValue);
+//        root.child(orderDetailItem.getOrderItemCategory()).child(orderDetailItem.getOrderItemName())
+//                .child(getMvpView().getContext().getString(R.string.rating))
+//                .setValue(ratingValue);
 
         final DatabaseReference foodItems = FirebaseDatabase.getInstance().getReference()
                 .child(getMvpView().getContext().getString(R.string.food)).child(orderDetailItem.getOrderItemCategory())

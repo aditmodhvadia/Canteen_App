@@ -1,11 +1,11 @@
 package com.example.getfood.api;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class FireBaseApiManager {
@@ -18,7 +18,7 @@ public class FireBaseApiManager {
             apiManager = new FireBaseApiManager();
         }
         if (apiWrapper == null) {
-            apiWrapper = new FireBaseApiWrapper();
+            apiWrapper = FireBaseApiWrapper.getInstance();
         }
         return apiManager;
     }
@@ -26,60 +26,37 @@ public class FireBaseApiManager {
 //    TODO: Implement common call/listener for all FireBase RealTime Database listeners first and
 //     then write calls and all FireBase APIs subsequently
 
-    public void sampleSingleValue() {
-        apiWrapper.singleValueEventListener("Test", new ValueEventListener() {
+
+    public void orderDetailListener(@NonNull String rollNo, @NonNull String orderID, final ValueEventListener eventListener) {
+
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference()
+                .child(BaseUrl.USER_ORDER.url).child(rollNo).child(orderID);
+
+        apiWrapper.valueEventListener(dbRef, new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+                eventListener.onDataChange(dataSnapshot);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                eventListener.onCancelled(databaseError);
             }
         });
     }
 
-    public void sampleChildEventListener() {
-        apiWrapper.childEventListener("Testing", new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+    enum BaseUrl {
+        USER_ORDER("UserOrderData"),
+        DEV("https://dev.domain.com:21323/");
 
-            }
+        private String url;
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+        BaseUrl(String path) {
+            this.url = path;
+        }
 
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    public void sampleValueEventListener() {
-        apiWrapper.valueEventListener("Testing", new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+        public String getUrl() {
+            return url;
+        }
     }
 }
