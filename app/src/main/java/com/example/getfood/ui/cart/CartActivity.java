@@ -152,6 +152,8 @@ public class CartActivity extends BaseActivity implements View.OnClickListener, 
                         @Override
                         public void onPositiveButtonClicked() {
                             clearCart();
+                            makeText(getString(R.string.cart_cleared));
+                            onBackPressed();
                         }
 
                         @Override
@@ -166,8 +168,6 @@ public class CartActivity extends BaseActivity implements View.OnClickListener, 
 
     private void clearCart() {
         FoodMenuDisplayActivity.cartItems.clear();
-        makeText(getString(R.string.cart_cleared));
-        onBackPressed();
     }
 
     private void chooseTime() {
@@ -349,14 +349,12 @@ public class CartActivity extends BaseActivity implements View.OnClickListener, 
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isComplete()) {
+                        clearCart();
                         userOrderData.child(orderId).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 FullOrder order = dataSnapshot.getValue(FullOrder.class);
                                 if (order != null) {
-                                    for (CartItem item : order.getOrderItems()) {
-                                        Log.d("##DebugData", "\n" + item.getItemName() + " " + item.getItemQuantity() + " " + item.getItemCategory());
-                                    }
                                     hideLoading();
                                     Intent orderIntent = new Intent(CartActivity.this, OrderDetailActivity.class);
                                     orderIntent.putExtra("TestOrderData", order);
@@ -375,46 +373,6 @@ public class CartActivity extends BaseActivity implements View.OnClickListener, 
                 }
             });
         }
-        /*
-        orderRoot.child(String.valueOf(orderID)).child(getString(R.string.total_amount)).setValue(String.valueOf(total));
-        orderRoot.child(String.valueOf(orderID)).child(getString(R.string.time_to_deliver)).setValue(orderTime);
-        orderRoot.child(String.valueOf(orderID)).child(getString(R.string.roll_no)).setValue(rollNo);
-        for (int pos = 0; pos < FoodMenuDisplayActivity.cartItems.size(); pos++) {
-            orderRoot.child(String.valueOf(orderID)).child(getString(R.string.items))
-                    .child(FoodMenuDisplayActivity.cartItems.get(pos).getFoodItem().getItemCategory())
-                    .child(FoodMenuDisplayActivity.cartItems.get(pos).getCartItemName())
-                    .child(getString(R.string.quantity)).setValue(FoodMenuDisplayActivity.cartItems.get(pos).getItemQuantity());
-            orderRoot.child(String.valueOf(orderID)).child(getString(R.string.items))
-                    .child(FoodMenuDisplayActivity.cartItems.get(pos).getFoodItem().getItemCategory())
-                    .child(FoodMenuDisplayActivity.cartItems.get(pos).getCartItemName())
-                    .child(getString(R.string.status)).setValue(getString(R.string.received));
-        }
-//        orderRoot.child(String.valueOf(orderID)).child("Total Amount").setValue(String.valueOf(total));
-//        orderRoot.child(String.valueOf(orderID)).child("Time to deliver").setValue(orderTime);
-//        orderRoot.child(String.valueOf(orderID)).child("Roll No").setValue(rollNo);
-
-//        store value of orderID for future reference
-        root = FirebaseDatabase.getInstance().getReference().child(getString(R.string.order_data));
-
-        root.child(rollNo).child(String.valueOf(orderID)).child(getString(R.string.status)).setValue(getString(R.string.ordered));
-        chooseTimeDialog.hide();
-*/
-        /*orderIntent = new Intent(CartActivity.this, OrderDetailActivity.class);
-        orderIntent.putExtra(getString(R.string.i_order_id), String.valueOf(orderID));
-        orderIntent.putExtra(getString(R.string.i_roll_no), rollNo);
-        orderIntent.putExtra(getString(R.string.i_total), total);*/
-
-//        FoodMenuDisplayActivity.cartItemName.clear();
-//        FoodMenuDisplayActivity.cartItemCategory.clear();
-//        FoodMenuDisplayActivity.cartItemQuantity.clear();
-//        FoodMenuDisplayActivity.cartItemPrice.clear();
-        FoodMenuDisplayActivity.cartItems.clear();
-
-//        startActivity(orderIntent);
-
-//        generateCheckSumVoley();
-//        generate checksum from server and pass all details to paytm
-//        launched order activity
     }
 
     private void generateCheckSumVoley() {

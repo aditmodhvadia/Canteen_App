@@ -5,7 +5,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -18,11 +17,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,12 +43,10 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
 
 
     public static ArrayList<CartItem> cartItems;
-    FloatingActionButton floatingActionButton;
     CoordinatorLayout coordinatorLayoutParent;
     FirebaseAuth auth;
-    int exitCount;
-    long currTime, prevTime;
-    ImageButton helpButton;
+    private int exitCount;
+    private long currTime, prevTime;
     private DrawerLayout mDrawerLayout;
 
     private FoodCategoryFragment chineseFragment;
@@ -63,7 +59,6 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_food_menu_display);
 
         cartItems = new ArrayList<>();
-        helpButton = findViewById(R.id.helpButton);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         coordinatorLayoutParent = findViewById(R.id.CoordinatorLayoutParent);
@@ -99,6 +94,12 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
             makeText("Action Bar null");
         }
 
+        findViewById(R.id.floatingActionButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openCart();
+            }
+        });
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
@@ -114,33 +115,15 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
                         menuItem.setChecked(true);
                         // close drawer when item is tapped
                         if (menuItem.getItemId() == R.id.nav_cart) {
-//                            Toast.makeText(FoodMenuDisplayActivity.this, "Cart Pressed", Toast.LENGTH_SHORT).show();
-                            if (cartItems.isEmpty())
-                                makeText(getString(R.string.cart_empty));
-                            else
-                                showCart();
+                            openCart();
                         } else if (menuItem.getItemId() == R.id.nav_order) {
-                            startActivity(new Intent(FoodMenuDisplayActivity.this, OrderListActivity.class));
+                            openOrderListActivity();
                         } else if (menuItem.getItemId() == R.id.nav_terms) {
-                            startActivity(new Intent(FoodMenuDisplayActivity.this, TermsActivity.class));
+                            openTermsActivity();
                         } else if (menuItem.getItemId() == R.id.nav_map) {
-                            startActivity(new Intent(FoodMenuDisplayActivity.this, MapsActivity.class));
+                            openMapActivity();
                         } else if (menuItem.getItemId() == R.id.nav_contact) {
-
-                            Intent email = new Intent(Intent.ACTION_SEND);
-                            email.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.primary_email)});
-                            email.putExtra(Intent.EXTRA_CC, new String[]{getString(R.string.email_1),
-                                    getString(R.string.email_2)});
-                            email.putExtra(Intent.EXTRA_SUBJECT, R.string.subject_email);
-
-                            email.putExtra(Intent.EXTRA_TEXT, "Debug Information: " + Build.MANUFACTURER + "\n" + Build.DEVICE + "\n"
-                                    + Build.BRAND + "\n" + Build.MODEL + "\nAPI Level: " + Build.VERSION.SDK_INT);
-
-                            //need this to prompts email client only
-                            email.setType(getString(R.string.email_type));
-
-                            startActivity(Intent.createChooser(email, "Choose an Email client :"));
-
+                            openEmailClient();
                         } else if (menuItem.getItemId() == R.id.nav_reset_password) {
 
                             auth.sendPasswordResetEmail(auth.getCurrentUser().getEmail()).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -158,7 +141,6 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
                             });
 
                         } else if (menuItem.getItemId() == R.id.nav_logout) {
-//                            Toast.makeText(FoodMenuDisplayActivity.this, "Logout Pressed", Toast.LENGTH_SHORT).show();
                             logout();
                         } else if (menuItem.getItemId() == R.id.nav_help) {
                             Toast.makeText(FoodMenuDisplayActivity.this, getString(R.string.help_pressed), Toast.LENGTH_SHORT).show();
@@ -169,30 +151,39 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
                         }
                         mDrawerLayout.closeDrawers();
 
-                        // Add code here to update the UI based on the item selected
-                        // For example, swap UI fragments here
-
                         return true;
                     }
                 });
+    }
 
-        floatingActionButton = findViewById(R.id.floatingActionButton);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (cartItems.isEmpty())
-                    makeText(getString(R.string.cart_empty));
-                else
-                    showCart();
-            }
-        });
+    private void openTermsActivity() {
+        startActivity(new Intent(FoodMenuDisplayActivity.this, TermsActivity.class));
+    }
 
-        helpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                makeText(getString(R.string.help_pressed));
-            }
-        });
+    private void openOrderListActivity() {
+        startActivity(new Intent(FoodMenuDisplayActivity.this, OrderListActivity.class));
+    }
+
+    private void openMapActivity() {
+        startActivity(new Intent(FoodMenuDisplayActivity.this, MapsActivity.class));
+    }
+
+    private void openEmailClient() {
+        Intent email = new Intent(Intent.ACTION_SEND);
+        email.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.primary_email)});
+        email.putExtra(Intent.EXTRA_CC, new String[]{getString(R.string.email_1),
+                getString(R.string.email_2)});
+        email.putExtra(Intent.EXTRA_SUBJECT, R.string.subject_email);
+
+        email.putExtra(Intent.EXTRA_TEXT, "Debug Information: " + Build.MANUFACTURER + "\n" + Build.DEVICE + "\n"
+                + Build.BRAND + "\n" + Build.MODEL + "\nAPI Level: " + Build.VERSION.SDK_INT);
+
+        //need this to prompts email client only
+        email.setType(getString(R.string.email_type));
+
+        startActivity(Intent.createChooser(email, "Choose an Email client :"));
+
+
     }
 
     @Override
@@ -201,8 +192,18 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
+            case R.id.menuHelp:
+                makeText(getString(R.string.help_pressed));
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_help, menu);
+        return true;
     }
 
     @Override
@@ -219,7 +220,6 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
                 prevTime = System.currentTimeMillis();
                 exitCount = 1;
             } else {
-//                startActivity(homeIntent);
                 finishAffinity();
 
             }
@@ -243,9 +243,13 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
                 });
     }
 
-    private void showCart() {
-        Intent i = new Intent(this, CartActivity.class);
-        startActivity(i);
+    private void openCart() {
+        if (cartItems.isEmpty())
+            makeText(getString(R.string.cart_empty));
+        else {
+            startActivity(new Intent(this, CartActivity.class));
+        }
+
     }
 
     public void showSnackBar(View parent, String msg) {
@@ -256,39 +260,6 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
 
     public void makeText(String msg) {
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-    }
-
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        public PlaceholderFragment() {
-        }
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_food_menu_display, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-
-            return rootView;
-        }
     }
 
     /**

@@ -128,5 +128,7 @@
     <string name="ok">OK</string>
     <string name="std_error_title">Something went wrong!</string>
     <string name="std_error_msg">Try again later</string>
+    <string name="help">Help</string>
+    <string name="dev_label">Developed by Adit, Designed by Avani</string>
 
 </resources>
