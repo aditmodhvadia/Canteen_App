@@ -3,6 +3,11 @@ package com.example.getfood.api;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.ActionCodeSettings;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -116,6 +121,54 @@ class FireBaseApiWrapper implements FireBaseApiWrapperInterface {
     @Override
     public void signOutUser() {
         FirebaseAuth.getInstance().signOut();
+    }
+
+    @Override
+    public void createNewUserWithEmailPassword(String userEmail, String password, final OnCompleteListener<AuthResult> onCompleteListener) {
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(userEmail, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                onCompleteListener.onComplete(task);
+            }
+        });
+    }
+
+    @Override
+    public void signInWithEmailAndPassword(@NonNull String userEmail, @NonNull String password, final OnCompleteListener<AuthResult> onCompleteListener) {
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(userEmail, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                onCompleteListener.onComplete(task);
+            }
+        });
+    }
+
+    @Override
+    public String getCurrentUserEmail() {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            return FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        }
+        return "User not authenticated";
+    }
+
+    @Override
+    public void sendEmailVerification(ActionCodeSettings actionCodeSettings,
+                                      final OnCompleteListener<Void> onCompleteListener, final OnFailureListener onFailureListener) {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification(actionCodeSettings).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    onCompleteListener.onComplete(task);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    onFailureListener.onFailure(e);
+                }
+            });
+        } else {
+            onFailureListener.onFailure(new Exception("User not logged in"));
+        }
     }
 
     @Override

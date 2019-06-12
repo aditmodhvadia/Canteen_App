@@ -3,6 +3,11 @@ package com.example.getfood.api;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringDef;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.ActionCodeSettings;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -108,6 +113,46 @@ public class FireBaseApiManager {
      */
     public boolean isUserEmailVerified() {
         return apiWrapper.isUserVerified();
+    }
+
+    public void createNewUserWithEmailPassword(String userEmail, String password, final OnCompleteListener<AuthResult> onCompleteListener) {
+        apiWrapper.createNewUserWithEmailPassword(userEmail, password, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                onCompleteListener.onComplete(task);
+            }
+        });
+    }
+
+    public void signInWithEmailAndPassword(@NonNull String userEmail, @NonNull String password, final OnCompleteListener<AuthResult> onCompleteListener) {
+        apiWrapper.signInWithEmailAndPassword(userEmail, password, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                onCompleteListener.onComplete(task);
+            }
+        });
+    }
+
+    public void sendEmailVerification(final OnCompleteListener<Void> onCompleteListener, final OnFailureListener onFailureListener) {
+        ActionCodeSettings actionCodeSettings = ActionCodeSettings.newBuilder()
+                .setUrl("")
+                .setIOSBundleId("")
+                .build();
+        apiWrapper.sendEmailVerification(actionCodeSettings, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                onCompleteListener.onComplete(task);
+            }
+        }, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                onFailureListener.onFailure(e);
+            }
+        });
+    }
+
+    public String getCurrentUserEmail() {
+        return apiWrapper.getCurrentUserEmail();
     }
 
 

@@ -5,7 +5,7 @@ import com.example.getfood.api.FireBaseApiManager;
 public abstract class BasePresenter<V extends BaseView> implements BaseMvpPresenter<V> {
 
     private static final String TAG = "BasePresenter";
-    public FireBaseApiManager apiManager;
+    protected FireBaseApiManager apiManager;
 
     private V mMvpView;
 
