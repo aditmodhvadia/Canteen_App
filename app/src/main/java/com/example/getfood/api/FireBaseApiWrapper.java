@@ -172,6 +172,21 @@ class FireBaseApiWrapper implements FireBaseApiWrapperInterface {
     }
 
     @Override
+    public void sendPasswordResetEmail(String userEmail, final OnCompleteListener<Void> onCompleteListener, final OnFailureListener onFailureListener) {
+        FirebaseAuth.getInstance().sendPasswordResetEmail(userEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                onCompleteListener.onComplete(task);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                onFailureListener.onFailure(e);
+            }
+        });
+    }
+
+    @Override
     public boolean isUserVerified() {
         return FirebaseAuth.getInstance().getCurrentUser() != null && FirebaseAuth.getInstance().getCurrentUser().isEmailVerified();
     }

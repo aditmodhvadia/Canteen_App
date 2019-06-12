@@ -31,4 +31,6 @@ public interface FireBaseApiWrapperInterface {
     void sendEmailVerification(ActionCodeSettings actionCodeSettings, OnCompleteListener<Void> onCompleteListener, OnFailureListener onFailureListener);
 
     String getCurrentUserEmail();
+
+    void sendPasswordResetEmail(String userEmail, OnCompleteListener<Void> onCompleteListener, OnFailureListener onFailureListener);
 }

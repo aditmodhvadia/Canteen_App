@@ -13,4 +13,6 @@ public interface LoginMvpView extends BaseView {
     void userVerifiedSuccessfully();
 
     void onUserEmailVerificationFailed();
+
+    void onPasswordResetEmailSentSuccessfully();
 }

@@ -154,6 +154,10 @@ public class FireBaseApiManager {
         return apiWrapper.getCurrentUserEmail();
     }
 
+    public void sendPasswordResetEmail(String userEmail, OnCompleteListener<Void> onCompleteListener, OnFailureListener onFailureListener) {
+        apiWrapper.sendPasswordResetEmail(userEmail, onCompleteListener, onFailureListener);
+    }
+
 
     public static class BaseUrl {
         // Declare the constants

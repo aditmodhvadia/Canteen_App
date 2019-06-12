@@ -54,7 +54,7 @@
     <string name="email_1">15bce001@nirmauni.ac.in</string>
     <string name="email_2">15bce014@nirmauni.ac.in</string>
     <string name="email_type">message/rfc822</string>
-    <string name="pwd_reset_sent">Password Reset Email Sent!</string>
+    <string name="pwd_reset_sent">Password Reset Email sent successfully!</string>
     <string name="help_pressed">Help Pressed</string>
     <string name="error_occurred">Error Occurred</string>
     <string name="press_back_exit">Press back once more to exit</string>
@@ -108,7 +108,7 @@
     <string name="email_required">Email ID Required</string>
     <string name="enter_valid_email">Enter valid Email Address</string>
     <string name="nirma_domain">nirmauni.ac.in</string>
-    <string name="enter_valid_nirma_domain">Enter valid Nirma University Domain Email Address</string>
+    <string name="enter_valid_nirma_domain">Please enter a valid Nirma University Email Address</string>
     <string name="password_required">Password Required</string>
     <string name="confirm_password_required">Password Confirmation Required</string>
     <string name="password_more_than_8">Password should be of more than 8 digits</string>
@@ -135,5 +135,7 @@
     <string name="login">login</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="get_registered">Get Registered</string>
+    <string name="email_not_registered">Email Address not registered</string>
+    <string name="check_email">Check your registered email</string>
 
 </resources>

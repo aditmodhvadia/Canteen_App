@@ -11,6 +11,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
 public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V> implements LoginMvpPresenter<V> {
@@ -21,7 +22,7 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V> imp
     @Override
     public void performLogin(@NonNull String userEmail, @NonNull String password) {
         if (!AppUtils.isEmailValid(userEmail)) {
-            getMvpView().valueEntryError("Please enter a valid Nirma University Email Address");
+            getMvpView().valueEntryError(getMvpView().getContext().getString(R.string.enter_valid_email));
             return;
         }
 
@@ -92,5 +93,36 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V> imp
     @Override
     public boolean isUserEmailVerified() {
         return apiManager.isUserEmailVerified();
+    }
+
+    @Override
+    public void forgotPasswordClicked(String userEmail) {
+        if (!AppUtils.isEmailValid(userEmail)) {
+            getMvpView().valueEntryError(getMvpView().getContext().getString(R.string.enter_valid_email));
+            return;
+        }
+
+        apiManager.sendPasswordResetEmail(userEmail, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    getMvpView().onPasswordResetEmailSentSuccessfully();
+                } else {
+                    if (task.getException() instanceof FirebaseNetworkException) {
+                        getMvpView().valueEntryError(getMvpView().getContext().getString(R.string.no_internet));
+                    } else if (task.getException() instanceof FirebaseAuthInvalidUserException) {
+                        getMvpView().valueEntryError(getMvpView().getContext().getString(R.string.email_not_registered));
+                    } else {
+                        getMvpView().valueEntryError(getMvpView().getContext().getString(R.string.error_occurred));
+                    }
+                }
+            }
+        }, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
     }
 }
