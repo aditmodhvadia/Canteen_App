@@ -63,10 +63,10 @@ public class RegisterFragment extends BaseFragment implements RegisterMvpView, V
                 showLoading();
 //                TODO: Hide Keyboard
 //                userEmailEditText.setText("");
-                String password = userPasswordEditText.getText().toString().trim();
                 String confirmPassword = userConPasswordEditText.getText().toString().trim();
-                userPasswordEditText.setText("");
+                String password = userPasswordEditText.getText().toString().trim();
                 userConPasswordEditText.setText("");
+                userPasswordEditText.setText("");
 
                 presenter.performRegistration(userEmailEditText.getText().toString().trim(),
                         password, confirmPassword);
@@ -111,6 +111,7 @@ public class RegisterFragment extends BaseFragment implements RegisterMvpView, V
     @Override
     public void valueEntryError(String errorMsg) {
         hideLoading();
+        presenter.signOutUser();
         AlertUtils.showAlertBox(mContext, getString(R.string.error_occurred), errorMsg, getString(R.string.ok), new DialogSimple.AlertDialogListener() {
             @Override
             public void onButtonClicked() {

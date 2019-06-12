@@ -6,7 +6,6 @@ import android.support.annotation.StringDef;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -134,11 +133,11 @@ public class FireBaseApiManager {
     }
 
     public void sendEmailVerification(final OnCompleteListener<Void> onCompleteListener, final OnFailureListener onFailureListener) {
-        ActionCodeSettings actionCodeSettings = ActionCodeSettings.newBuilder()
+        /*ActionCodeSettings actionCodeSettings = ActionCodeSettings.newBuilder()
                 .setUrl("")
                 .setIOSBundleId("")
-                .build();
-        apiWrapper.sendEmailVerification(actionCodeSettings, new OnCompleteListener<Void>() {
+                .build();*/
+        apiWrapper.sendEmailVerification(null, new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 onCompleteListener.onComplete(task);

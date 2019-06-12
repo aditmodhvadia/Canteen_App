@@ -11,6 +11,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
 public class RegisterPresenter<V extends RegisterMvpView> extends BasePresenter<V> implements RegisterMvpPresenter<V> {
@@ -49,7 +50,10 @@ public class RegisterPresenter<V extends RegisterMvpView> extends BasePresenter<
                         getMvpView().valueEntryError(getMvpView().getContext().getString(R.string.no_internet));
                     } else if (task.getException() instanceof FirebaseAuthUserCollisionException) {
                         getMvpView().valueEntryError(getMvpView().getContext().getString(R.string.email_in_use));
+                    } else if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                        getMvpView().valueEntryError(getMvpView().getContext().getString(R.string.invalid_credentials));
                     } else {
+                        Log.d("##DebugDataNew", task.getException().getMessage());
                         getMvpView().valueEntryError(getMvpView().getContext().getString(R.string.error_occurred));
                     }
                 }
@@ -65,7 +69,18 @@ public class RegisterPresenter<V extends RegisterMvpView> extends BasePresenter<
             apiManager.sendEmailVerification(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-                    getMvpView().userVerifiedSuccessfully();
+                    if (task.isSuccessful()) {
+                        getMvpView().userVerifiedSuccessfully();
+                    } else {
+                        if (task.getException() instanceof FirebaseNetworkException) {
+                            getMvpView().valueEntryError(getMvpView().getContext().getString(R.string.no_internet));
+                        } else if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                            getMvpView().valueEntryError(getMvpView().getContext().getString(R.string.email_in_use));
+                        } else {
+                            Log.d("##DebugDataNew", task.getException().getMessage());
+                            getMvpView().valueEntryError(getMvpView().getContext().getString(R.string.error_occurred));
+                        }
+                    }
                 }
             }, new OnFailureListener() {
                 @Override

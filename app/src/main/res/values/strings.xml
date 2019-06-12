@@ -130,5 +130,10 @@
     <string name="std_error_msg">Try again later</string>
     <string name="help">Help</string>
     <string name="dev_label">Developed by Adit, Designed by Avani</string>
+    <string name="invalid_credentials">Invalid Credentials</string>
+    <string name="verify_email_msg">In order to continue you need to verify your email first. Do you want to receive an email on your email address</string>
+    <string name="login">login</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="get_registered">Get Registered</string>
 
 </resources>

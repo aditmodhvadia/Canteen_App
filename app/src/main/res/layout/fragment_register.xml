@@ -116,7 +116,7 @@
             android:gravity="center"
             android:paddingLeft="40dp"
             android:paddingRight="40dp"
-            android:text="Get Registered"
+            android:text="@string/get_registered"
             android:textColor="#ffffff" />
 
     </LinearLayout>

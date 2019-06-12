@@ -18,6 +18,7 @@ import com.example.getfood.ui.base.BaseFragment;
 import com.example.getfood.ui.foodmenu.FoodMenuDisplayActivity;
 import com.example.getfood.utils.AlertUtils;
 import com.example.getfood.utils.DialogConfirmation;
+import com.example.getfood.utils.DialogSimple;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -28,7 +29,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 
 
-public class LoginFragment extends BaseFragment implements LoginMvpView {
+public class LoginFragment extends BaseFragment implements LoginMvpView, View.OnClickListener {
 
     Button userLoginButton;
     EditText userLoginEmailEditText, userLoginPasswordEditText;
@@ -46,7 +47,7 @@ public class LoginFragment extends BaseFragment implements LoginMvpView {
 
     @Override
     public int getLayoutResId() {
-        return R.layout.fragment_login_curr_user;
+        return R.layout.fragment_login;
     }
 
     @Override
@@ -64,25 +65,12 @@ public class LoginFragment extends BaseFragment implements LoginMvpView {
         userLoginPasswordEditText = view.findViewById(R.id.userLoginPasswordEditText);
         userLoginButton = view.findViewById(R.id.userLoginButton);
         forgotPasswordTextView = view.findViewById(R.id.forgotPasswordTextView);
-
-        userLoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loginUser();
-            }
-        });
-        forgotPasswordTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                todo: Hide keyboard
-                forgotPassword();
-            }
-        });
     }
 
     @Override
     public void setListeners(View view) {
-
+        userLoginButton.setOnClickListener(this);
+        forgotPasswordTextView.setOnClickListener(this);
     }
 
 //    timeout progress dialog
@@ -117,13 +105,6 @@ public class LoginFragment extends BaseFragment implements LoginMvpView {
         };
         Handler pdCanceller = new Handler();
         pdCanceller.postDelayed(progressRunnable, 10000);
-    }
-
-    public void loginClick(View view) {
-        String userEmail = userLoginEmailEditText.getText().toString().trim().toLowerCase();
-        String userPassword = userLoginPasswordEditText.getText().toString().trim();
-
-//        presenter.performLogin(userEmail, userPassword, userLoginEmailEditText, userLoginPasswordEditText);
     }
 
     private void loginUser() {
@@ -297,5 +278,62 @@ public class LoginFragment extends BaseFragment implements LoginMvpView {
             }
         });
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.userLoginButton:
+                showLoading();
+//                TODO: Hide Keyboard
+                String userEmail = userLoginEmailEditText.getText().toString().trim();
+                String password = userLoginPasswordEditText.getText().toString().trim();
+                userLoginPasswordEditText.setText("");
+
+                presenter.performLogin(userEmail, password);
+
+//                loginUser();
+                break;
+            case R.id.forgotPasswordTextView:
+                forgotPassword();
+                break;
+        }
+    }
+
+    @Override
+    public void valueEntryError(String errorMsg) {
+        hideLoading();
+        presenter.performSignOut();
+        AlertUtils.showAlertBox(mContext, getString(R.string.error_occurred), errorMsg, getString(R.string.ok),
+                new DialogSimple.AlertDialogListener() {
+                    @Override
+                    public void onButtonClicked() {
+                        userLoginEmailEditText.requestFocus();
+                    }
+                });
+    }
+
+    @Override
+    public void userVerifiedSuccessfully() {
+        hideLoading();
+        startActivity(new Intent(mContext, FoodMenuDisplayActivity.class));
+    }
+
+    @Override
+    public void onUserEmailVerificationFailed() {
+        hideLoading();
+        AlertUtils.showConfirmationDialog(mContext, "Verify your Email First!",
+                mContext.getString(R.string.verify_email_msg), getString(R.string.ok), getString(R.string.cancel),
+                new DialogConfirmation.ConfirmationDialogListener() {
+                    @Override
+                    public void onPositiveButtonClicked() {
+                        presenter.sendEmailForVerification();
+                    }
+
+                    @Override
+                    public void onNegativeButtonClicked() {
+
+                    }
+                });
     }
 }

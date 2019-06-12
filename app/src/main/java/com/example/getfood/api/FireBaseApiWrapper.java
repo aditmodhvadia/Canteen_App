@@ -148,14 +148,14 @@ class FireBaseApiWrapper implements FireBaseApiWrapperInterface {
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             return FirebaseAuth.getInstance().getCurrentUser().getEmail();
         }
-        return "User not authenticated";
+        return null;
     }
 
     @Override
     public void sendEmailVerification(ActionCodeSettings actionCodeSettings,
                                       final OnCompleteListener<Void> onCompleteListener, final OnFailureListener onFailureListener) {
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification(actionCodeSettings).addOnCompleteListener(new OnCompleteListener<Void>() {
+            FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     onCompleteListener.onComplete(task);
