@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -17,7 +18,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class RegisterFragment extends BaseFragment implements RegisterMvpView, View.OnClickListener {
 
-    EditText userConPasswordEditText, userPasswordEditText, userEmailEditText;
+    private EditText userConPasswordEditText, userPasswordEditText, userEmailEditText;
+    private CheckBox termsCheckBox;
     private RegisterPresenter<RegisterFragment> presenter;
 
     public RegisterFragment() {
@@ -41,6 +43,7 @@ public class RegisterFragment extends BaseFragment implements RegisterMvpView, V
         userConPasswordEditText = view.findViewById(R.id.userConPasswordEditText);
         userPasswordEditText = view.findViewById(R.id.userPasswordEditText);
         userEmailEditText = view.findViewById(R.id.userLoginEmailEditText);
+        termsCheckBox = view.findViewById(R.id.termsCheckBox);
 
     }
 
@@ -54,17 +57,28 @@ public class RegisterFragment extends BaseFragment implements RegisterMvpView, V
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.userAddButton:
-                showLoading();
+                if (presenter.isTermsAndConditionChecked(termsCheckBox.isChecked())) {
+                    showLoading();
 //                TODO: Hide Keyboard
 //                userEmailEditText.setText("");
-                String confirmPassword = userConPasswordEditText.getText().toString().trim();
-                String password = userPasswordEditText.getText().toString().trim();
-                userConPasswordEditText.setText("");
-                userPasswordEditText.setText("");
+                    String confirmPassword = userConPasswordEditText.getText().toString().trim();
+                    String password = userPasswordEditText.getText().toString().trim();
+                    userConPasswordEditText.setText("");
+                    userPasswordEditText.setText("");
 
-                presenter.performRegistration(userEmailEditText.getText().toString().trim(),
-                        password, confirmPassword);
+                    presenter.performRegistration(userEmailEditText.getText().toString().trim(),
+                            password, confirmPassword);
 //                presenter.performRegistration("adit.modhvadia@gmail.com", "12345678", "12345678");
+                } else {
+                    AlertUtils.showAlertBox(mContext, getString(R.string.warning),
+                            getString(R.string.accept_terms_and_condition), getString(R.string.ok), new DialogSimple.AlertDialogListener() {
+                                @Override
+                                public void onButtonClicked() {
+                                    termsCheckBox.requestFocus();
+                                }
+                            });
+                }
+
                 break;
             case R.id.termsTextView:
                 startActivity(new Intent(getContext(), TermsActivity.class));

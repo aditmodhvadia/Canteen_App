@@ -10,4 +10,6 @@ public interface RegisterMvpPresenter<V extends RegisterMvpView> extends BaseMvp
     void verifyUserEmail();
 
     void signOutUser();
+
+    boolean isTermsAndConditionChecked(boolean checked);
 }

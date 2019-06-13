@@ -92,6 +92,11 @@ public class RegisterPresenter<V extends RegisterMvpView> extends BasePresenter<
     }
 
     @Override
+    public boolean isTermsAndConditionChecked(boolean checked) {
+        return checked;
+    }
+
+    @Override
     public void signOutUser() {
         apiManager.forceSignOutUser();
     }
