@@ -57,17 +57,20 @@ public class FullOrder implements Serializable {
     @NonNull
     @Override
     public String toString() {
-        String itemData = "";
+        StringBuilder itemData = new StringBuilder();
         for (CartItem item : orderItems) {
-            itemData = itemData.concat("\n\t\t\t Item Name: " + item.getItemName() + " Item Quantity: " + item.getItemQuantity()
+            /*itemData = itemData.concat("\n\t\t\t Item Name: " + item.getItemName() + " Item Quantity: " + item.getItemQuantity()
                     + " Item Category: " + item.getItemCategory() + " Item Price: " + item.getItemPrice()
-                    + " Item Status: " + item.getItemStatus() + " Item Rating: " + item.getItemRating());
+                    + " Item Status: " + item.getItemStatus() + " Item Rating: " + item.getItemRating());*/
+
+            itemData.append(item.toString());
+
         }
         return "\n Display ID: " + displayID + " Order ID: " + orderId
                 + "\n Order Amount: " + orderAmount + " Time to Deliver: " + timeToDeliver
                 + "\n Roll No: " + rollNo + " Order Status: " + orderStatus
                 + "\n Order Items Size: " + orderItems.size() + " Order Status: " + orderStatus
-                + "\n Item Data : " + itemData;
+                + "\n Item Data : " + itemData.toString();
 
     }
 }

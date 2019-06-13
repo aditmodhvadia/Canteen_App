@@ -1,5 +1,7 @@
 package com.example.getfood.models;
 
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
 
 public class CartItem extends FoodItem implements Serializable {
@@ -43,5 +45,11 @@ public class CartItem extends FoodItem implements Serializable {
 
     public void decreaseQuantity() {
         this.itemQuantity--;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return super.toString() + " Item Quantity: " + itemQuantity + " Item Status: " + itemStatus;
     }
 }

@@ -51,16 +51,7 @@ public class SplashActivity extends BaseActivity implements SplashMvpView {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.getValue().toString().equals(getString(R.string.yes))) {
                         Log.d("vcheck", "Inside db check for yes");
-                        if (mAuth.getCurrentUser() != null) {
-                            startActivity(new Intent(SplashActivity.this, FoodMenuDisplayActivity.class));
-                            Log.d("vcheck", "everything green");
-                            finish();
-
-                        } else {
-                            //start login activity
-                            startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                            finish();
-                        }
+                        presenter.determineIfUserLoggedIn();
                     } else {
                         //deprecated versionName of app
                         AlertUtils.showConfirmationDialog(SplashActivity.this, getString(R.string.warning), getString(R.string.outdated_version_msg),
@@ -97,6 +88,20 @@ public class SplashActivity extends BaseActivity implements SplashMvpView {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void userIsSignedIn() {
+        startActivity(new Intent(SplashActivity.this, FoodMenuDisplayActivity.class));
+        Log.d("vcheck", "everything green");
+        finish();
+    }
+
+    @Override
+    public void userIsNotSignedIn() {
+        //start login activity
+        startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+        finish();
     }
 
     @Override
