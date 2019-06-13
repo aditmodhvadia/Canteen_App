@@ -1,14 +1,18 @@
 package com.example.getfood.api;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 
 public interface FireBaseApiWrapperInterface {
 
@@ -33,4 +37,8 @@ public interface FireBaseApiWrapperInterface {
     String getCurrentUserEmail();
 
     void sendPasswordResetEmail(String userEmail, OnCompleteListener<Void> onCompleteListener, OnFailureListener onFailureListener);
+
+    void listenToDynamicLinks(Intent intent, Context context, OnSuccessListener<PendingDynamicLinkData> onSuccessListener, OnFailureListener onFailureListener);
+
+    void reloadCurrentUserAuthState(OnSuccessListener<Void> onSuccessListener, OnFailureListener onFailureListener);
 }

@@ -137,5 +137,6 @@
     <string name="get_registered">Get Registered</string>
     <string name="email_not_registered">Email Address not registered</string>
     <string name="check_email">Check your registered email</string>
+    <string name="common_err_msg">Some error occurred, try again later</string>
 
 </resources>

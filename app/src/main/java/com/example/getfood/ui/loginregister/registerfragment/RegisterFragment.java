@@ -1,7 +1,7 @@
-package com.example.getfood.ui.loginregister;
+package com.example.getfood.ui.loginregister.registerfragment;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -18,8 +18,6 @@ import com.google.firebase.auth.FirebaseAuth;
 public class RegisterFragment extends BaseFragment implements RegisterMvpView, View.OnClickListener {
 
     EditText userConPasswordEditText, userPasswordEditText, userEmailEditText;
-    ProgressDialog progressDialog;
-    private FirebaseAuth auth;
     private RegisterPresenter<RegisterFragment> presenter;
 
     public RegisterFragment() {
@@ -39,10 +37,6 @@ public class RegisterFragment extends BaseFragment implements RegisterMvpView, V
 
         presenter = new RegisterPresenter<>();
         presenter.onAttach(this);
-
-        auth = FirebaseAuth.getInstance();
-
-        progressDialog = new ProgressDialog(getContext());
 
         userConPasswordEditText = view.findViewById(R.id.userConPasswordEditText);
         userPasswordEditText = view.findViewById(R.id.userPasswordEditText);
@@ -96,7 +90,12 @@ public class RegisterFragment extends BaseFragment implements RegisterMvpView, V
                         userEmailEditText.setText("");
                         userPasswordEditText.setText("");
                         userConPasswordEditText.setText("");
-                        presenter.signOutUser();
+                        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                            Log.d("##DebugData", FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                        } else {
+                            Log.d("##DebugData", "User null in register itself");
+                        }
+//                        presenter.signOutUser();
 //                        todo: redirect to login fragment
                     }
                 });

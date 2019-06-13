@@ -1,4 +1,4 @@
-package com.example.getfood.ui.loginregister;
+package com.example.getfood.ui.loginregister.registerfragment;
 
 import android.support.annotation.NonNull;
 import android.util.Log;

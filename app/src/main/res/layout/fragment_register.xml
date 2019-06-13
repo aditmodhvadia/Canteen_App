@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_red"
-    tools:context=".ui.loginregister.RegisterFragment">
+    tools:context=".ui.loginregister.registerfragment.RegisterFragment">
 
 
     <LinearLayout

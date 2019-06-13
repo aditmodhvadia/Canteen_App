@@ -1,10 +1,14 @@
 package com.example.getfood.api;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthResult;
@@ -15,6 +19,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 
 /**
  * Keep this as a Singleton Class
@@ -155,7 +161,7 @@ class FireBaseApiWrapper implements FireBaseApiWrapperInterface {
     public void sendEmailVerification(ActionCodeSettings actionCodeSettings,
                                       final OnCompleteListener<Void> onCompleteListener, final OnFailureListener onFailureListener) {
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+            FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification(actionCodeSettings).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     onCompleteListener.onComplete(task);
@@ -189,5 +195,44 @@ class FireBaseApiWrapper implements FireBaseApiWrapperInterface {
     @Override
     public boolean isUserVerified() {
         return FirebaseAuth.getInstance().getCurrentUser() != null && FirebaseAuth.getInstance().getCurrentUser().isEmailVerified();
+    }
+
+    // listen to Firebase dynamic links
+
+    @Override
+    public void listenToDynamicLinks(Intent intent, Context context, final OnSuccessListener<PendingDynamicLinkData> onSuccessListener, final OnFailureListener onFailureListener) {
+        FirebaseDynamicLinks.getInstance()
+                .getDynamicLink(intent)
+                .addOnSuccessListener((Activity) context, new OnSuccessListener<PendingDynamicLinkData>() {
+                    @Override
+                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+                        onSuccessListener.onSuccess(pendingDynamicLinkData);
+                    }
+                })
+                .addOnFailureListener((Activity) context, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        onFailureListener.onFailure(e);
+                    }
+                });
+    }
+
+    @Override
+    public void reloadCurrentUserAuthState(final OnSuccessListener<Void> onSuccessListener, final OnFailureListener onFailureListener) {
+        if (getCurrentUserEmail() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().reload().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    onSuccessListener.onSuccess(aVoid);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    onFailureListener.onFailure(e);
+                }
+            });
+        } else {
+            onFailureListener.onFailure(new Exception("Some Error Occurred, Try again later"));
+        }
     }
 }

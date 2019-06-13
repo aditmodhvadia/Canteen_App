@@ -1,29 +1,40 @@
 package com.example.getfood.ui.loginregister;
 
-import android.os.Bundle;
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.getfood.R;
+import com.example.getfood.ui.base.BaseActivity;
+import com.example.getfood.ui.foodmenu.FoodMenuDisplayActivity;
+import com.example.getfood.ui.loginregister.loginfragment.LoginFragment;
+import com.example.getfood.ui.loginregister.registerfragment.RegisterFragment;
+import com.example.getfood.utils.AlertUtils;
+import com.example.getfood.utils.DialogSimple;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity implements LoginActivityMvpView {
 
     int exitCount;
     long currTime, prevTime;
+    LoginActivityPresenter<LoginActivity> presenter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+    public int getLayoutResId() {
+        return R.layout.activity_login;
+    }
 
+    @Override
+    public void initViews() {
+        presenter = new LoginActivityPresenter<>();
+        presenter.onAttach(this);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -36,6 +47,37 @@ public class LoginActivity extends AppCompatActivity {
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+
+        presenter.bindDynamicLinkEmailVerification(getIntent());
+    }
+
+    @Override
+    public void onSuccessfulVerificationAndSignIn() {
+        AlertUtils.showAlertBox(LoginActivity.this, "", "Email Address Verified", "Continue", new DialogSimple.AlertDialogListener() {
+            @Override
+            public void onButtonClicked() {
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                    Log.d("##DebugData", FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                    startActivity(new Intent(LoginActivity.this, FoodMenuDisplayActivity.class));
+                } else {
+                    Log.d("##DebugData", "User not signed in");
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onFailedVerificationOrSignIn(Exception e) {
+        AlertUtils.showAlertBox(LoginActivity.this, "", e.getMessage(), getString(R.string.ok), new DialogSimple.AlertDialogListener() {
+            @Override
+            public void onButtonClicked() {
+
+            }
+        });
+    }
+
+    @Override
+    public void setListeners() {
 
     }
 

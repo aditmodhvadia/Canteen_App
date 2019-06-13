@@ -1,4 +1,4 @@
-package com.example.getfood.ui.loginregister;
+package com.example.getfood.ui.loginregister.loginfragment;
 
 import android.content.Context;
 

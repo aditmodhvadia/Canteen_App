@@ -1,7 +1,6 @@
 package com.example.getfood.ui.foodmenu;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.example.getfood.api.FireBaseApiManager;
 import com.example.getfood.models.FoodItem;
@@ -29,9 +28,9 @@ public class FoodCategoryPresenter<V extends FoodCategoryMvpView> extends BasePr
                     FoodItem foodItem = FoodItem.fromMap(dsp, category);
 
                     if (foodItem != null) {
-                        Log.d("##DebugData", foodItem.toString());
+//                        Log.d("##DebugData", foodItem.toString());
                     } else {
-                        Log.d("##DebugData", "\n\t\t Test Item null");
+//                        Log.d("##DebugData", "\n\t\t Test Item null");
                     }
 //                    todo: Create a method to convert from HashMap instead of this
                     if (dsp.hasChild(FireBaseApiManager.FoodMenuDetails.AVAILABLE) &&

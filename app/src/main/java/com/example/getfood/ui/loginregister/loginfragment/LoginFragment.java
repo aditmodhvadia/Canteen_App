@@ -1,4 +1,4 @@
-package com.example.getfood.ui.loginregister;
+package com.example.getfood.ui.loginregister.loginfragment;
 
 import android.app.ProgressDialog;
 import android.content.Intent;

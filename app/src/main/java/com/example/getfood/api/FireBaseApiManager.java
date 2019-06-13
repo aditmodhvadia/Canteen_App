@@ -1,17 +1,25 @@
 package com.example.getfood.api;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringDef;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -137,7 +145,24 @@ public class FireBaseApiManager {
                 .setUrl("")
                 .setIOSBundleId("")
                 .build();*/
-        apiWrapper.sendEmailVerification(null, new OnCompleteListener<Void>() {
+
+        String url = "http://getfood.page.link/verify/?email=" + getCurrentUserEmail();
+        DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(Uri.parse(url))
+                .setDomainUriPrefix("https://getfood.page.link")
+                // Open links with this app on Android
+                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
+                // Open links with com.example.ios on iOS
+                .setIosParameters(new DynamicLink.IosParameters.Builder("com.example.ios").build())
+                .buildDynamicLink();
+
+        Uri dynamicLinkUri = dynamicLink.getUri();
+        ActionCodeSettings actionCodeSettings = ActionCodeSettings.newBuilder()
+                .setUrl(dynamicLinkUri.toString())
+                .setHandleCodeInApp(true)
+                .setDynamicLinkDomain("getfood.page.link")
+                .build();
+        apiWrapper.sendEmailVerification(actionCodeSettings, new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 onCompleteListener.onComplete(task);
@@ -150,12 +175,22 @@ public class FireBaseApiManager {
         });
     }
 
+    public void bindDynamicLinkEmailVerification(Intent intent, Context context,
+                                                 OnSuccessListener<PendingDynamicLinkData> onSuccessListener,
+                                                 OnFailureListener onFailureListener) {
+        apiWrapper.listenToDynamicLinks(intent, context, onSuccessListener, onFailureListener);
+    }
+
     public String getCurrentUserEmail() {
         return apiWrapper.getCurrentUserEmail();
     }
 
     public void sendPasswordResetEmail(String userEmail, OnCompleteListener<Void> onCompleteListener, OnFailureListener onFailureListener) {
         apiWrapper.sendPasswordResetEmail(userEmail, onCompleteListener, onFailureListener);
+    }
+
+    public void reloadUserAuthState(OnSuccessListener<Void> onSuccessListener, OnFailureListener onFailureListener) {
+        apiWrapper.reloadCurrentUserAuthState(onSuccessListener, onFailureListener);
     }
 
 
