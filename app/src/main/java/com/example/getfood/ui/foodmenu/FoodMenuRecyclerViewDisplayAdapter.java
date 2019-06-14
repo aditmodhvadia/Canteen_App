@@ -8,14 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.getfood.R;
-import com.example.getfood.models.CartItem;
+import com.example.getfood.callback.FoodItemTouchListener;
 import com.example.getfood.models.FoodItem;
-import com.example.getfood.utils.AlertUtils;
 import com.example.getfood.utils.AppUtils;
-import com.example.getfood.utils.DialogAddToCart;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +21,12 @@ public class FoodMenuRecyclerViewDisplayAdapter extends RecyclerView.Adapter<Foo
 
     private List<FoodItem> foodItemList;
     private Context context;
+    private FoodItemTouchListener itemTouchListener;
 
-    public FoodMenuRecyclerViewDisplayAdapter(List<FoodItem> foodItemList, Context context) {
+    public FoodMenuRecyclerViewDisplayAdapter(List<FoodItem> foodItemList, Context context, FoodItemTouchListener itemTouchListener) {
         this.foodItemList = foodItemList;
         this.context = context;
+        this.itemTouchListener = itemTouchListener;
     }
 
     @NonNull
@@ -59,43 +58,7 @@ public class FoodMenuRecyclerViewDisplayAdapter extends RecyclerView.Adapter<Foo
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (AppUtils.isItemInCart(FoodMenuDisplayActivity.cartItems, foodItemList.get(holder.getAdapterPosition())) != -1) {
-                    Toast.makeText(context, context.getString(R.string.item_in_cart), Toast.LENGTH_SHORT).show();
-                } else {
-                    AlertUtils.showAddToCartDialog(context, foodItemList.get(holder.getAdapterPosition()), new DialogAddToCart.AddToCartDialogListener() {
-
-                        @Override
-                        public void onAddToCartClicked(int quantity) {
-                            if (quantity != 0) {
-                                int probablePosition = AppUtils.isItemInCart(FoodMenuDisplayActivity.cartItems, foodItemList.get(holder.getAdapterPosition()));
-                                if (probablePosition != -1) {
-                                    FoodMenuDisplayActivity.cartItems.get(probablePosition)
-                                            .setItemQuantity(FoodMenuDisplayActivity.cartItems
-                                                    .get(probablePosition).getItemQuantity() + quantity);
-                                } else {
-                                    FoodMenuDisplayActivity.cartItems.add(new CartItem(foodItemList.get(holder.getAdapterPosition()),
-                                            "Order-Placed", quantity));
-                                }
-                                Toast.makeText(context, context.getString(R.string.add_to_cart), Toast.LENGTH_LONG).show();
-                            }
-                        }
-
-                        @Override
-                        public void onCancelClicked() {
-
-                        }
-
-                        @Override
-                        public void onIncreaseQuantityClicked() {
-
-                        }
-
-                        @Override
-                        public void onDecreaseQuantityClicked() {
-
-                        }
-                    });
-                }
+                itemTouchListener.onItemClicked(holder.getAdapterPosition(), foodItemList.get(holder.getAdapterPosition()));
             }
         });
 

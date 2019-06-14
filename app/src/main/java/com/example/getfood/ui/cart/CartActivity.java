@@ -1,6 +1,5 @@
 package com.example.getfood.ui.cart;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,7 +7,6 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,22 +30,17 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.getfood.Paytm;
 import com.example.getfood.R;
+import com.example.getfood.callback.CartItemTouchListener;
 import com.example.getfood.callback.SwipeToDeleteCallback;
 import com.example.getfood.models.CartItem;
 import com.example.getfood.models.FullOrder;
 import com.example.getfood.ui.base.BaseActivity;
-import com.example.getfood.ui.foodmenu.FoodMenuDisplayActivity;
 import com.example.getfood.ui.orderdetail.OrderDetailActivity;
 import com.example.getfood.utils.AlertUtils;
 import com.example.getfood.utils.AppUtils;
 import com.example.getfood.utils.DialogConfirmation;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.example.getfood.utils.DialogSimple;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.paytm.pgsdk.PaytmOrder;
 import com.paytm.pgsdk.PaytmPGService;
 import com.paytm.pgsdk.PaytmPaymentTransactionCallback;
@@ -58,16 +51,13 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public class CartActivity extends BaseActivity implements View.OnClickListener, PaytmPaymentTransactionCallback {
+public class CartActivity extends BaseActivity implements CartMvpView, View.OnClickListener, CartItemTouchListener, PaytmPaymentTransactionCallback {
 
-    public static Activity activity = null;
     public static int total;
     static TextView totalPriceTV;
     RecyclerView cartRecyclerView;
@@ -79,19 +69,8 @@ public class CartActivity extends BaseActivity implements View.OnClickListener, 
     String orderTime = null;
     private AlertDialog chooseTimeDialog;
     private TextView tvCurrentDate;
+    private CartPresenter<CartActivity> presenter;
 
-    public static void calcTotal() {
-//        int i = 0;
-        total = 0;
-        for (CartItem item : FoodMenuDisplayActivity.cartItems) {
-            total = total + Integer.parseInt(item.getItemPrice()) * item.getItemQuantity();
-        }
-//        set alpha of total price textview to zero, and then animate it to increase to 1.0
-        totalPriceTV.setAlpha(0.0f);
-        totalPriceTV.setText(String.format(activity.getString(R.string.total_rs), String.valueOf(total)));
-        totalPriceTV.animate().alpha(1.0f).setDuration(250);
-
-    }
 
     @Override
     public int getLayoutResId() {
@@ -100,8 +79,6 @@ public class CartActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void initViews() {
-        activity = this;
-
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -111,23 +88,32 @@ public class CartActivity extends BaseActivity implements View.OnClickListener, 
             Drawable upArrow = getResources().getDrawable(R.drawable.ic_down);
             getSupportActionBar().setHomeAsUpIndicator(upArrow);
         }
-
         cartRecyclerView = findViewById(R.id.cartRecyclerView);
         cartRecyclerView.setHasFixedSize(true);
         cartRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         cartRecyclerView.addItemDecoration(new DividerItemDecoration(cartRecyclerView.getContext(), LinearLayoutManager.VERTICAL));
 
-
         totalPriceTV = findViewById(R.id.totalPriceTV);
         orderButton = findViewById(R.id.orderButton);
 
-        CartRecyclerViewDisplayAdapter adapter = new CartRecyclerViewDisplayAdapter(FoodMenuDisplayActivity.cartItems, this);
+        presenter = new CartPresenter<>();
+        presenter.onAttach(this);
+
+        CartRecyclerViewDisplayAdapter adapter = new CartRecyclerViewDisplayAdapter(presenter.getCartItems(), this, this);
         cartRecyclerDisplayAdapter = adapter;
         cartRecyclerView.setAdapter(cartRecyclerDisplayAdapter);
-        calcTotal();
+        updateCartTotal();
+//        calcTotal();
         ItemTouchHelper itemTouchHelper = new
                 ItemTouchHelper(new SwipeToDeleteCallback(adapter));
         itemTouchHelper.attachToRecyclerView(cartRecyclerView);
+    }
+
+    private void updateCartTotal() {
+        totalPriceTV.setAlpha(0.0f);
+        totalPriceTV.setText(String.valueOf(presenter.getCartTotal()));
+        totalPriceTV.animate().alpha(1.0f).setDuration(250);
+
     }
 
     @Override
@@ -167,7 +153,7 @@ public class CartActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     private void clearCart() {
-        FoodMenuDisplayActivity.cartItems.clear();
+        presenter.clearCartItems();
     }
 
     private void chooseTime() {
@@ -256,7 +242,7 @@ public class CartActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        if (FoodMenuDisplayActivity.cartItems.isEmpty()) {
+        if (presenter.getCartItems().size() == 0) {
             finish();
         }
     }
@@ -296,10 +282,6 @@ public class CartActivity extends BaseActivity implements View.OnClickListener, 
     private void placeOrder() {
         chooseTimeDialog.dismiss();
         showLoading();
-        orderRoot = FirebaseDatabase.getInstance().getReference().child(getString(R.string.order));
-        userOrderData = FirebaseDatabase.getInstance().getReference().child("UserOrderData").child(mRollNo);
-
-        orderRoot.keepSynced(true);
 
 //        TODO: generate unique Order ID and redirect user to Order Activity, before that accept the payment.
 
@@ -311,68 +293,94 @@ public class CartActivity extends BaseActivity implements View.OnClickListener, 
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
         if (isConnected) {
-            orderRoot.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    long orderID = dataSnapshot.getChildrenCount();
-                    generateOrder(++orderID);
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-
+            generateOrder();
         } else {
             hideLoading();
             makeText(getString(R.string.no_internet));
         }
     }
 
-    private void generateOrder(final long orderID) {
+    private void generateOrder() {
 
 //        TODO: make object of FullOrder with all the fields
-        Collections.sort(FoodMenuDisplayActivity.cartItems, new Comparator<CartItem>() {
-            @Override
-            public int compare(CartItem o1, CartItem o2) {
-                return o1.getItemCategory().length() - o2.getItemCategory().length();
-            }
-        });
+        presenter.sortCartItems();
 
-        final String orderId = userOrderData.push().getKey();
-        FullOrder fullOrder = new FullOrder(FoodMenuDisplayActivity.cartItems, String.valueOf(total), orderTime, mRollNo, orderId, null);
+
+        final String orderId = presenter.getNewOrderKey();
 
         if (orderId != null) {
-            userOrderData.child(orderId).setValue(fullOrder).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isComplete()) {
-                        clearCart();
-                        userOrderData.child(orderId).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                FullOrder order = dataSnapshot.getValue(FullOrder.class);
-                                if (order != null) {
-                                    hideLoading();
-                                    Intent orderIntent = new Intent(CartActivity.this, OrderDetailActivity.class);
-                                    orderIntent.putExtra("TestOrderData", order);
-                                    startActivity(orderIntent);
-                                }
-                            }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-                                hideLoading();
-                            }
-                        });
-                    } else {
-                        hideLoading();
-                    }
-                }
-            });
+            FullOrder fullOrder = new FullOrder(presenter.getCartItems(), String.valueOf(presenter.getCartTotal()),
+                    orderTime, presenter.getRollNo(), orderId, null);
+            presenter.setNewOrder(fullOrder);
+
+        } else {
+            hideLoading();
+            AlertUtils.showAlertBox(mContext, "Some Error occurred!",
+                    "Please try again later", getString(R.string.ok), new DialogSimple.AlertDialogListener() {
+                        @Override
+                        public void onButtonClicked() {
+
+                        }
+                    });
         }
+    }
+
+    @Override
+    public void onIncreaseClicked(int adapterPosition) {
+        presenter.increaseCartQuantity(adapterPosition);
+        updateCartTotal();
+        cartRecyclerDisplayAdapter.notifyItemChanged(adapterPosition);
+        Toast.makeText(mContext, getString(R.string.adjust_cart), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDecreaseClicked(int adapterPosition) {
+        presenter.decreaseCartItemQuantity(adapterPosition);
+        updateCartTotal();
+        Toast.makeText(mContext, getString(R.string.adjust_cart), Toast.LENGTH_SHORT).show();
+        cartRecyclerDisplayAdapter.notifyItemChanged(adapterPosition);
+    }
+
+    @Override
+    public void onItemRemoved(int adapterPosition) {
+        presenter.removeCartItem(adapterPosition);
+        updateCartTotal();
+        cartRecyclerDisplayAdapter.notifyItemRemoved(adapterPosition);
+    }
+
+    @Override
+    public void onItemRemoveUndo(CartItem removedItem, int mRecentlyDeletedItemPosition) {
+        presenter.undoCartItemRemove(removedItem, mRecentlyDeletedItemPosition);
+        updateCartTotal();
+        cartRecyclerDisplayAdapter.notifyItemInserted(mRecentlyDeletedItemPosition);
+    }
+
+    @Override
+    public void onOrderPlacedSuccessfully(String orderId) {
+        presenter.getOrderData(orderId);
+    }
+
+    @Override
+    public void onOrderDataFetchedSuccessfully(FullOrder fullOrder) {
+        hideLoading();
+        if (fullOrder != null) {
+            hideLoading();
+            Intent orderIntent = new Intent(CartActivity.this, OrderDetailActivity.class);
+            orderIntent.putExtra("TestOrderData", fullOrder);
+            startActivity(orderIntent);
+        }
+    }
+
+    @Override
+    public void onOrderFailed(Exception exception) {
+        AlertUtils.showAlertBox(mContext, "Some error occurred!", exception.getMessage(),
+                getString(R.string.ok), new DialogSimple.AlertDialogListener() {
+                    @Override
+                    public void onButtonClicked() {
+
+                    }
+                });
     }
 
     private void generateCheckSumVoley() {
@@ -449,8 +457,8 @@ public class CartActivity extends BaseActivity implements View.OnClickListener, 
         Service.startPaymentTransaction(this, true, true, this);
 
     }
-
     //all these overriden method is to detect the payment result accordingly
+
     @Override
     public void onTransactionResponse(Bundle bundle) {
 
@@ -458,14 +466,7 @@ public class CartActivity extends BaseActivity implements View.OnClickListener, 
         Log.d("PayTM", bundle.toString());
         Log.d("response", "Checksum from Paytm server was " + bundle.getString(getString(R.string.checksum)));
 
-//        reseting the cart
-//        FoodMenuDisplayActivity.cartItemName.clear();
-//        FoodMenuDisplayActivity.cartItemCategory.clear();
-//        FoodMenuDisplayActivity.cartItemQuantity.clear();
-//        FoodMenuDisplayActivity.cartItemPrice.clear();
-        FoodMenuDisplayActivity.cartItems.clear();
-
-//        startActivity(orderIntent);
+        clearCart();
     }
 
     @Override

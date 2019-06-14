@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringDef;
 
+import com.example.getfood.models.FullOrder;
+import com.example.getfood.utils.AppUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -197,6 +199,23 @@ public class FireBaseApiManager {
         DatabaseReference versionCheck = FirebaseDatabase.getInstance().getReference().child(BaseUrl.VERSION_CHECK).child(versionName);
 
         apiWrapper.singleValueEventListener(versionCheck, eventListener);
+    }
+
+    public String getNewOrderKey() {
+        return apiWrapper.getKey(FirebaseDatabase.getInstance().getReference().child(BaseUrl.USER_ORDER)
+                .child(AppUtils.getRollNoFromEmail(apiWrapper.getCurrentUserEmail())));
+    }
+
+    public void setOrderValue(FullOrder fullOrder, OnCompleteListener<Void> onCompleteListener) {
+        DatabaseReference orderReference = FirebaseDatabase.getInstance().getReference().child(BaseUrl.USER_ORDER)
+                .child(AppUtils.getRollNoFromEmail(apiWrapper.getCurrentUserEmail())).child(fullOrder.getOrderId());
+        apiWrapper.setValue(orderReference, fullOrder, onCompleteListener);
+    }
+
+    public void getNewOrderData(String orderId, ValueEventListener eventListener) {
+        DatabaseReference orderReference = FirebaseDatabase.getInstance().getReference().child(BaseUrl.USER_ORDER)
+                .child(AppUtils.getRollNoFromEmail(apiWrapper.getCurrentUserEmail())).child(orderId);
+        apiWrapper.singleValueEventListener(orderReference, eventListener);
     }
 
 

@@ -1,12 +1,13 @@
 package com.example.getfood.ui.base;
 
 import com.example.getfood.api.FireBaseApiManager;
+import com.example.getfood.data.DataManager;
 
 public abstract class BasePresenter<V extends BaseView> implements BaseMvpPresenter<V> {
 
     private static final String TAG = "BasePresenter";
     protected FireBaseApiManager apiManager;
-
+    protected DataManager dataManager;
     private V mMvpView;
 
     public BasePresenter() {
@@ -16,6 +17,7 @@ public abstract class BasePresenter<V extends BaseView> implements BaseMvpPresen
     public void onAttach(V mvpView) {
         mMvpView = mvpView;
         apiManager = FireBaseApiManager.getInstance();
+        dataManager = DataManager.getInstance();
     }
 
     public FireBaseApiManager getApiManager() {

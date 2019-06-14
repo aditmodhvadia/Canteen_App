@@ -25,7 +25,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.getfood.R;
-import com.example.getfood.models.CartItem;
 import com.example.getfood.ui.cart.CartActivity;
 import com.example.getfood.ui.loginregister.LoginActivity;
 import com.example.getfood.ui.map.MapsActivity;
@@ -37,12 +36,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.ArrayList;
-
 public class FoodMenuDisplayActivity extends AppCompatActivity {
 
 
-    public static ArrayList<CartItem> cartItems;
     CoordinatorLayout coordinatorLayoutParent;
     FirebaseAuth auth;
     private int exitCount;
@@ -57,8 +53,6 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_menu_display);
-
-        cartItems = new ArrayList<>();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         coordinatorLayoutParent = findViewById(R.id.CoordinatorLayoutParent);
@@ -244,11 +238,13 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
     }
 
     private void openCart() {
-        if (cartItems.isEmpty())
+        /*if (cartItems.isEmpty())
             makeText(getString(R.string.cart_empty));
         else {
             startActivity(new Intent(this, CartActivity.class));
-        }
+        }*/
+//        TODO: Change to Mvp with BaseActiovity and then check for cartItems from presenter
+        startActivity(new Intent(this, CartActivity.class));
 
     }
 

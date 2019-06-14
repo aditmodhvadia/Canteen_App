@@ -235,4 +235,14 @@ class FireBaseApiWrapper implements FireBaseApiWrapperInterface {
             onFailureListener.onFailure(new Exception("Some Error Occurred, Try again later"));
         }
     }
+
+    @Override
+    public String getKey(DatabaseReference reference) {
+        return reference.push().getKey();
+    }
+
+    @Override
+    public void setValue(DatabaseReference reference, Object object, OnCompleteListener<Void> onCompleteListener) {
+        reference.setValue(object).addOnCompleteListener(onCompleteListener);
+    }
 }

@@ -41,4 +41,8 @@ public interface FireBaseApiWrapperInterface {
     void listenToDynamicLinks(Intent intent, Context context, OnSuccessListener<PendingDynamicLinkData> onSuccessListener, OnFailureListener onFailureListener);
 
     void reloadCurrentUserAuthState(OnSuccessListener<Void> onSuccessListener, OnFailureListener onFailureListener);
+
+    String getKey(DatabaseReference reference);
+
+    void setValue(DatabaseReference reference, Object object, OnCompleteListener<Void> onCompleteListener);
 }

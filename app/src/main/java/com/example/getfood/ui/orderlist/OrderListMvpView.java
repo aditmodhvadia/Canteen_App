@@ -11,4 +11,6 @@ public interface OrderListMvpView extends BaseView {
     void bindListAdapter(ArrayList<FullOrder> orderListItems);
 
     Context getContext();
+
+    void onRollNumberNull();
 }

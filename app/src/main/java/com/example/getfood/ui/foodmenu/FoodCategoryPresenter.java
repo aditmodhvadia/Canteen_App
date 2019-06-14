@@ -3,6 +3,7 @@ package com.example.getfood.ui.foodmenu;
 import android.support.annotation.NonNull;
 
 import com.example.getfood.api.FireBaseApiManager;
+import com.example.getfood.models.CartItem;
 import com.example.getfood.models.FoodItem;
 import com.example.getfood.ui.base.BasePresenter;
 import com.google.firebase.database.DataSnapshot;
@@ -46,5 +47,15 @@ public class FoodCategoryPresenter<V extends FoodCategoryMvpView> extends BasePr
 
             }
         });
+    }
+
+    @Override
+    public ArrayList<CartItem> getCartItems() {
+        return dataManager.getCartItems();
+    }
+
+    @Override
+    public void addFoodItemToCart(CartItem cartItem) {
+        dataManager.getCartItems().add(cartItem);
     }
 }

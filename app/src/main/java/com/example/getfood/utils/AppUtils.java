@@ -125,6 +125,14 @@ public class AppUtils {
         return !TextUtils.isEmpty(password) && password.length() >= 8;
     }
 
+    public static String getRollNoFromEmail(String currentUserEmail) {
+        if (currentUserEmail == null) {
+            return null;
+        } else {
+            return currentUserEmail.substring(0, currentUserEmail.indexOf("@"));
+        }
+    }
+
     public String generateString() {
         String uuid = UUID.randomUUID().toString();
         return uuid.replaceAll("-", "");

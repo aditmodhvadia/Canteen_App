@@ -39,7 +39,7 @@ public class OrderListActivity extends BaseActivity implements OrderListMvpView 
         presenter.onAttach(this);
 
         //        fetch all the order IDs of the user first
-        presenter.fetchOrderList(mRollNo);
+        presenter.fetchOrderList();
     }
 
     @Override
@@ -71,15 +71,10 @@ public class OrderListActivity extends BaseActivity implements OrderListMvpView 
         orderListDisplayAdapter = new OrderListRecyclerViewDisplayAdapter(orderListItems, mContext);
         ordersListRecyclerView.setAdapter(orderListDisplayAdapter);
         hideLoading();
+    }
 
-//        attach OnItemClickListener
-        /*ordersListRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(OrderListActivity.this, OrderDetailActivity.class);
-                i.putExtra("TestOrderData", orderListItems.get(position));
-                startActivity(i);
-            }
-        });*/
+    @Override
+    public void onRollNumberNull() {
+//        TODO: Either refresh state of Auth or redirect to LoginActivity
     }
 }

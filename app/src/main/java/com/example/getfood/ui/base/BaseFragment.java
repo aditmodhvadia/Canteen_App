@@ -81,16 +81,6 @@ public abstract class BaseFragment extends Fragment implements BaseView {
         return networkInfo != null && networkInfo.isConnected();
     }
 
-    @Override
-    public FirebaseAuth getFirebaseAuth() {
-        return mAuth;
-    }
-
-    @Override
-    public String getRollNo() {
-        return mRollNo;
-    }
-
     @Nullable
     @Override
     public Context getContext() {

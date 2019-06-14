@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.example.getfood.models.FullOrder;
 import com.example.getfood.ui.base.BasePresenter;
+import com.example.getfood.utils.AppUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -17,10 +18,15 @@ public class OrderListPresenter<V extends OrderListMvpView> extends BasePresente
     }
 
     @Override
-    public void fetchOrderList(String rollNo) {
+    public void fetchOrderList() {
+        String userRollNo = AppUtils.getRollNoFromEmail(apiManager.getCurrentUserEmail());
+        if (userRollNo == null) {
+            getMvpView().onRollNumberNull();
+            return;
+        }
         orderListItems = new ArrayList<>();
 
-        apiManager.orderListListener(rollNo, new ValueEventListener() {
+        apiManager.orderListListener(userRollNo, new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
