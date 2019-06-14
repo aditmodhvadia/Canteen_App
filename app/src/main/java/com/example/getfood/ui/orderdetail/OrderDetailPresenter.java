@@ -33,7 +33,7 @@ public class OrderDetailPresenter<V extends OrderDetailMvpView> extends BasePres
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                getMvpView().onDatabaseError(databaseError);
+                getMvpView().onDatabaseError(new Error(databaseError.getMessage()));
             }
         });
     }
@@ -57,12 +57,12 @@ public class OrderDetailPresenter<V extends OrderDetailMvpView> extends BasePres
                 float newRating = (currRating * numberOfRating++ + Integer.parseInt(ratingValue)) / numberOfRating;
                 foodItems.child(getMvpView().getContext().getString(R.string.rating)).setValue(newRating);
                 foodItems.child(getMvpView().getContext().getString(R.string.no_of_rating)).setValue(numberOfRating);
-                getMvpView().onRatingUpdatedSuccessfuly();
+                getMvpView().onRatingUpdatedSuccessfully();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                getMvpView().onRatingUpdateFailed(databaseError);
+                getMvpView().onRatingUpdateFailed(new Error(databaseError.getMessage()));
             }
         });
     }

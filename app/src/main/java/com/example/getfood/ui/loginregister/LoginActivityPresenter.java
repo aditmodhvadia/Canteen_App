@@ -85,4 +85,14 @@ public class LoginActivityPresenter<V extends LoginActivityMvpView> extends Base
             }
         });
     }
+
+    @Override
+    public boolean isUserLoggedIn() {
+        return apiManager.isUserLoggedIn();
+    }
+
+    @Override
+    public void signOutUser() {
+        apiManager.forceSignOutUser();
+    }
 }

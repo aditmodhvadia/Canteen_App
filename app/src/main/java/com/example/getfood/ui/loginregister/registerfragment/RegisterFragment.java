@@ -1,7 +1,6 @@
 package com.example.getfood.ui.loginregister.registerfragment;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.CheckBox;
@@ -13,7 +12,6 @@ import com.example.getfood.ui.base.BaseFragment;
 import com.example.getfood.ui.terms.TermsActivity;
 import com.example.getfood.utils.AlertUtils;
 import com.example.getfood.utils.DialogSimple;
-import com.google.firebase.auth.FirebaseAuth;
 
 
 public class RegisterFragment extends BaseFragment implements RegisterMvpView, View.OnClickListener {
@@ -104,11 +102,7 @@ public class RegisterFragment extends BaseFragment implements RegisterMvpView, V
                         userEmailEditText.setText("");
                         userPasswordEditText.setText("");
                         userConPasswordEditText.setText("");
-                        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                            Log.d("##DebugData", FirebaseAuth.getInstance().getCurrentUser().getEmail());
-                        } else {
-                            Log.d("##DebugData", "User null in register itself");
-                        }
+
 //                        presenter.signOutUser();
 //                        todo: redirect to login fragment
                     }

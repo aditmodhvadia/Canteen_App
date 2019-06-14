@@ -218,6 +218,10 @@ public class FireBaseApiManager {
         apiWrapper.singleValueEventListener(orderReference, eventListener);
     }
 
+    public boolean isUserLoggedIn() {
+        return getCurrentUserEmail() != null;
+    }
+
 
     public static class BaseUrl {
         // Declare the constants

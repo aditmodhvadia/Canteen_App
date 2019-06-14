@@ -14,7 +14,6 @@ import com.example.getfood.ui.foodmenu.FoodMenuDisplayActivity;
 import com.example.getfood.utils.AlertUtils;
 import com.example.getfood.utils.DialogConfirmation;
 import com.example.getfood.utils.DialogSimple;
-import com.google.firebase.auth.FirebaseAuth;
 
 
 public class LoginFragment extends BaseFragment implements LoginMvpView, View.OnClickListener {
@@ -24,10 +23,6 @@ public class LoginFragment extends BaseFragment implements LoginMvpView, View.On
     TextView forgotPasswordTextView;
     ProgressDialog progressDialog;
     private LoginPresenter<LoginFragment> presenter;
-
-    //    CheckBox showPasswordCheckBox;
-    private FirebaseAuth auth;
-    private boolean timeout = false, success = false;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -40,7 +35,6 @@ public class LoginFragment extends BaseFragment implements LoginMvpView, View.On
 
     @Override
     public void initViews(View view) {
-        auth = FirebaseAuth.getInstance();
 
         if (getActivity() != null) {
             getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);

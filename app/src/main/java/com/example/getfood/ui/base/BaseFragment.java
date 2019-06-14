@@ -13,25 +13,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.getfood.utils.ProgressHandler;
-import com.google.firebase.auth.FirebaseAuth;
 
 public abstract class BaseFragment extends Fragment implements BaseView {
 
     public Context mContext;
-    public FirebaseAuth mAuth;
-    public String mRollNo;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getActivity();
-        mAuth = FirebaseAuth.getInstance();
-        if (mAuth != null && mAuth.getCurrentUser() != null && mAuth.getCurrentUser().getEmail() != null) {
-            mRollNo = mAuth.getCurrentUser().getEmail().substring(0,
-                    mAuth.getCurrentUser().getEmail().indexOf("@"));
-        } else {
-            mRollNo = null;
-        }
     }
 
     @Nullable

@@ -40,7 +40,6 @@ import com.example.getfood.utils.AlertUtils;
 import com.example.getfood.utils.AppUtils;
 import com.example.getfood.utils.DialogConfirmation;
 import com.example.getfood.utils.DialogSimple;
-import com.google.firebase.database.DatabaseReference;
 import com.paytm.pgsdk.PaytmOrder;
 import com.paytm.pgsdk.PaytmPGService;
 import com.paytm.pgsdk.PaytmPaymentTransactionCallback;
@@ -65,7 +64,6 @@ public class CartActivity extends BaseActivity implements CartMvpView, View.OnCl
     Button orderButton;
     //    choose time views
     Button firstBreakButton, secondBreakButton, lastBreakButton, nowButton;
-    DatabaseReference orderRoot, userOrderData;
     String orderTime = null;
     private AlertDialog chooseTimeDialog;
     private TextView tvCurrentDate;
@@ -103,7 +101,7 @@ public class CartActivity extends BaseActivity implements CartMvpView, View.OnCl
         cartRecyclerDisplayAdapter = adapter;
         cartRecyclerView.setAdapter(cartRecyclerDisplayAdapter);
         updateCartTotal();
-//        calcTotal();
+
         ItemTouchHelper itemTouchHelper = new
                 ItemTouchHelper(new SwipeToDeleteCallback(adapter));
         itemTouchHelper.attachToRecyclerView(cartRecyclerView);

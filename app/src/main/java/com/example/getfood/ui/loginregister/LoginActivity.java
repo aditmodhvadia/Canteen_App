@@ -18,7 +18,6 @@ import com.example.getfood.ui.loginregister.loginfragment.LoginFragment;
 import com.example.getfood.ui.loginregister.registerfragment.RegisterFragment;
 import com.example.getfood.utils.AlertUtils;
 import com.example.getfood.utils.DialogSimple;
-import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends BaseActivity implements LoginActivityMvpView {
 
@@ -56,8 +55,8 @@ public class LoginActivity extends BaseActivity implements LoginActivityMvpView 
         AlertUtils.showAlertBox(LoginActivity.this, "", "Email Address Verified", "Continue", new DialogSimple.AlertDialogListener() {
             @Override
             public void onButtonClicked() {
-                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                    Log.d("##DebugData", FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                if (presenter.isUserLoggedIn()) {
+//                    Log.d("##DebugData", FirebaseAuth.getInstance().getCurrentUser().getEmail());
                     startActivity(new Intent(LoginActivity.this, FoodMenuDisplayActivity.class));
                 } else {
                     Log.d("##DebugData", "User not signed in");
@@ -111,7 +110,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityMvpView 
                 prevTime = System.currentTimeMillis();
                 exitCount = 1;
             } else {
-                FirebaseAuth.getInstance().signOut();
+                presenter.signOutUser();
                 finish();
             }
         }

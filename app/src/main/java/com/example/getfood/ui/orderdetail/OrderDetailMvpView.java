@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.example.getfood.models.FullOrder;
 import com.example.getfood.ui.base.BaseView;
-import com.google.firebase.database.DatabaseError;
 
 public interface OrderDetailMvpView extends BaseView {
 
@@ -12,9 +11,9 @@ public interface OrderDetailMvpView extends BaseView {
 
     void bindOrderDetailAdapter(FullOrder updatedOrder);
 
-    void onDatabaseError(DatabaseError databaseError);
+    void onDatabaseError(Error error);
 
-    void onRatingUpdatedSuccessfuly();
+    void onRatingUpdatedSuccessfully();
 
-    void onRatingUpdateFailed(DatabaseError databaseError);
+    void onRatingUpdateFailed(Error error);
 }

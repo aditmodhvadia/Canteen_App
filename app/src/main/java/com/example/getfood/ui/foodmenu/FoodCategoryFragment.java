@@ -19,7 +19,6 @@ import com.example.getfood.utils.AlertUtils;
 import com.example.getfood.utils.AppUtils;
 import com.example.getfood.utils.DialogAddToCart;
 import com.facebook.shimmer.ShimmerFrameLayout;
-import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +78,7 @@ public class FoodCategoryFragment extends BaseFragment implements FoodCategoryMv
     }
 
     @Override
-    public void onDatabaseError(DatabaseError databaseError) {
+    public void onDatabaseError(Error error) {
 
     }
 
