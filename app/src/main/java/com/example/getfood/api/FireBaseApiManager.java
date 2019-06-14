@@ -193,11 +193,18 @@ public class FireBaseApiManager {
         apiWrapper.reloadCurrentUserAuthState(onSuccessListener, onFailureListener);
     }
 
+    public void determineIfUpdateNeededAtSplash(@NonNull String versionName, ValueEventListener eventListener) {
+        DatabaseReference versionCheck = FirebaseDatabase.getInstance().getReference().child(BaseUrl.VERSION_CHECK).child(versionName);
+
+        apiWrapper.singleValueEventListener(versionCheck, eventListener);
+    }
+
 
     public static class BaseUrl {
         // Declare the constants
         static final String USER_ORDER = "UserOrderData";
         static final String FOOD_MENU = "Food";
+        static final String VERSION_CHECK = "version-check";
 
         @Retention(RetentionPolicy.SOURCE)
         @StringDef({USER_ORDER, FOOD_MENU})

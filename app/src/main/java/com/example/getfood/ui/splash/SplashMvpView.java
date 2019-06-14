@@ -6,4 +6,8 @@ public interface SplashMvpView extends BaseView {
     void userIsSignedIn();
 
     void userIsNotSignedIn();
+
+    void updateNotRequired();
+
+    void updateRequired();
 }
