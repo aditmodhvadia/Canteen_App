@@ -5,14 +5,7 @@ import android.support.annotation.NonNull;
 import com.example.getfood.R;
 import com.example.getfood.ui.base.BasePresenter;
 import com.example.getfood.utils.AppUtils;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseNetworkException;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthInvalidUserException;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.fazemeright.firebase_api__library.listeners.OnTaskCompleteListener;
 
 public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V> implements LoginMvpPresenter<V> {
 
@@ -31,22 +24,20 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V> imp
             return;
         }
 
-        apiManager.signInWithEmailAndPassword(userEmail, password, new OnCompleteListener<AuthResult>() {
+        apiManager.signInWithEmailAndPassword(userEmail, password, new OnTaskCompleteListener() {
             @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    verifyUserEmail();
-                } else {
-                    if (task.getException() instanceof FirebaseNetworkException) {
-                        getMvpView().valueEntryError(getMvpView().getContext().getString(R.string.no_internet));
-                    } else if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-                        getMvpView().valueEntryError(getMvpView().getContext().getString(R.string.email_in_use));
-                    } else if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                        getMvpView().valueEntryError(getMvpView().getContext().getString(R.string.invalid_credentials));
-                    } else {
-                        getMvpView().valueEntryError(getMvpView().getContext().getString(R.string.error_occurred));
-                    }
-                }
+            public void onTaskSuccessful() {
+                verifyUserEmail();
+            }
+
+            @Override
+            public void onTaskCompleteButFailed(String errMsg) {
+                getMvpView().valueEntryError(errMsg);
+            }
+
+            @Override
+            public void onTaskFailed(Exception e) {
+
             }
         });
     }
@@ -62,24 +53,19 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V> imp
 
     @Override
     public void sendEmailForVerification() {
-        apiManager.sendEmailVerification(new OnCompleteListener<Void>() {
+        apiManager.sendEmailVerification(new OnTaskCompleteListener() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    getMvpView().userVerifiedSuccessfully();
-                } else {
-                    if (task.getException() instanceof FirebaseNetworkException) {
-                        getMvpView().valueEntryError(getMvpView().getContext().getString(R.string.no_internet));
-                    } else if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-                        getMvpView().valueEntryError(getMvpView().getContext().getString(R.string.email_in_use));
-                    } else {
-                        getMvpView().valueEntryError(getMvpView().getContext().getString(R.string.error_occurred));
-                    }
-                }
+            public void onTaskSuccessful() {
+                getMvpView().userVerifiedSuccessfully();
             }
-        }, new OnFailureListener() {
+
             @Override
-            public void onFailure(@NonNull Exception e) {
+            public void onTaskCompleteButFailed(String errMsg) {
+                getMvpView().valueEntryError(errMsg);
+            }
+
+            @Override
+            public void onTaskFailed(Exception e) {
                 getMvpView().onUserEmailVerificationFailed();
             }
         });
@@ -102,27 +88,21 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V> imp
             return;
         }
 
-        apiManager.sendPasswordResetEmail(userEmail, new OnCompleteListener<Void>() {
+        apiManager.sendPasswordResetEmail(userEmail, new OnTaskCompleteListener() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    getMvpView().onPasswordResetEmailSentSuccessfully();
-                } else {
-                    if (task.getException() instanceof FirebaseNetworkException) {
-                        getMvpView().valueEntryError(getMvpView().getContext().getString(R.string.no_internet));
-                    } else if (task.getException() instanceof FirebaseAuthInvalidUserException) {
-                        getMvpView().valueEntryError(getMvpView().getContext().getString(R.string.email_not_registered));
-                    } else {
-                        getMvpView().valueEntryError(getMvpView().getContext().getString(R.string.error_occurred));
-                    }
-                }
+            public void onTaskSuccessful() {
+                getMvpView().onPasswordResetEmailSentSuccessfully();
             }
-        }, new OnFailureListener() {
+
             @Override
-            public void onFailure(@NonNull Exception e) {
+            public void onTaskCompleteButFailed(String errMsg) {
+                getMvpView().valueEntryError(errMsg);
+            }
+
+            @Override
+            public void onTaskFailed(Exception e) {
 
             }
         });
-
     }
 }

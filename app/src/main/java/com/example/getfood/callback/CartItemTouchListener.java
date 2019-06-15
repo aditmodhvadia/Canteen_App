@@ -1,6 +1,6 @@
 package com.example.getfood.callback;
 
-import com.example.getfood.models.CartItem;
+import com.fazemeright.canteen_app_models.models.CartItem;
 
 public interface CartItemTouchListener {
     void onIncreaseClicked(int adapterPosition);

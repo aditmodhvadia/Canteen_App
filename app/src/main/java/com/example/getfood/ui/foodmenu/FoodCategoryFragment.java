@@ -12,13 +12,13 @@ import android.widget.Toast;
 
 import com.example.getfood.R;
 import com.example.getfood.callback.FoodItemTouchListener;
-import com.example.getfood.models.CartItem;
-import com.example.getfood.models.FoodItem;
 import com.example.getfood.ui.base.BaseFragment;
 import com.example.getfood.utils.AlertUtils;
 import com.example.getfood.utils.AppUtils;
 import com.example.getfood.utils.DialogAddToCart;
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.fazemeright.canteen_app_models.models.CartItem;
+import com.fazemeright.canteen_app_models.models.FoodItem;
 
 import java.util.ArrayList;
 import java.util.List;

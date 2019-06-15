@@ -11,12 +11,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.getfood.R;
-import com.example.getfood.models.FullOrder;
 import com.example.getfood.service.OrderNotificationService;
 import com.example.getfood.ui.base.BaseActivity;
 import com.example.getfood.utils.AlertUtils;
 import com.example.getfood.utils.AppUtils;
 import com.example.getfood.utils.DialogSimple;
+import com.fazemeright.canteen_app_models.models.FullOrder;
 
 public class OrderDetailActivity extends BaseActivity implements OrderDetailMvpView {
 

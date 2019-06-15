@@ -2,9 +2,9 @@ package com.example.getfood.ui.orderlist;
 
 import android.support.annotation.NonNull;
 
-import com.example.getfood.models.FullOrder;
 import com.example.getfood.ui.base.BasePresenter;
 import com.example.getfood.utils.AppUtils;
+import com.fazemeright.canteen_app_models.models.FullOrder;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;

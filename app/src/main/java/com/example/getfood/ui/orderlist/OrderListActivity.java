@@ -8,8 +8,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.getfood.R;
-import com.example.getfood.models.FullOrder;
 import com.example.getfood.ui.base.BaseActivity;
+import com.fazemeright.canteen_app_models.models.FullOrder;
 
 import java.util.ArrayList;
 

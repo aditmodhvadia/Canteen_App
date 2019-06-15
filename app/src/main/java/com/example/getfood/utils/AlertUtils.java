@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.getfood.R;
-import com.example.getfood.models.FoodItem;
+import com.fazemeright.canteen_app_models.models.FoodItem;
 
 
 /**

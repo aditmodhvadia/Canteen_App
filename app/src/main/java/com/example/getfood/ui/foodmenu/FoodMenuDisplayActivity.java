@@ -3,7 +3,6 @@ package com.example.getfood.ui.foodmenu;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -15,7 +14,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.getfood.R;
+import com.example.getfood.ui.base.BaseActivity;
 import com.example.getfood.ui.cart.CartActivity;
 import com.example.getfood.ui.loginregister.LoginActivity;
 import com.example.getfood.ui.map.MapsActivity;
@@ -32,35 +31,31 @@ import com.example.getfood.ui.orderlist.OrderListActivity;
 import com.example.getfood.ui.terms.TermsActivity;
 import com.example.getfood.utils.AlertUtils;
 import com.example.getfood.utils.DialogConfirmation;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
 
-public class FoodMenuDisplayActivity extends AppCompatActivity {
+public class FoodMenuDisplayActivity extends BaseActivity implements FoodMenuDisplayActivityMvpView {
 
 
     CoordinatorLayout coordinatorLayoutParent;
-    FirebaseAuth auth;
     private int exitCount;
     private long currTime, prevTime;
     private DrawerLayout mDrawerLayout;
+    private FoodMenuDisplayActivityPresenter<FoodMenuDisplayActivity> presenter;
 
     private FoodCategoryFragment chineseFragment;
     private FoodCategoryFragment southIndianFragment;
     private FoodCategoryFragment sandwichPizzaFragment;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_food_menu_display);
-
+    public void initViews() {
         NavigationView navigationView = findViewById(R.id.nav_view);
         coordinatorLayoutParent = findViewById(R.id.CoordinatorLayoutParent);
         View headerView = navigationView.getHeaderView(0);
         TextView emailTextView = headerView.findViewById(R.id.emailTextView);
 
-        auth = FirebaseAuth.getInstance();
-        emailTextView.setText(auth.getCurrentUser().getEmail());
+        presenter = new FoodMenuDisplayActivityPresenter<>();
+        presenter.onAttach(this);
+//        TODO: Move to Mvp
+        emailTextView.setText(presenter.getUserEmail());
 
 
         // Create the adapter that will return a fragment for each of the three
@@ -119,20 +114,7 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
                         } else if (menuItem.getItemId() == R.id.nav_contact) {
                             openEmailClient();
                         } else if (menuItem.getItemId() == R.id.nav_reset_password) {
-
-                            auth.sendPasswordResetEmail(auth.getCurrentUser().getEmail()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Toast.makeText(FoodMenuDisplayActivity.this, getString(R.string.pwd_reset_sent), Toast.LENGTH_SHORT).show();
-                                    auth.signOut();
-                                    finish();
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(FoodMenuDisplayActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                            presenter.sendPasswordResetEmail();
 
                         } else if (menuItem.getItemId() == R.id.nav_logout) {
                             logout();
@@ -148,6 +130,27 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
                         return true;
                     }
                 });
+    }
+
+    @Override
+    public void setListeners() {
+
+    }
+
+    @Override
+    public void onPasswordResetEmailSentSuccessfully() {
+        Toast.makeText(FoodMenuDisplayActivity.this, getString(R.string.pwd_reset_sent), Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    @Override
+    public void onPasswordResetEmailSentFailed(String errMsg) {
+        Toast.makeText(FoodMenuDisplayActivity.this, errMsg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public int getLayoutResId() {
+        return R.layout.activity_food_menu_display;
     }
 
     private void openTermsActivity() {
@@ -225,7 +228,7 @@ public class FoodMenuDisplayActivity extends AppCompatActivity {
                 getString(R.string.yes), getString(R.string.no), new DialogConfirmation.ConfirmationDialogListener() {
                     @Override
                     public void onPositiveButtonClicked() {
-                        auth.signOut();
+                        presenter.signOutUser();
                         startActivity(new Intent(FoodMenuDisplayActivity.this, LoginActivity.class));
                         finish();
                     }

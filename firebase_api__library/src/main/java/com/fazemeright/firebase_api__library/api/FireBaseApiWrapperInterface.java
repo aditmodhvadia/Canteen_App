@@ -1,4 +1,4 @@
-package com.example.getfood.api;
+package com.fazemeright.firebase_api__library.api;
 
 import android.content.Context;
 import android.content.Intent;

@@ -2,10 +2,10 @@ package com.example.getfood.ui.foodmenu;
 
 import android.support.annotation.NonNull;
 
-import com.example.getfood.api.FireBaseApiManager;
-import com.example.getfood.models.CartItem;
-import com.example.getfood.models.FoodItem;
 import com.example.getfood.ui.base.BasePresenter;
+import com.fazemeright.canteen_app_models.helpers.FoodMenuDetails;
+import com.fazemeright.canteen_app_models.models.CartItem;
+import com.fazemeright.canteen_app_models.models.FoodItem;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -26,7 +26,7 @@ public class FoodCategoryPresenter<V extends FoodCategoryMvpView> extends BasePr
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 ArrayList<FoodItem> foodItems = new ArrayList<>();
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                    FoodItem foodItem = FoodItem.fromMap(dsp, category);
+                    FoodItem foodItem = FoodItem.fromMap(dsp.getValue(), category, dsp.getKey());
 
                     if (foodItem != null) {
 //                        Log.d("##DebugData", foodItem.toString());
@@ -34,8 +34,8 @@ public class FoodCategoryPresenter<V extends FoodCategoryMvpView> extends BasePr
 //                        Log.d("##DebugData", "\n\t\t Test Item null");
                     }
 //                    todo: Create a method to convert from HashMap instead of this
-                    if (dsp.hasChild(FireBaseApiManager.FoodMenuDetails.AVAILABLE) &&
-                            dsp.child(FireBaseApiManager.FoodMenuDetails.AVAILABLE).getValue().toString().equals("Yes")) {
+                    if (dsp.hasChild(FoodMenuDetails.AVAILABLE) &&
+                            dsp.child(FoodMenuDetails.AVAILABLE).getValue().toString().equals("Yes")) {
                         foodItems.add(foodItem);
                     }
                 }

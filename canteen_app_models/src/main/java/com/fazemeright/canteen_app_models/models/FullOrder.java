@@ -1,4 +1,4 @@
-package com.example.getfood.models;
+package com.fazemeright.canteen_app_models.models;
 
 import android.support.annotation.NonNull;
 

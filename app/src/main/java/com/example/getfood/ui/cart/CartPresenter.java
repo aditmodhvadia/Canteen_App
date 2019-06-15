@@ -2,10 +2,10 @@ package com.example.getfood.ui.cart;
 
 import android.support.annotation.NonNull;
 
-import com.example.getfood.models.CartItem;
-import com.example.getfood.models.FullOrder;
 import com.example.getfood.ui.base.BasePresenter;
 import com.example.getfood.utils.AppUtils;
+import com.fazemeright.canteen_app_models.models.CartItem;
+import com.fazemeright.canteen_app_models.models.FullOrder;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;

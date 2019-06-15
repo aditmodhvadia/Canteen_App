@@ -12,8 +12,8 @@ import android.util.Patterns;
 import android.view.View;
 
 import com.example.getfood.R;
-import com.example.getfood.models.CartItem;
-import com.example.getfood.models.FoodItem;
+import com.fazemeright.canteen_app_models.models.CartItem;
+import com.fazemeright.canteen_app_models.models.FoodItem;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

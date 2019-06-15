@@ -1,7 +1,7 @@
 package com.example.getfood.ui.foodmenu;
 
-import com.example.getfood.models.CartItem;
 import com.example.getfood.ui.base.BaseMvpPresenter;
+import com.fazemeright.canteen_app_models.models.CartItem;
 
 import java.util.ArrayList;
 

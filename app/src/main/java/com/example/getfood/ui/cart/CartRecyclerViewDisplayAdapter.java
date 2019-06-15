@@ -13,8 +13,8 @@ import android.widget.TextView;
 
 import com.example.getfood.R;
 import com.example.getfood.callback.CartItemTouchListener;
-import com.example.getfood.models.CartItem;
 import com.example.getfood.utils.AppUtils;
+import com.fazemeright.canteen_app_models.models.CartItem;
 
 import java.util.ArrayList;
 import java.util.Locale;

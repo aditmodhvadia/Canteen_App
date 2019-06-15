@@ -1,4 +1,4 @@
-package com.example.getfood.models;
+package com.fazemeright.canteen_app_models.models;
 
 //TODO: Remove class and its usages
 public class OrderDetailItem {

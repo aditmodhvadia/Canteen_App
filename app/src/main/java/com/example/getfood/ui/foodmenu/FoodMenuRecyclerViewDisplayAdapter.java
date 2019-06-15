@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 import com.example.getfood.R;
 import com.example.getfood.callback.FoodItemTouchListener;
-import com.example.getfood.models.FoodItem;
 import com.example.getfood.utils.AppUtils;
+import com.fazemeright.canteen_app_models.models.FoodItem;
 
 import java.util.ArrayList;
 import java.util.List;

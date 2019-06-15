@@ -1,9 +1,8 @@
-package com.example.getfood.models;
+package com.fazemeright.canteen_app_models.models;
 
 import android.support.annotation.NonNull;
 
-import com.example.getfood.api.FireBaseApiManager;
-import com.google.firebase.database.DataSnapshot;
+import com.fazemeright.canteen_app_models.helpers.FoodMenuDetails;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -22,14 +21,14 @@ public class FoodItem implements Serializable {
     public FoodItem() {
     }
 
-    public static FoodItem fromMap(DataSnapshot dsp, String category) {
-        HashMap<String, Object> map = (HashMap<String, Object>) dsp.getValue();
+    public static FoodItem fromMap(Object dsp, String category, String itemName) {
+        HashMap<String, Object> map = (HashMap<String, Object>) dsp;
         if (map != null) {
             String rating = null;
-            if (map.containsKey(FireBaseApiManager.FoodMenuDetails.RATING)) {
-                rating = String.valueOf(map.get(FireBaseApiManager.FoodMenuDetails.RATING));
+            if (map.containsKey(FoodMenuDetails.RATING)) {
+                rating = String.valueOf(map.get(FoodMenuDetails.RATING));
             }
-            return new FoodItem(dsp.getKey(), String.valueOf(map.get(FireBaseApiManager.FoodMenuDetails.PRICE)),
+            return new FoodItem(itemName, String.valueOf(map.get(FoodMenuDetails.PRICE)),
                     rating,
                     category);
         } else {

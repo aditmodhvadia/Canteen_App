@@ -1,7 +1,7 @@
 package com.example.getfood.ui.base;
 
-import com.example.getfood.api.FireBaseApiManager;
 import com.example.getfood.data.DataManager;
+import com.fazemeright.firebase_api__library.api.FireBaseApiManager;
 
 public abstract class BasePresenter<V extends BaseView> implements BaseMvpPresenter<V> {
 

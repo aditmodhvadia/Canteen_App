@@ -4,9 +4,9 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.getfood.R;
-import com.example.getfood.models.FullOrder;
-import com.example.getfood.models.OrderDetailItem;
 import com.example.getfood.ui.base.BasePresenter;
+import com.fazemeright.canteen_app_models.models.FullOrder;
+import com.fazemeright.canteen_app_models.models.OrderDetailItem;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
