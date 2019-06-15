@@ -86,6 +86,7 @@ public class FoodMenuDisplayActivity extends BaseActivity implements FoodMenuDis
         findViewById(R.id.floatingActionButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                presenter.openCart();
                 openCart();
             }
         });
@@ -104,7 +105,7 @@ public class FoodMenuDisplayActivity extends BaseActivity implements FoodMenuDis
                         menuItem.setChecked(true);
                         // close drawer when item is tapped
                         if (menuItem.getItemId() == R.id.nav_cart) {
-                            openCart();
+                            presenter.openCart();
                         } else if (menuItem.getItemId() == R.id.nav_order) {
                             openOrderListActivity();
                         } else if (menuItem.getItemId() == R.id.nav_terms) {
@@ -240,15 +241,14 @@ public class FoodMenuDisplayActivity extends BaseActivity implements FoodMenuDis
                 });
     }
 
-    private void openCart() {
-        /*if (cartItems.isEmpty())
-            makeText(getString(R.string.cart_empty));
-        else {
-            startActivity(new Intent(this, CartActivity.class));
-        }*/
-//        TODO: Change to Mvp with BaseActiovity and then check for cartItems from presenter
+    @Override
+    public void openCart() {
         startActivity(new Intent(this, CartActivity.class));
+    }
 
+    @Override
+    public void cantOpenCart() {
+        makeText(getString(R.string.cart_empty));
     }
 
     public void showSnackBar(View parent, String msg) {

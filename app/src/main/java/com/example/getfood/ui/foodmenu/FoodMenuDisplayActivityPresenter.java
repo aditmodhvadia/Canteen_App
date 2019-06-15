@@ -35,6 +35,15 @@ public class FoodMenuDisplayActivityPresenter<V extends FoodMenuDisplayActivityM
     }
 
     @Override
+    public void openCart() {
+        if (dataManager.getCartSize() > 0) {
+            getMvpView().openCart();
+        } else {
+            getMvpView().cantOpenCart();
+        }
+    }
+
+    @Override
     public void signOutUser() {
         apiManager.forceSignOutUser();
     }

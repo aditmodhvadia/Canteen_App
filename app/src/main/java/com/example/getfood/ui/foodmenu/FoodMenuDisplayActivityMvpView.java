@@ -11,4 +11,8 @@ public interface FoodMenuDisplayActivityMvpView extends BaseView {
     void onPasswordResetEmailSentSuccessfully();
 
     void onPasswordResetEmailSentFailed(String errMsg);
+
+    void openCart();
+
+    void cantOpenCart();
 }

@@ -9,4 +9,6 @@ public interface FoodMenuDisplayActivityMvpPresenter<V extends FoodMenuDisplayAc
     void sendPasswordResetEmail();
 
     void signOutUser();
+
+    void openCart();
 }
