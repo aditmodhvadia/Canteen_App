@@ -21,7 +21,7 @@ public class OrderDetailPresenter<V extends OrderDetailMvpView> extends BasePres
 
     @Override
     public void fetchOrderDetails(FullOrder fullOrder) {
-        apiManager.orderDetailListener(fullOrder.getRollNo(), fullOrder.getOrderId(), new ValueEventListener() {
+        apiManager.orderDetailListener(fullOrder.getOrderId(), new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 FullOrder updatedOrder = dataSnapshot.getValue(FullOrder.class);

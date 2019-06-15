@@ -26,7 +26,7 @@ public class OrderListPresenter<V extends OrderListMvpView> extends BasePresente
         }
         orderListItems = new ArrayList<>();
 
-        apiManager.orderListListener(userRollNo, new ValueEventListener() {
+        apiManager.orderListListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {

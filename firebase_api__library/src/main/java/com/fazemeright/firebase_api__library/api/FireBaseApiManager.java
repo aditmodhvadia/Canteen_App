@@ -53,14 +53,13 @@ public class FireBaseApiManager {
     /**
      * Call to fetch details of an Orders placed by a User
      *
-     * @param rollNo        Roll Number of User
      * @param orderID       Unique Order ID
      * @param eventListener Callback for ValueEventListener
      */
-    public void orderDetailListener(@NonNull String rollNo, @NonNull String orderID, final ValueEventListener eventListener) {
+    public void orderDetailListener(@NonNull String orderID, final ValueEventListener eventListener) {
 
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference()
-                .child(BaseUrl.USER_ORDER).child(rollNo).child(orderID);
+                .child(BaseUrl.USER_ORDER).child(AppUtils.getRollNoFromEmail(apiWrapper.getCurrentUserEmail())).child(orderID);
 
         apiWrapper.valueEventListener(dbRef, new ValueEventListener() {
             @Override
@@ -78,13 +77,12 @@ public class FireBaseApiManager {
     /**
      * Call to fetch List of all Orders placed by a User
      *
-     * @param rollNo        Roll Number of User
      * @param eventListener Callback for ValueEventListener
      */
-    public void orderListListener(@NonNull String rollNo, final ValueEventListener eventListener) {
+    public void orderListListener(final ValueEventListener eventListener) {
 
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference()
-                .child(BaseUrl.USER_ORDER).child(rollNo);
+                .child(BaseUrl.USER_ORDER).child(AppUtils.getRollNoFromEmail(apiWrapper.getCurrentUserEmail()));
 
         apiWrapper.valueEventListener(dbRef, new ValueEventListener() {
             @Override
