@@ -4,18 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -57,48 +53,13 @@ class FireBaseApiWrapper implements FireBaseApiWrapperInterface {
      *                           Return A reference to the listener provided. Save this to remove the listener later.
      */
     @Override
-    public void childEventListener(@NonNull DatabaseReference mDatabaseReference, final ChildEventListener childEventListener) {
-        mDatabaseReference.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                childEventListener.onChildAdded(dataSnapshot, s);
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                childEventListener.onChildChanged(dataSnapshot, s);
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                childEventListener.onChildRemoved(dataSnapshot);
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                childEventListener.onChildMoved(dataSnapshot, s);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                childEventListener.onCancelled(databaseError);
-            }
-        });
+    public void childEventListener(@NonNull DatabaseReference mDatabaseReference, ChildEventListener childEventListener) {
+        mDatabaseReference.addChildEventListener(childEventListener);
     }
 
     @Override
-    public void valueEventListener(@NonNull DatabaseReference mDatabaseReference, final ValueEventListener eventListener) {
-        mDatabaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                eventListener.onDataChange(dataSnapshot);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                eventListener.onCancelled(databaseError);
-            }
-        });
+    public void valueEventListener(@NonNull DatabaseReference mDatabaseReference, ValueEventListener eventListener) {
+        mDatabaseReference.addValueEventListener(eventListener);
 
     }
 
@@ -107,18 +68,8 @@ class FireBaseApiWrapper implements FireBaseApiWrapperInterface {
      * @param singleValueEventListener
      */
     @Override
-    public void singleValueEventListener(@NonNull DatabaseReference mDatabaseReference, final ValueEventListener singleValueEventListener) {
-        mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                singleValueEventListener.onDataChange(dataSnapshot);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                singleValueEventListener.onCancelled(databaseError);
-            }
-        });
+    public void singleValueEventListener(@NonNull DatabaseReference mDatabaseReference, ValueEventListener singleValueEventListener) {
+        mDatabaseReference.addListenerForSingleValueEvent(singleValueEventListener);
     }
 
     /**
@@ -130,107 +81,62 @@ class FireBaseApiWrapper implements FireBaseApiWrapperInterface {
     }
 
     @Override
-    public void createNewUserWithEmailPassword(String userEmail, String password, final OnCompleteListener<AuthResult> onCompleteListener) {
-        FirebaseAuth.getInstance().createUserWithEmailAndPassword(userEmail, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                onCompleteListener.onComplete(task);
-            }
-        });
+    public void createNewUserWithEmailPassword(String userEmail, String password, OnCompleteListener<AuthResult> onCompleteListener) {
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(userEmail, password).addOnCompleteListener(onCompleteListener);
     }
 
     @Override
-    public void signInWithEmailAndPassword(@NonNull String userEmail, @NonNull String password, final OnCompleteListener<AuthResult> onCompleteListener) {
-        FirebaseAuth.getInstance().signInWithEmailAndPassword(userEmail, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                onCompleteListener.onComplete(task);
-            }
-        });
+    public void signInWithEmailAndPassword(@NonNull String userEmail, @NonNull String password, OnCompleteListener<AuthResult> onCompleteListener) {
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(userEmail, password).addOnCompleteListener(onCompleteListener);
     }
 
     @Override
     public String getCurrentUserEmail() {
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            return FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        }
-        return null;
+        return FirebaseAuth.getInstance().getCurrentUser() != null
+                ? FirebaseAuth.getInstance().getCurrentUser().getEmail() : null;
     }
 
     @Override
     public void sendEmailVerification(ActionCodeSettings actionCodeSettings,
-                                      final OnCompleteListener<Void> onCompleteListener, final OnFailureListener onFailureListener) {
+                                      OnCompleteListener<Void> onCompleteListener, OnFailureListener onFailureListener) {
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification(actionCodeSettings).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    onCompleteListener.onComplete(task);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    onFailureListener.onFailure(e);
-                }
-            });
+            FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification(actionCodeSettings)
+                    .addOnCompleteListener(onCompleteListener)
+                    .addOnFailureListener(onFailureListener);
         } else {
             onFailureListener.onFailure(new Exception("User not logged in"));
         }
     }
 
     @Override
-    public void sendPasswordResetEmail(String userEmail, final OnCompleteListener<Void> onCompleteListener, final OnFailureListener onFailureListener) {
-        FirebaseAuth.getInstance().sendPasswordResetEmail(userEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                onCompleteListener.onComplete(task);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                onFailureListener.onFailure(e);
-            }
-        });
+    public void sendPasswordResetEmail(String userEmail, OnCompleteListener<Void> onCompleteListener, OnFailureListener onFailureListener) {
+        FirebaseAuth.getInstance().sendPasswordResetEmail(userEmail)
+                .addOnCompleteListener(onCompleteListener)
+                .addOnFailureListener(onFailureListener);
     }
 
     @Override
     public boolean isUserVerified() {
-        return FirebaseAuth.getInstance().getCurrentUser() != null && FirebaseAuth.getInstance().getCurrentUser().isEmailVerified();
+        return FirebaseAuth.getInstance().getCurrentUser() != null &&
+                FirebaseAuth.getInstance().getCurrentUser().isEmailVerified();
     }
 
-    // listen to Firebase dynamic links
+    // listen to FireBase dynamic links
 
     @Override
     public void listenToDynamicLinks(Intent intent, Context context, final OnSuccessListener<PendingDynamicLinkData> onSuccessListener, final OnFailureListener onFailureListener) {
         FirebaseDynamicLinks.getInstance()
                 .getDynamicLink(intent)
-                .addOnSuccessListener((Activity) context, new OnSuccessListener<PendingDynamicLinkData>() {
-                    @Override
-                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
-                        onSuccessListener.onSuccess(pendingDynamicLinkData);
-                    }
-                })
-                .addOnFailureListener((Activity) context, new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        onFailureListener.onFailure(e);
-                    }
-                });
+                .addOnSuccessListener((Activity) context, onSuccessListener)
+                .addOnFailureListener((Activity) context, onFailureListener);
     }
 
     @Override
     public void reloadCurrentUserAuthState(final OnSuccessListener<Void> onSuccessListener, final OnFailureListener onFailureListener) {
-        if (getCurrentUserEmail() != null) {
-            FirebaseAuth.getInstance().getCurrentUser().reload().addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    onSuccessListener.onSuccess(aVoid);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    onFailureListener.onFailure(e);
-                }
-            });
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().reload()
+                    .addOnSuccessListener(onSuccessListener)
+                    .addOnFailureListener(onFailureListener);
         } else {
             onFailureListener.onFailure(new Exception("Some Error Occurred, Try again later"));
         }
