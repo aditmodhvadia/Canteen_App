@@ -5,6 +5,9 @@ import android.support.annotation.NonNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * It is the complete order fetched directly from the FireBase Real-time database
+ */
 public class FullOrder implements Serializable {
     private ArrayList<CartItem> orderItems;
     private String orderAmount;
