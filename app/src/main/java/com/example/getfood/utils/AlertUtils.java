@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.getfood.R;
-import com.example.getfood.models.FoodItem;
+import com.fazemeright.canteen_app_models.models.FoodItem;
 
 
 /**
@@ -70,6 +70,7 @@ public class AlertUtils {
         return dialogConfirmation;
     }
 
+    @Deprecated
     public static void showAddToCartDialog(Context context, FoodItem foodItem, DialogAddToCart.AddToCartDialogListener listener) {
         DialogAddToCart dialogConfirmation = getAddToCartDialog(context, context.getString(R.string.select_quantity),
                 foodItem.getItemName(), context.getString(R.string.add_to_cart), context.getString(R.string.no), listener);

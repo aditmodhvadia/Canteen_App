@@ -28,7 +28,7 @@
                 android:theme="@style/AppTheme.AppBarOverlay">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
@@ -44,25 +44,6 @@
                         app:title="@string/app_name">
 
                     </android.support.v7.widget.Toolbar>
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <ImageButton
-                        android:id="@+id/helpButton"
-                        style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:layout_marginRight="7dp"
-                        android:background="@color/colorPrimary"
-                        android:elevation="0dp"
-                        android:scaleType="center"
-                        android:src="@drawable/ic_action_help" />
-
-
 
                 </LinearLayout>
 
@@ -151,7 +132,7 @@
                     android:layout_gravity="center"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:text="Developed by Adit, Designed by Avani" />
+                    android:text="@string/dev_label" />
             </LinearLayout>
 
         </android.support.design.widget.NavigationView>

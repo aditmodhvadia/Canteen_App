@@ -11,13 +11,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.getfood.R;
-import com.example.getfood.models.FullOrder;
 import com.example.getfood.service.OrderNotificationService;
 import com.example.getfood.ui.base.BaseActivity;
 import com.example.getfood.utils.AlertUtils;
 import com.example.getfood.utils.AppUtils;
 import com.example.getfood.utils.DialogSimple;
-import com.google.firebase.database.DatabaseError;
+import com.fazemeright.canteen_app_models.models.FullOrder;
 
 public class OrderDetailActivity extends BaseActivity implements OrderDetailMvpView {
 
@@ -155,18 +154,18 @@ public class OrderDetailActivity extends BaseActivity implements OrderDetailMvpV
     }
 
     @Override
-    public void onDatabaseError(DatabaseError databaseError) {
-        Toast.makeText(OrderDetailActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+    public void onDatabaseError(Error error) {
+        Toast.makeText(OrderDetailActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onRatingUpdatedSuccessfuly() {
+    public void onRatingUpdatedSuccessfully() {
         Toast.makeText(OrderDetailActivity.this, getString(R.string.rating_saved), Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onRatingUpdateFailed(DatabaseError databaseError) {
-        Toast.makeText(OrderDetailActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+    public void onRatingUpdateFailed(Error error) {
+        Toast.makeText(OrderDetailActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

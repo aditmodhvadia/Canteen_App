@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.getfood.R;
-import com.example.getfood.models.FullOrder;
 import com.example.getfood.ui.orderdetail.OrderDetailActivity;
+import com.fazemeright.canteen_app_models.models.FullOrder;
 
 import java.util.ArrayList;
 

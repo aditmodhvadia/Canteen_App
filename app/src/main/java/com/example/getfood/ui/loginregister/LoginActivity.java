@@ -1,33 +1,39 @@
 package com.example.getfood.ui.loginregister;
 
-import android.os.Bundle;
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.getfood.R;
-import com.google.firebase.auth.FirebaseAuth;
+import com.example.getfood.ui.base.BaseActivity;
+import com.example.getfood.ui.foodmenu.FoodMenuDisplayActivity;
+import com.example.getfood.ui.loginregister.loginfragment.LoginFragment;
+import com.example.getfood.ui.loginregister.registerfragment.RegisterFragment;
+import com.example.getfood.utils.AlertUtils;
+import com.example.getfood.utils.DialogSimple;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity implements LoginActivityMvpView {
 
     int exitCount;
     long currTime, prevTime;
+    LoginActivityPresenter<LoginActivity> presenter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+    public int getLayoutResId() {
+        return R.layout.activity_login;
+    }
 
+    @Override
+    public void initViews() {
+        presenter = new LoginActivityPresenter<>();
+        presenter.onAttach(this);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -40,6 +46,37 @@ public class LoginActivity extends AppCompatActivity {
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+
+        presenter.bindDynamicLinkEmailVerification(getIntent());
+    }
+
+    @Override
+    public void onSuccessfulVerificationAndSignIn() {
+        AlertUtils.showAlertBox(LoginActivity.this, "", "Email Address Verified", "Continue", new DialogSimple.AlertDialogListener() {
+            @Override
+            public void onButtonClicked() {
+                if (presenter.isUserLoggedIn()) {
+//                    Log.d("##DebugData", FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                    startActivity(new Intent(LoginActivity.this, FoodMenuDisplayActivity.class));
+                } else {
+                    Log.d("##DebugData", "User not signed in");
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onFailedVerificationOrSignIn(Exception e) {
+        AlertUtils.showAlertBox(LoginActivity.this, "", e.getMessage(), getString(R.string.ok), new DialogSimple.AlertDialogListener() {
+            @Override
+            public void onButtonClicked() {
+
+            }
+        });
+    }
+
+    @Override
+    public void setListeners() {
 
     }
 
@@ -73,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
                 prevTime = System.currentTimeMillis();
                 exitCount = 1;
             } else {
-                FirebaseAuth.getInstance().signOut();
+                presenter.signOutUser();
                 finish();
             }
         }
@@ -81,41 +118,6 @@ public class LoginActivity extends AppCompatActivity {
 
     public void makeText(String msg) {
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        public PlaceholderFragment() {
-        }
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_login, container, false);
-            TextView textView = rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
-        }
     }
 
     /**

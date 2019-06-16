@@ -7,11 +7,13 @@ import android.content.Context;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 
 import com.example.getfood.R;
-import com.example.getfood.models.CartItem;
-import com.example.getfood.models.FoodItem;
+import com.fazemeright.canteen_app_models.models.CartItem;
+import com.fazemeright.canteen_app_models.models.FoodItem;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -107,6 +109,28 @@ public class AppUtils {
             }
         }
         return -1;
+    }
+
+    public static boolean isEmailValid(String userEmail) {
+        if (TextUtils.isEmpty(userEmail)) {
+            return false;
+        }
+        if (!Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
+            return false;
+        }
+        return userEmail.split("@")[1].equals("nirmauni.ac.in");
+    }
+
+    public static boolean isValidPassword(String password) {
+        return !TextUtils.isEmpty(password) && password.length() >= 8;
+    }
+
+    public static String getRollNoFromEmail(String currentUserEmail) {
+        if (currentUserEmail == null) {
+            return null;
+        } else {
+            return currentUserEmail.substring(0, currentUserEmail.indexOf("@"));
+        }
     }
 
     public String generateString() {

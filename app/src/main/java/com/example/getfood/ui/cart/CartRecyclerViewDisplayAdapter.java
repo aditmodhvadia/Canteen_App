@@ -10,12 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.getfood.R;
-import com.example.getfood.models.CartItem;
-import com.example.getfood.ui.foodmenu.FoodMenuDisplayActivity;
+import com.example.getfood.callback.CartItemTouchListener;
 import com.example.getfood.utils.AppUtils;
+import com.fazemeright.canteen_app_models.models.CartItem;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -23,13 +22,15 @@ import java.util.Locale;
 public class CartRecyclerViewDisplayAdapter extends RecyclerView.Adapter<CartRecyclerViewDisplayAdapter.ViewHolder> {
 
     private ArrayList<CartItem> cartItems;
+    private CartItemTouchListener cartItemTouchListener;
     private Context context;
     private CartItem removedItem;
     private int mRecentlyDeletedItemPosition;
 
-    public CartRecyclerViewDisplayAdapter(ArrayList<CartItem> cartItems, Context context) {
+    public CartRecyclerViewDisplayAdapter(ArrayList<CartItem> cartItems, Context context, CartItemTouchListener cartItemTouchListener) {
         this.cartItems = cartItems;
         this.context = context;
+        this.cartItemTouchListener = cartItemTouchListener;
     }
 
     @NonNull
@@ -49,26 +50,27 @@ public class CartRecyclerViewDisplayAdapter extends RecyclerView.Adapter<CartRec
         holder.itemNameTextView.setText(cartItems.get(position).getItemName());
         holder.itemPriceTextView.setText(String.format(Locale.ENGLISH, "%s%d", context.getString(R.string.rupee_symbol),
                 Integer.parseInt(cartItems.get(position).getItemPrice())));
-        holder.itemQuantityTextView.setText(cartItems.get(position).getItemQuantity().toString());
+        holder.itemQuantityTextView.setText(String.valueOf(cartItems.get(position).getItemQuantity()));
 
         holder.increaseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int position = holder.getAdapterPosition();
+                /*int position = holder.getAdapterPosition();
                 int value = FoodMenuDisplayActivity.cartItems.get(position).getItemQuantity();
                 if (value < 10) {
                     FoodMenuDisplayActivity.cartItems.get(position).increaseQuantity();
                     CartActivity.calcTotal();
                     notifyItemChanged(position);
                     Toast.makeText(context, context.getString(R.string.adjust_cart), Toast.LENGTH_SHORT).show();
-                }
+                }*/
+                cartItemTouchListener.onIncreaseClicked(holder.getAdapterPosition());
             }
         });
 
         holder.decreaseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int position = holder.getAdapterPosition();
+                /*int position = holder.getAdapterPosition();
 
                 if (position != RecyclerView.NO_POSITION) {
 
@@ -91,8 +93,12 @@ public class CartRecyclerViewDisplayAdapter extends RecyclerView.Adapter<CartRec
                         Toast.makeText(context, context.getString(R.string.adjust_cart), Toast.LENGTH_SHORT).show();
 
                     }
+                }*/
+                if (cartItems.get(holder.getAdapterPosition()).getItemQuantity() == 1) {
+                    cartItemTouchListener.onItemRemoved(holder.getAdapterPosition());
+                } else {
+                    cartItemTouchListener.onDecreaseClicked(holder.getAdapterPosition());
                 }
-
             }
         });
 
@@ -110,16 +116,9 @@ public class CartRecyclerViewDisplayAdapter extends RecyclerView.Adapter<CartRec
 
     public void deleteItem(int position) {
         mRecentlyDeletedItemPosition = position;
-        removedItem = FoodMenuDisplayActivity.cartItems.get(mRecentlyDeletedItemPosition);
-        FoodMenuDisplayActivity.cartItems.remove(mRecentlyDeletedItemPosition);
+        removedItem = cartItems.get(mRecentlyDeletedItemPosition);
 
-        if (FoodMenuDisplayActivity.cartItems.size() == 0) {
-            Toast.makeText(context, context.getString(R.string.cart_empty), Toast.LENGTH_SHORT).show();
-            CartActivity.activity.finish();
-        }
-        notifyItemRemoved(mRecentlyDeletedItemPosition);
-        CartActivity.calcTotal();
-//        Toast.makeText(context, context.getString(R.string.adjust_cart), Toast.LENGTH_SHORT).show();
+        cartItemTouchListener.onItemRemoved(position);
         showUndoSnackbar();
     }
 
@@ -136,9 +135,7 @@ public class CartRecyclerViewDisplayAdapter extends RecyclerView.Adapter<CartRec
     }
 
     private void undoDelete() {
-        FoodMenuDisplayActivity.cartItems.add(mRecentlyDeletedItemPosition, removedItem);
-        CartActivity.calcTotal();
-        notifyItemInserted(mRecentlyDeletedItemPosition);
+        cartItemTouchListener.onItemRemoveUndo(removedItem, mRecentlyDeletedItemPosition);
     }
 
 

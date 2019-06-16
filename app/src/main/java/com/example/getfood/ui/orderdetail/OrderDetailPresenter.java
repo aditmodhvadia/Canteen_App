@@ -1,22 +1,11 @@
 package com.example.getfood.ui.orderdetail;
 
-import android.support.annotation.NonNull;
-
-import com.example.getfood.R;
-import com.example.getfood.models.FullOrder;
-import com.example.getfood.models.OrderDetailItem;
 import com.example.getfood.ui.base.BasePresenter;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.fazemeright.canteen_app_models.models.FullOrder;
+import com.fazemeright.canteen_app_models.models.OrderDetailItem;
+import com.fazemeright.firebase_api__library.listeners.DBValueEventListener;
 
 public class OrderDetailPresenter<V extends OrderDetailMvpView> extends BasePresenter<V> implements OrderDetailMvpPresenter<V> {
-
-    private DatabaseReference root;
-//    private ArrayList<OrderDetailItem> orderDetailItems;
-//    private String orderID, rollNo, orderTime, orderTotalPrice;
 
     public OrderDetailPresenter() {
     }
@@ -24,31 +13,26 @@ public class OrderDetailPresenter<V extends OrderDetailMvpView> extends BasePres
 
     @Override
     public void fetchOrderDetails(FullOrder fullOrder) {
-
-        root = FirebaseDatabase.getInstance().getReference().child("UserOrderData")
-                .child(fullOrder.getRollNo()).child(fullOrder.getOrderId());
-
-        root.addValueEventListener(new ValueEventListener() {
+        apiManager.orderDetailListener(fullOrder.getOrderId(), new DBValueEventListener<FullOrder>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                FullOrder updatedOrder = dataSnapshot.getValue(FullOrder.class);
-                getMvpView().bindOrderDetailAdapter(updatedOrder);
+            public void onDataChange(FullOrder data) {
+                getMvpView().bindOrderDetailAdapter(data);
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                getMvpView().onDatabaseError(databaseError);
+            public void onCancelled(Error error) {
+                getMvpView().onDatabaseError(error);
             }
         });
     }
 
     @Override
     public void setRatingValue(final String ratingValue, OrderDetailItem orderDetailItem) {
-        root.child(orderDetailItem.getOrderItemCategory()).child(orderDetailItem.getOrderItemName())
-                .child(getMvpView().getContext().getString(R.string.rating))
-                .setValue(ratingValue);
+//        root.child(orderDetailItem.getOrderItemCategory()).child(orderDetailItem.getOrderItemName())
+//                .child(getMvpView().getContext().getString(R.string.rating))
+//                .setValue(ratingValue);
 
-        final DatabaseReference foodItems = FirebaseDatabase.getInstance().getReference()
+        /*final DatabaseReference foodItems = FirebaseDatabase.getInstance().getReference()
                 .child(getMvpView().getContext().getString(R.string.food)).child(orderDetailItem.getOrderItemCategory())
                 .child(orderDetailItem.getOrderItemName());
         foodItems.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -61,13 +45,13 @@ public class OrderDetailPresenter<V extends OrderDetailMvpView> extends BasePres
                 float newRating = (currRating * numberOfRating++ + Integer.parseInt(ratingValue)) / numberOfRating;
                 foodItems.child(getMvpView().getContext().getString(R.string.rating)).setValue(newRating);
                 foodItems.child(getMvpView().getContext().getString(R.string.no_of_rating)).setValue(numberOfRating);
-                getMvpView().onRatingUpdatedSuccessfuly();
+                getMvpView().onRatingUpdatedSuccessfully();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                getMvpView().onRatingUpdateFailed(databaseError);
+                getMvpView().onRatingUpdateFailed(new Error(databaseError.getMessage()));
             }
-        });
+        });*/
     }
 }

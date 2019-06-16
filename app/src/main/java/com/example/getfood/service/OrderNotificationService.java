@@ -5,23 +5,16 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 
-import com.example.getfood.ui.orderdetail.OrderDetailActivity;
 import com.example.getfood.R;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.example.getfood.ui.orderdetail.OrderDetailActivity;
 
 public class OrderNotificationService extends Service {
 
     //    Firebase Variables
-    DatabaseReference currOrderRootChinese, currOrderRootSouthIndian, currOrderRootPizza;
+//    DatabaseReference currOrderRootChinese, currOrderRootSouthIndian, currOrderRootPizza;
     NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
     //    Variables
     private String ORDER_ID;
@@ -43,11 +36,11 @@ public class OrderNotificationService extends Service {
         Intent data = intent;
         ORDER_ID = data.getStringExtra(getString(R.string.i_order_id));
 
-        currOrderRootChinese = FirebaseDatabase.getInstance().getReference().child(getString(R.string.order)).child(ORDER_ID).child(getString(R.string.items)).child(getString(R.string.chinese));
-        currOrderRootSouthIndian = FirebaseDatabase.getInstance().getReference().child(getString(R.string.order)).child(ORDER_ID).child(getString(R.string.items)).child(getString(R.string.south_indian));
-        currOrderRootPizza = FirebaseDatabase.getInstance().getReference().child(getString(R.string.order)).child(ORDER_ID).child(getString(R.string.items)).child(getString(R.string.pizza_sandwich));
+//        currOrderRootChinese = FirebaseDatabase.getInstance().getReference().child(getString(R.string.order)).child(ORDER_ID).child(getString(R.string.items)).child(getString(R.string.chinese));
+//        currOrderRootSouthIndian = FirebaseDatabase.getInstance().getReference().child(getString(R.string.order)).child(ORDER_ID).child(getString(R.string.items)).child(getString(R.string.south_indian));
+//        currOrderRootPizza = FirebaseDatabase.getInstance().getReference().child(getString(R.string.order)).child(ORDER_ID).child(getString(R.string.items)).child(getString(R.string.pizza_sandwich));
 
-        currOrderRootChinese.addChildEventListener(new ChildEventListener() {
+        /*currOrderRootChinese.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
@@ -120,7 +113,7 @@ public class OrderNotificationService extends Service {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
-        });
+        });*/
 
 
         return START_STICKY;
