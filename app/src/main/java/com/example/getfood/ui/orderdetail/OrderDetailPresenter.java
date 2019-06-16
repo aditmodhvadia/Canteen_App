@@ -1,17 +1,9 @@
 package com.example.getfood.ui.orderdetail;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
-
-import com.example.getfood.R;
 import com.example.getfood.ui.base.BasePresenter;
 import com.fazemeright.canteen_app_models.models.FullOrder;
 import com.fazemeright.canteen_app_models.models.OrderDetailItem;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.fazemeright.firebase_api__library.listeners.DBValueEventListener;
 
 public class OrderDetailPresenter<V extends OrderDetailMvpView> extends BasePresenter<V> implements OrderDetailMvpPresenter<V> {
 
@@ -21,19 +13,15 @@ public class OrderDetailPresenter<V extends OrderDetailMvpView> extends BasePres
 
     @Override
     public void fetchOrderDetails(FullOrder fullOrder) {
-        apiManager.orderDetailListener(fullOrder.getOrderId(), new ValueEventListener() {
+        apiManager.orderDetailListener(fullOrder.getOrderId(), new DBValueEventListener<FullOrder>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                FullOrder updatedOrder = dataSnapshot.getValue(FullOrder.class);
-                if (updatedOrder != null) {
-                    Log.d("##DebugData", updatedOrder.toString());
-                }
-                getMvpView().bindOrderDetailAdapter(updatedOrder);
+            public void onDataChange(FullOrder data) {
+                getMvpView().bindOrderDetailAdapter(data);
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                getMvpView().onDatabaseError(new Error(databaseError.getMessage()));
+            public void onCancelled(Error error) {
+                getMvpView().onDatabaseError(error);
             }
         });
     }
@@ -44,7 +32,7 @@ public class OrderDetailPresenter<V extends OrderDetailMvpView> extends BasePres
 //                .child(getMvpView().getContext().getString(R.string.rating))
 //                .setValue(ratingValue);
 
-        final DatabaseReference foodItems = FirebaseDatabase.getInstance().getReference()
+        /*final DatabaseReference foodItems = FirebaseDatabase.getInstance().getReference()
                 .child(getMvpView().getContext().getString(R.string.food)).child(orderDetailItem.getOrderItemCategory())
                 .child(orderDetailItem.getOrderItemName());
         foodItems.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -64,6 +52,6 @@ public class OrderDetailPresenter<V extends OrderDetailMvpView> extends BasePres
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 getMvpView().onRatingUpdateFailed(new Error(databaseError.getMessage()));
             }
-        });
+        });*/
     }
 }

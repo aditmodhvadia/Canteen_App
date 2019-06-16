@@ -7,7 +7,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringDef;
 import android.util.Log;
 
+import com.fazemeright.canteen_app_models.helpers.FoodMenuDetails;
+import com.fazemeright.canteen_app_models.models.FoodItem;
 import com.fazemeright.canteen_app_models.models.FullOrder;
+import com.fazemeright.firebase_api__library.listeners.DBValueEventListener;
 import com.fazemeright.firebase_api__library.listeners.OnDynamicLinkStatusListener;
 import com.fazemeright.firebase_api__library.listeners.OnTaskCompleteListener;
 import com.fazemeright.firebase_api__library.utils.AppUtils;
@@ -31,6 +34,7 @@ import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.ArrayList;
 
 public class FireBaseApiManager {
 
@@ -53,10 +57,10 @@ public class FireBaseApiManager {
     /**
      * Call to fetch details of an Orders placed by a User
      *
-     * @param orderID       Unique Order ID
-     * @param eventListener Callback for ValueEventListener
+     * @param orderID              Unique Order ID
+     * @param dbValueEventListener Callback for ValueEventListener
      */
-    public void orderDetailListener(@NonNull String orderID, final ValueEventListener eventListener) {
+    public void orderDetailListener(@NonNull String orderID, final DBValueEventListener<FullOrder> dbValueEventListener) {
 
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference()
                 .child(BaseUrl.USER_ORDER).child(AppUtils.getRollNoFromEmail(apiWrapper.getCurrentUserEmail())).child(orderID);
@@ -64,12 +68,12 @@ public class FireBaseApiManager {
         apiWrapper.valueEventListener(dbRef, new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                eventListener.onDataChange(dataSnapshot);
+                dbValueEventListener.onDataChange(dataSnapshot.getValue(FullOrder.class));
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                eventListener.onCancelled(databaseError);
+                dbValueEventListener.onCancelled(new Error(databaseError.getMessage()));
             }
         });
     }
@@ -79,7 +83,7 @@ public class FireBaseApiManager {
      *
      * @param eventListener Callback for ValueEventListener
      */
-    public void orderListListener(final ValueEventListener eventListener) {
+    public void orderListListener(final DBValueEventListener<ArrayList<FullOrder>> eventListener) {
 
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference()
                 .child(BaseUrl.USER_ORDER).child(AppUtils.getRollNoFromEmail(apiWrapper.getCurrentUserEmail()));
@@ -87,29 +91,43 @@ public class FireBaseApiManager {
         apiWrapper.valueEventListener(dbRef, new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                eventListener.onDataChange(dataSnapshot);
+                ArrayList<FullOrder> orderList = new ArrayList<>();
+                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                    orderList.add(dsp.getValue(FullOrder.class));
+                }
+                eventListener.onDataChange(orderList);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                eventListener.onCancelled(databaseError);
+                eventListener.onCancelled(new Error(databaseError.getMessage()));
             }
         });
     }
 
-    public void foodMenuListener(@NonNull String category, final ValueEventListener eventListener) {
+    public void foodMenuListener(@NonNull final String category, final DBValueEventListener<ArrayList<FoodItem>> eventListener) {
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference()
                 .child(BaseUrl.FOOD_MENU).child(category);
 
         apiWrapper.valueEventListener(dbRef, new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                eventListener.onDataChange(dataSnapshot);
+                ArrayList<FoodItem> foodItems = new ArrayList<>();
+                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                    FoodItem foodItem = FoodItem.fromMap(dsp.getValue(), category, dsp.getKey());
+
+                    if (dsp.hasChild(FoodMenuDetails.AVAILABLE) &&
+                            dsp.child(FoodMenuDetails.AVAILABLE).getValue().toString().equals("Yes")) {
+                        foodItems.add(foodItem);
+                    }
+                }
+
+                eventListener.onDataChange(foodItems);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                eventListener.onCancelled(databaseError);
+                eventListener.onCancelled(new Error(databaseError.getMessage()));
             }
         });
     }
@@ -272,10 +290,20 @@ public class FireBaseApiManager {
         apiWrapper.reloadCurrentUserAuthState(onSuccessListener, onFailureListener);
     }
 
-    public void determineIfUpdateNeededAtSplash(@NonNull String versionName, ValueEventListener eventListener) {
+    public void determineIfUpdateNeededAtSplash(@NonNull String versionName, final DBValueEventListener<String> eventListener) {
         DatabaseReference versionCheck = FirebaseDatabase.getInstance().getReference().child(BaseUrl.VERSION_CHECK).child(versionName);
 
-        apiWrapper.singleValueEventListener(versionCheck, eventListener);
+        apiWrapper.singleValueEventListener(versionCheck, new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                eventListener.onDataChange(dataSnapshot.getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                eventListener.onCancelled(new Error(databaseError.getMessage()));
+            }
+        });
     }
 
     public String getNewOrderKey() {
@@ -283,10 +311,27 @@ public class FireBaseApiManager {
                 .child(AppUtils.getRollNoFromEmail(apiWrapper.getCurrentUserEmail())));
     }
 
-    public void setOrderValue(FullOrder fullOrder, OnCompleteListener<Void> onCompleteListener) {
+    public void setOrderValue(FullOrder fullOrder, final OnTaskCompleteListener onCompleteListener) {
         DatabaseReference orderReference = FirebaseDatabase.getInstance().getReference().child(BaseUrl.USER_ORDER)
                 .child(AppUtils.getRollNoFromEmail(apiWrapper.getCurrentUserEmail())).child(fullOrder.getOrderId());
-        apiWrapper.setValue(orderReference, fullOrder, onCompleteListener);
+        apiWrapper.setValue(orderReference, fullOrder, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    onCompleteListener.onTaskSuccessful();
+                } else {
+                    if (task.getException() instanceof FirebaseNetworkException) {
+                        onCompleteListener.onTaskCompleteButFailed("No Internet");
+                    } else if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                        onCompleteListener.onTaskCompleteButFailed("Email ID is already in use");
+                    } else if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                        onCompleteListener.onTaskCompleteButFailed("Invalid Credentials");
+                    } else {
+                        onCompleteListener.onTaskCompleteButFailed("Error Occurred");
+                    }
+                }
+            }
+        });
     }
 
     public void getNewOrderData(String orderId, ValueEventListener eventListener) {

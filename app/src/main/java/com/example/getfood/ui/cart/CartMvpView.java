@@ -9,7 +9,7 @@ public interface CartMvpView extends BaseView {
 
     Context getContext();
 
-    void onOrderFailed(Exception exception);
+    void onOrderFailed(Error error);
 
     void onOrderPlacedSuccessfully(String orderId);
 

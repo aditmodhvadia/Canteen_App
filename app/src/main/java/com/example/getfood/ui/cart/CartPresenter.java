@@ -1,16 +1,11 @@
 package com.example.getfood.ui.cart;
 
-import android.support.annotation.NonNull;
-
 import com.example.getfood.ui.base.BasePresenter;
 import com.example.getfood.utils.AppUtils;
 import com.fazemeright.canteen_app_models.models.CartItem;
 import com.fazemeright.canteen_app_models.models.FullOrder;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
+import com.fazemeright.firebase_api__library.listeners.DBValueEventListener;
+import com.fazemeright.firebase_api__library.listeners.OnTaskCompleteListener;
 
 import java.util.ArrayList;
 
@@ -27,31 +22,37 @@ public class CartPresenter<V extends CartMvpView> extends BasePresenter<V> imple
 
     @Override
     public void setNewOrder(final FullOrder fullOrder) {
-        apiManager.setOrderValue(fullOrder, new OnCompleteListener<Void>() {
+        apiManager.setOrderValue(fullOrder, new OnTaskCompleteListener() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    dataManager.clearCartItems();
-                    getMvpView().onOrderPlacedSuccessfully(fullOrder.getOrderId());
-                } else {
-                    getMvpView().onOrderFailed(task.getException());
-                }
+            public void onTaskSuccessful() {
+                dataManager.clearCartItems();
+                getMvpView().onOrderPlacedSuccessfully(fullOrder.getOrderId());
+            }
+
+            @Override
+            public void onTaskCompleteButFailed(String errMsg) {
+                getMvpView().onOrderFailed(new Error(errMsg));
+            }
+
+            @Override
+            public void onTaskFailed(Exception e) {
+
             }
         });
     }
 
     @Override
     public void getOrderData(String orderId) {
-        apiManager.getNewOrderData(orderId, new ValueEventListener() {
+        apiManager.orderDetailListener(orderId, new DBValueEventListener<FullOrder>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                getMvpView().onOrderDataFetchedSuccessfully(dataSnapshot.getValue(FullOrder.class));
+            public void onDataChange(FullOrder data) {
+                getMvpView().onOrderDataFetchedSuccessfully(data);
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCancelled(Error error) {
 //                Keeping same method right now, to be updated when required
-                getMvpView().onOrderFailed(new Exception(databaseError.getMessage()));
+                getMvpView().onOrderFailed(error);
             }
         });
     }

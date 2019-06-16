@@ -371,8 +371,8 @@ public class CartActivity extends BaseActivity implements CartMvpView, View.OnCl
     }
 
     @Override
-    public void onOrderFailed(Exception exception) {
-        AlertUtils.showAlertBox(mContext, "Some error occurred!", exception.getMessage(),
+    public void onOrderFailed(Error error) {
+        AlertUtils.showAlertBox(mContext, "Some error occurred!", error.getMessage(),
                 getString(R.string.ok), new DialogSimple.AlertDialogListener() {
                     @Override
                     public void onButtonClicked() {

@@ -1,14 +1,9 @@
 package com.example.getfood.ui.foodmenu;
 
-import android.support.annotation.NonNull;
-
 import com.example.getfood.ui.base.BasePresenter;
-import com.fazemeright.canteen_app_models.helpers.FoodMenuDetails;
 import com.fazemeright.canteen_app_models.models.CartItem;
 import com.fazemeright.canteen_app_models.models.FoodItem;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
+import com.fazemeright.firebase_api__library.listeners.DBValueEventListener;
 
 import java.util.ArrayList;
 
@@ -21,29 +16,14 @@ public class FoodCategoryPresenter<V extends FoodCategoryMvpView> extends BasePr
     @Override
     public void fetchFoodList(final String category) {
 
-        apiManager.foodMenuListener(category, new ValueEventListener() {
+        apiManager.foodMenuListener(category, new DBValueEventListener<ArrayList<FoodItem>>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ArrayList<FoodItem> foodItems = new ArrayList<>();
-                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                    FoodItem foodItem = FoodItem.fromMap(dsp.getValue(), category, dsp.getKey());
-
-                    if (foodItem != null) {
-//                        Log.d("##DebugData", foodItem.toString());
-                    } else {
-//                        Log.d("##DebugData", "\n\t\t Test Item null");
-                    }
-//                    todo: Create a method to convert from HashMap instead of this
-                    if (dsp.hasChild(FoodMenuDetails.AVAILABLE) &&
-                            dsp.child(FoodMenuDetails.AVAILABLE).getValue().toString().equals("Yes")) {
-                        foodItems.add(foodItem);
-                    }
-                }
-                getMvpView().bindFoodListAdapter(foodItems);
+            public void onDataChange(ArrayList<FoodItem> data) {
+                getMvpView().bindFoodListAdapter(data);
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCancelled(Error error) {
 
             }
         });

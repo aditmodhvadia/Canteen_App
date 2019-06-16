@@ -5,13 +5,10 @@ import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.example.getfood.R;
 import com.example.getfood.ui.base.BasePresenter;
+import com.fazemeright.firebase_api__library.listeners.DBValueEventListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 
 public class SplashPresenter<V extends SplashMvpView> extends BasePresenter<V> implements SplashMvpPresenter<V> {
     public SplashPresenter() {
@@ -48,22 +45,19 @@ public class SplashPresenter<V extends SplashMvpView> extends BasePresenter<V> i
     @Override
     public void determineIfUpdateNeeded(String versionName) {
 
-        apiManager.determineIfUpdateNeededAtSplash(versionName, new ValueEventListener() {
+        apiManager.determineIfUpdateNeededAtSplash(versionName, new DBValueEventListener<String>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() != null &&
-                        dataSnapshot.getValue().toString().equals(getMvpView().getContext().getString(R.string.yes))) {
-                    Log.d("##DebugData", "Update not required");
+            public void onDataChange(String data) {
+                if (data != null) {
                     getMvpView().updateNotRequired();
                 } else {
-                    //deprecated versionName of app or version name not found
                     getMvpView().updateRequired();
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                    getMvpView().updateRequired();
+            public void onCancelled(Error error) {
+                getMvpView().updateRequired();
             }
         });
     }
