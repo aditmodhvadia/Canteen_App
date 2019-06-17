@@ -1,1 +1,1 @@
-include ':app'
+include ':app', ':firebase_api_library', ':firebase_api__library', ':canteen_app_models'
