@@ -11,4 +11,6 @@ public interface LoginActivityMvpView extends BaseView {
     void onSuccessfulVerificationAndSignIn();
 
     void onFailedVerificationOrSignIn(Exception e);
+
+    void onTokenUpdatedSuccessfully();
 }

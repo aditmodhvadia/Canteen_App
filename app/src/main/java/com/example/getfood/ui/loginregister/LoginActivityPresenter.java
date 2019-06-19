@@ -7,6 +7,7 @@ import android.util.Log;
 import com.example.getfood.R;
 import com.example.getfood.ui.base.BasePresenter;
 import com.fazemeright.firebase_api__library.listeners.OnDynamicLinkStatusListener;
+import com.fazemeright.firebase_api__library.listeners.OnTaskCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
@@ -52,6 +53,26 @@ public class LoginActivityPresenter<V extends LoginActivityMvpView> extends Base
                         getMvpView().onFailedVerificationOrSignIn(e);
                     }
                 });
+            }
+        });
+    }
+
+    @Override
+    public void updateToken(String token) {
+        apiManager.updateToken(token, new OnTaskCompleteListener() {
+            @Override
+            public void onTaskSuccessful() {
+                getMvpView().onTokenUpdatedSuccessfully();
+            }
+
+            @Override
+            public void onTaskCompleteButFailed(String errMsg) {
+
+            }
+
+            @Override
+            public void onTaskFailed(Exception e) {
+
             }
         });
     }

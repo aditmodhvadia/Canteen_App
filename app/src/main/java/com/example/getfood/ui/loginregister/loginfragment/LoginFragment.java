@@ -2,6 +2,8 @@ package com.example.getfood.ui.loginregister.loginfragment;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -14,6 +16,10 @@ import com.example.getfood.ui.foodmenu.FoodMenuDisplayActivity;
 import com.example.getfood.utils.AlertUtils;
 import com.example.getfood.utils.DialogConfirmation;
 import com.example.getfood.utils.DialogSimple;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 
 public class LoginFragment extends BaseFragment implements LoginMvpView, View.OnClickListener {
@@ -90,6 +96,27 @@ public class LoginFragment extends BaseFragment implements LoginMvpView, View.On
 
     @Override
     public void userVerifiedSuccessfully() {
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.d("##FCM", "getInstanceId failed", task.getException());
+//                            TODO: redirect user to app from here as well
+                            return;
+                        }
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+                        presenter.updateToken(token);
+                        // Log and toast
+                        Log.d("##FCM", token);
+                    }
+                });
+
+    }
+
+    @Override
+    public void onTokenUpdatedSuccessfully() {
         hideLoading();
         startActivity(new Intent(mContext, FoodMenuDisplayActivity.class));
     }

@@ -105,4 +105,25 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V> imp
             }
         });
     }
+
+    @Override
+    public void updateToken(String token) {
+
+        apiManager.updateToken(token, new OnTaskCompleteListener() {
+            @Override
+            public void onTaskSuccessful() {
+                getMvpView().onTokenUpdatedSuccessfully();
+            }
+
+            @Override
+            public void onTaskCompleteButFailed(String errMsg) {
+
+            }
+
+            @Override
+            public void onTaskFailed(Exception e) {
+
+            }
+        });
+    }
 }

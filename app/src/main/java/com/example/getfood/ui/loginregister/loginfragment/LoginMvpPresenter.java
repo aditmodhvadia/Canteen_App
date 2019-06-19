@@ -17,4 +17,6 @@ public interface LoginMvpPresenter<V extends LoginMvpView> extends BaseMvpPresen
     void sendEmailForVerification();
 
     void forgotPasswordClicked(String userEmail);
+
+    void updateToken(String token);
 }
