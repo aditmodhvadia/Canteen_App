@@ -10,4 +10,6 @@ public interface LoginActivityMvpPresenter<V extends LoginActivityMvpView> exten
     boolean isUserLoggedIn();
 
     void signOutUser();
+
+    void updateToken(String token);
 }

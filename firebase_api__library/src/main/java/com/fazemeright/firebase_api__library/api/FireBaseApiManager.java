@@ -344,6 +344,24 @@ public class FireBaseApiManager {
         return getCurrentUserEmail() != null;
     }
 
+    public void updateToken(String token, final OnTaskCompleteListener onTaskCompleteListener) {
+        DatabaseReference tokenReference = FirebaseDatabase.getInstance().getReference().child(BaseUrl.USER_DATA)
+                .child(AppUtils.getRollNoFromEmail(getCurrentUserEmail())).child(BaseUrl.TOKEN);
+
+        apiWrapper.setValue(tokenReference, token, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.d("##FCM", "Token updated");
+                    onTaskCompleteListener.onTaskSuccessful();
+                } else {
+                    Log.d("##FCM", "Failed to update token");
+                    onTaskCompleteListener.onTaskCompleteButFailed(task.getException().toString());
+                }
+            }
+        });
+    }
+
 
     public static class BaseUrl {
         // Declare the constants
@@ -351,9 +369,13 @@ public class FireBaseApiManager {
         static final String FOOD_MENU = "Food";
         static final String VERSION_CHECK = "version-check";
 
+        static final String USER_DATA = "UserData";
+        static final String TOKEN = "Token";
+
         @Retention(RetentionPolicy.SOURCE)
         @StringDef({USER_ORDER, FOOD_MENU})
         public @interface BaseUrlDef {
+
         }
     }
 

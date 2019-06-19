@@ -1,6 +1,7 @@
 package com.example.getfood.ui.loginregister;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,6 +19,10 @@ import com.example.getfood.ui.loginregister.loginfragment.LoginFragment;
 import com.example.getfood.ui.loginregister.registerfragment.RegisterFragment;
 import com.example.getfood.utils.AlertUtils;
 import com.example.getfood.utils.DialogSimple;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 public class LoginActivity extends BaseActivity implements LoginActivityMvpView {
 
@@ -56,8 +61,21 @@ public class LoginActivity extends BaseActivity implements LoginActivityMvpView 
             @Override
             public void onButtonClicked() {
                 if (presenter.isUserLoggedIn()) {
-//                    Log.d("##DebugData", FirebaseAuth.getInstance().getCurrentUser().getEmail());
-                    startActivity(new Intent(LoginActivity.this, FoodMenuDisplayActivity.class));
+                    FirebaseInstanceId.getInstance().getInstanceId()
+                            .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                    if (!task.isSuccessful()) {
+                                        Log.d("##FCM", "getInstanceId failed", task.getException());
+                                        return;
+                                    }
+                                    // Get new Instance ID token
+                                    String token = task.getResult().getToken();
+                                    presenter.updateToken(token);
+                                    // Log and toast
+                                    Log.d("##FCM", token);
+                                }
+                            });
                 } else {
                     Log.d("##DebugData", "User not signed in");
                 }
@@ -73,6 +91,11 @@ public class LoginActivity extends BaseActivity implements LoginActivityMvpView 
 
             }
         });
+    }
+
+    @Override
+    public void onTokenUpdatedSuccessfully() {
+        startActivity(new Intent(LoginActivity.this, FoodMenuDisplayActivity.class));
     }
 
     @Override

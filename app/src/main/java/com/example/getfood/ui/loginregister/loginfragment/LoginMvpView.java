@@ -15,4 +15,6 @@ public interface LoginMvpView extends BaseView {
     void onUserEmailVerificationFailed();
 
     void onPasswordResetEmailSentSuccessfully();
+
+    void onTokenUpdatedSuccessfully();
 }
