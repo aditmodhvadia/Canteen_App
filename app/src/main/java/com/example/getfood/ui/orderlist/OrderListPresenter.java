@@ -6,6 +6,7 @@ import com.fazemeright.canteen_app_models.models.FullOrder;
 import com.fazemeright.firebase_api__library.listeners.DBValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class OrderListPresenter<V extends OrderListMvpView> extends BasePresenter<V> implements OrderListMvpPresenter<V> {
 
@@ -23,6 +24,8 @@ public class OrderListPresenter<V extends OrderListMvpView> extends BasePresente
         apiManager.orderListListener(new DBValueEventListener<ArrayList<FullOrder>>() {
             @Override
             public void onDataChange(ArrayList<FullOrder> data) {
+//                TODO: Later add option to flip the order list based on order timing
+                Collections.reverse(data);
                 getMvpView().bindListAdapter(data);
             }
 

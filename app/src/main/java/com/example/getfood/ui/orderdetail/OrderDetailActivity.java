@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,7 +17,7 @@ import com.example.getfood.utils.AppUtils;
 import com.example.getfood.utils.DialogSimple;
 import com.fazemeright.canteen_app_models.models.FullOrder;
 
-public class OrderDetailActivity extends BaseActivity implements OrderDetailMvpView {
+public class OrderDetailActivity extends BaseActivity implements OrderDetailMvpView, OrderDetailRecyclerViewDisplayAdapter.OnOrderItemClickListener {
 
     private TextView testTV, test;
     private RecyclerView orderRecyclerView;
@@ -58,10 +57,10 @@ public class OrderDetailActivity extends BaseActivity implements OrderDetailMvpV
 //        Get data from Intent
         FullOrder fullOrder = (FullOrder) getIntent().getSerializableExtra("TestOrderData");
 
-        orderDisplayAdapter = new OrderDetailRecyclerViewDisplayAdapter(fullOrder, mContext);
+        orderDisplayAdapter = new OrderDetailRecyclerViewDisplayAdapter(fullOrder, mContext, this);
 
         orderRecyclerView.setAdapter(orderDisplayAdapter);
-        Log.d("##DebugData", fullOrder.toString());
+//        Log.d("##DebugData", fullOrder.toString());
         presenter.fetchOrderDetails(fullOrder);
     }
 
@@ -206,5 +205,10 @@ public class OrderDetailActivity extends BaseActivity implements OrderDetailMvpV
             onBackPressed();
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onRatingGiven(float rating, int position, FullOrder order) {
+        presenter.setRatingValueForOrderItem(String.valueOf(rating), position, order);
     }
 }

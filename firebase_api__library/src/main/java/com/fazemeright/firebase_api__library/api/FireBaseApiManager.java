@@ -362,6 +362,26 @@ public class FireBaseApiManager {
         });
     }
 
+    public void setRatingValueForOrderItem(String rating, int position, FullOrder order) {
+        DatabaseReference orderItem = FirebaseDatabase.getInstance().getReference()
+                .child(BaseUrl.USER_ORDER)
+                .child(AppUtils.getRollNoFromEmail(getCurrentUserEmail()))
+                .child(order.getOrderId())
+                .child("orderItems")
+                .child(String.valueOf(position))
+                .child("itemRating");
+        apiWrapper.setValue(orderItem, rating, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.d("##DebugData", "Rating set");
+                } else {
+                    Log.d("##DebugData", "Rating not set" + task.getException().getMessage());
+                }
+            }
+        });
+    }
+
 
     public static class BaseUrl {
         // Declare the constants
