@@ -1,22 +1,16 @@
 package com.example.getfood.ui.orderdetail;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.getfood.R;
-import com.example.getfood.utils.AppUtils;
 import com.fazemeright.canteen_app_models.models.FullOrder;
 
 public class OrderDetailRecyclerViewDisplayAdapter extends RecyclerView.Adapter<OrderDetailRecyclerViewDisplayAdapter.ViewHolder> {
@@ -57,36 +51,21 @@ public class OrderDetailRecyclerViewDisplayAdapter extends RecyclerView.Adapter<
             }
 
             if (orderDetailItems.getOrderItems().get(holder.getAdapterPosition()).getItemRating() != null) {
-                holder.itemRatingTextView.setText(orderDetailItems.getOrderItems().get(holder.getAdapterPosition()).getItemRating());
-                holder.itemRatingTextView.setTextColor(AppUtils.getColorForRating(context,
-                        orderDetailItems.getOrderItems().get(holder.getAdapterPosition()).getItemRating()));
-                holder.ivRatingStar.setVisibility(View.VISIBLE);
-                holder.itemRatingTextView.setVisibility(View.VISIBLE);
+                holder.ratingBar.setRating(Float.parseFloat(orderDetailItems.getOrderItems()
+                        .get(holder.getAdapterPosition()).getItemRating()));
+                holder.ratingBar.setEnabled(false);
+            } else {
+                holder.ratingBar.setRating(0);
+                holder.ratingBar.setEnabled(true);
             }
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
+            holder.ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                 @Override
-                public void onClick(View v) {
-                    if (orderDetailItems.getOrderItems().get(holder.getAdapterPosition()).getItemRating() == null) {
-                        AlertDialog.Builder giveRating = new AlertDialog.Builder(context);
-                        giveRating.setTitle(R.string.give_rating);
-                        View ratingView = ((Activity) context).getLayoutInflater().inflate(R.layout.choose_rating, null);
-                        final RatingBar ratingBar = ratingView.findViewById(R.id.ratingBar);
-                        giveRating.setView(ratingView);
-                        giveRating.setPositiveButton(R.string.rate, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Log.d("##DebugData", "Rating is " + ratingBar.getRating());
-                                onOrderItemClickListener.onRatingGiven(ratingBar.getRating(), holder.getAdapterPosition(), orderDetailItems);
-                            }
-                        });
-
-                        AlertDialog chooseTimeDialog = giveRating.create();
-                        chooseTimeDialog.show();
-
-                        Button nbutton = chooseTimeDialog.getButton(DialogInterface.BUTTON_POSITIVE);
-                        nbutton.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-
+                public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                    if (fromUser) {
+                        Log.d("##DebugData", "Rating is " + ratingBar.getRating());
+                        ratingBar.setEnabled(false);
+                        onOrderItemClickListener.onRatingGiven(ratingBar.getRating(), holder.getAdapterPosition(), orderDetailItems);
                     }
                 }
             });
@@ -113,16 +92,15 @@ public class OrderDetailRecyclerViewDisplayAdapter extends RecyclerView.Adapter<
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView orderItemQuantityTextView, orderItemNameTextView, orderItemStatusTextView, itemRatingTextView;
-        ImageView ivRatingStar;
+        TextView orderItemQuantityTextView, orderItemNameTextView, orderItemStatusTextView;
+        RatingBar ratingBar;
 
         ViewHolder(View itemView) {
             super(itemView);
             orderItemQuantityTextView = itemView.findViewById(R.id.orderItemQuantityTextView);
             orderItemNameTextView = itemView.findViewById(R.id.orderItemNameTextView);
             orderItemStatusTextView = itemView.findViewById(R.id.orderItemStatusTextView);
-            itemRatingTextView = itemView.findViewById(R.id.itemRatingTextView);
-            ivRatingStar = itemView.findViewById(R.id.ivRatingStar);
+            ratingBar = itemView.findViewById(R.id.ratingBar);
         }
     }
 }

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,7 +60,7 @@ public class OrderDetailActivity extends BaseActivity implements OrderDetailMvpV
         orderDisplayAdapter = new OrderDetailRecyclerViewDisplayAdapter(fullOrder, mContext, this);
 
         orderRecyclerView.setAdapter(orderDisplayAdapter);
-        Log.d("##DebugData", fullOrder.toString());
+//        Log.d("##DebugData", fullOrder.toString());
         presenter.fetchOrderDetails(fullOrder);
     }
 

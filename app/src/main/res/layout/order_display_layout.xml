@@ -43,30 +43,46 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="TextView" />
 
-
-    <ImageView
-        android:id="@+id/ivRatingStar"
-        android:layout_width="16sp"
-        android:layout_height="16sp"
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
-        android:tint="#bdc3c7"
-        android:visibility="invisible"
+        android:isIndicator="false"
+        android:numStars="5"
+        android:rating="3.5"
+        android:stepSize="0.5"
+        android:theme="@style/RatingBar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/orderItemNameTextView"
         app:srcCompat="@drawable/ic_rating" />
+    <!--
+
+        <ImageView
+            android:id="@+id/ivRatingStar"
+            android:layout_width="16sp"
+            android:layout_height="16sp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:tint="#bdc3c7"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/orderItemNameTextView"
+            app:srcCompat="@drawable/ic_rating" />
 
 
-    <TextView
-        android:id="@+id/itemRatingTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:textColor="#2dda20"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/ivRatingStar"
-        app:layout_constraintStart_toEndOf="@+id/ivRatingStar"
-        app:layout_constraintTop_toTopOf="@+id/ivRatingStar"
-        tools:text="4.5" />
+        <TextView
+            android:id="@+id/itemRatingTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="#2dda20"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/ivRatingStar"
+            app:layout_constraintStart_toEndOf="@+id/ivRatingStar"
+            app:layout_constraintTop_toTopOf="@+id/ivRatingStar"
+            tools:text="4.5" />-->
 </android.support.constraint.ConstraintLayout>
