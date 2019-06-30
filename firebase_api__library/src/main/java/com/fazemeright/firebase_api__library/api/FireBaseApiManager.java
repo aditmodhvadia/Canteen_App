@@ -362,11 +362,11 @@ public class FireBaseApiManager {
         });
     }
 
-    public void setRatingValueForOrderItem(String rating, int position, FullOrder order) {
+    public void setRatingValueForOrderItem(float rating, int position, String orderId) {
         DatabaseReference orderItem = FirebaseDatabase.getInstance().getReference()
                 .child(BaseUrl.USER_ORDER)
                 .child(AppUtils.getRollNoFromEmail(getCurrentUserEmail()))
-                .child(order.getOrderId())
+                .child(orderId)
                 .child("orderItems")
                 .child(String.valueOf(position))
                 .child("itemRating");

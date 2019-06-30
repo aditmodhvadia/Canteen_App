@@ -46,9 +46,9 @@ public class FoodMenuRecyclerViewDisplayAdapter extends RecyclerView.Adapter<Foo
 
         holder.itemNameTextView.setText(foodItemList.get(holder.getAdapterPosition()).getItemName());
         holder.itemPriceTextView.setText(String.format("%s %s", context.getString(R.string.rupee_symbol), foodItemList.get(holder.getAdapterPosition()).getItemPrice()));
-        if (foodItemList.get(holder.getAdapterPosition()).getItemRating() != null) {
-            holder.itemRatingTextView.setText(foodItemList.get(holder.getAdapterPosition()).getItemRating());
-            holder.itemRatingTextView.setTextColor(AppUtils.getColorForRating(context, foodItemList.get(holder.getAdapterPosition()).getItemRating()));
+        if (foodItemList.get(holder.getAdapterPosition()).getItemRating() != -1) {
+            holder.itemRatingTextView.setText(String.valueOf(foodItemList.get(holder.getAdapterPosition()).getItemRating()));
+            holder.itemRatingTextView.setTextColor(AppUtils.getColorForRating(context, String.valueOf(foodItemList.get(holder.getAdapterPosition()).getItemRating())));
 
         } else {
             holder.itemRatingTextView.setVisibility(View.INVISIBLE);

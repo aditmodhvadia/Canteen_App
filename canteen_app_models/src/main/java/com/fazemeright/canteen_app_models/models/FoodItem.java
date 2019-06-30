@@ -9,9 +9,10 @@ import java.util.HashMap;
 
 public class FoodItem implements Serializable {
 
-    protected String itemName, itemPrice, itemRating, itemCategory;
+    protected String itemName, itemPrice, itemCategory;
+    protected long itemRating;
 
-    public FoodItem(String itemName, String itemPrice, String itemRating, String itemCategory) {
+    public FoodItem(String itemName, String itemPrice, long itemRating, String itemCategory) {
         this.itemName = itemName;
         this.itemPrice = itemPrice;
         this.itemRating = itemRating;
@@ -24,9 +25,9 @@ public class FoodItem implements Serializable {
     public static FoodItem fromMap(Object dsp, String category, String itemName) {
         HashMap<String, Object> map = (HashMap<String, Object>) dsp;
         if (map != null) {
-            String rating = null;
+            long rating = -1;
             if (map.containsKey(FoodMenuDetails.RATING)) {
-                rating = String.valueOf(map.get(FoodMenuDetails.RATING));
+                rating = (long) map.get(FoodMenuDetails.RATING);
             }
             return new FoodItem(itemName, String.valueOf(map.get(FoodMenuDetails.PRICE)),
                     rating,
@@ -48,7 +49,7 @@ public class FoodItem implements Serializable {
         return itemPrice;
     }
 
-    public String getItemRating() {
+    public long getItemRating() {
         return itemRating;
     }
 

@@ -11,7 +11,7 @@ public class CartItem extends FoodItem implements Serializable {
 //    private FoodItem foodItem;
 
     public CartItem(FoodItem foodItem, String itemStatus, Integer cartItemQuantity) {
-        super(foodItem.getItemName(), foodItem.getItemPrice(), null, foodItem.getItemCategory());
+        super(foodItem.getItemName(), foodItem.getItemPrice(), -1, foodItem.getItemCategory());
         this.itemQuantity = cartItemQuantity;
         this.itemStatus = itemStatus;
 //        this.foodItem = foodItem;

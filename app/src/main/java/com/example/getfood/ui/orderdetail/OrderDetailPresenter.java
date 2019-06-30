@@ -26,7 +26,7 @@ public class OrderDetailPresenter<V extends OrderDetailMvpView> extends BasePres
     }
 
     @Override
-    public void setRatingValueForOrderItem(String rating, int position, FullOrder order) {
-        apiManager.setRatingValueForOrderItem(rating, position, order);
+    public void setRatingValueForOrderItem(float rating, int position, String orderId) {
+        apiManager.setRatingValueForOrderItem(rating, position, orderId);
     }
 }
