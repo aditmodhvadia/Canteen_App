@@ -38,6 +38,9 @@ public class OrderListActivity extends BaseActivity implements OrderListMvpView 
         presenter = new OrderListPresenter<>();
         presenter.onAttach(this);
 
+        orderListDisplayAdapter = new OrderListRecyclerViewDisplayAdapter(mContext);
+        ordersListRecyclerView.setAdapter(orderListDisplayAdapter);
+
         //        fetch all the order IDs of the user first
         presenter.fetchOrderList();
     }
@@ -67,9 +70,8 @@ public class OrderListActivity extends BaseActivity implements OrderListMvpView 
     }
 
     @Override
-    public void bindListAdapter(final ArrayList<FullOrder> orderListItems) {
-        orderListDisplayAdapter = new OrderListRecyclerViewDisplayAdapter(orderListItems, mContext);
-        ordersListRecyclerView.setAdapter(orderListDisplayAdapter);
+    public void bindListAdapter(ArrayList<FullOrder> orderListItems) {
+        orderListDisplayAdapter.submitList(orderListItems);
         hideLoading();
     }
 
