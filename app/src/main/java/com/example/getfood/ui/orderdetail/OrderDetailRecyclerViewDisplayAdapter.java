@@ -16,11 +16,11 @@ import com.fazemeright.canteen_app_models.models.CartItem;
 
 public class OrderDetailRecyclerViewDisplayAdapter extends ListAdapter<CartItem, OrderDetailRecyclerViewDisplayAdapter.ViewHolder> {
 
-    private OnOrderItemClickListener onOrderItemClickListener;
+    private static OnOrderItemClickListener onOrderItemClickListener;
 
-    protected OrderDetailRecyclerViewDisplayAdapter(OnOrderItemClickListener onOrderItemClickListener) {
+    OrderDetailRecyclerViewDisplayAdapter(OnOrderItemClickListener onOrderItemClickListener) {
         super(new OrderDetailDiffCallBack());
-        this.onOrderItemClickListener = onOrderItemClickListener;
+        OrderDetailRecyclerViewDisplayAdapter.onOrderItemClickListener = onOrderItemClickListener;
     }
 
     /*public OrderDetailRecyclerViewDisplayAdapter(OnOrderItemClickListener onOrderItemClickListener) {
@@ -31,10 +31,7 @@ public class OrderDetailRecyclerViewDisplayAdapter extends ListAdapter<CartItem,
     @Override
     public OrderDetailRecyclerViewDisplayAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.order_display_layout, parent, false);
-
-        return new ViewHolder(v);
+        return ViewHolder.from(parent);
 
     }
 
@@ -65,7 +62,7 @@ public class OrderDetailRecyclerViewDisplayAdapter extends ListAdapter<CartItem,
         }
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView orderItemQuantityTextView, orderItemNameTextView, orderItemStatusTextView;
         RatingBar ratingBar;
@@ -76,6 +73,12 @@ public class OrderDetailRecyclerViewDisplayAdapter extends ListAdapter<CartItem,
             orderItemNameTextView = itemView.findViewById(R.id.orderItemNameTextView);
             orderItemStatusTextView = itemView.findViewById(R.id.orderItemStatusTextView);
             ratingBar = itemView.findViewById(R.id.ratingBar);
+        }
+
+        public static ViewHolder from(ViewGroup parent) {
+            View v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.order_display_layout, parent, false);
+            return new ViewHolder(v);
         }
 
         void bind(CartItem item) {
