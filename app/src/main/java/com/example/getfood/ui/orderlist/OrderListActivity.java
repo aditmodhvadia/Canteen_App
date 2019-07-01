@@ -15,14 +15,12 @@ import java.util.ArrayList;
 
 public class OrderListActivity extends BaseActivity implements OrderListMvpView {
 
-    private RecyclerView ordersListRecyclerView;
     private OrderListRecyclerViewDisplayAdapter orderListDisplayAdapter;
-    private OrderListPresenter<OrderListActivity> presenter;
 
     @Override
     public void initViews() {
         showLoading();
-        ordersListRecyclerView = findViewById(R.id.ordersListRecyclerView);
+        RecyclerView ordersListRecyclerView = findViewById(R.id.ordersListRecyclerView);
         ordersListRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         ordersListRecyclerView.addItemDecoration(new DividerItemDecoration(ordersListRecyclerView.getContext(), LinearLayoutManager.VERTICAL));
 
@@ -35,7 +33,7 @@ public class OrderListActivity extends BaseActivity implements OrderListMvpView 
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        presenter = new OrderListPresenter<>();
+        OrderListPresenter<OrderListActivity> presenter = new OrderListPresenter<>();
         presenter.onAttach(this);
 
         orderListDisplayAdapter = new OrderListRecyclerViewDisplayAdapter(mContext);
@@ -71,7 +69,7 @@ public class OrderListActivity extends BaseActivity implements OrderListMvpView 
 
     @Override
     public void bindListAdapter(ArrayList<FullOrder> orderListItems) {
-        orderListDisplayAdapter.submitList(orderListItems);
+        orderListDisplayAdapter.swapData(orderListItems);
         hideLoading();
     }
 

@@ -15,19 +15,27 @@ import com.example.getfood.R;
 import com.example.getfood.ui.orderdetail.OrderDetailActivity;
 import com.fazemeright.canteen_app_models.models.FullOrder;
 
+import java.util.List;
+
 public class OrderListRecyclerViewDisplayAdapter extends ListAdapter<FullOrder, OrderListRecyclerViewDisplayAdapter.ViewHolder> {
 
-    private static Context context;
+    private Context context;
 
     OrderListRecyclerViewDisplayAdapter(Context context) {
         super(new OrderListDiffCallBack());
         this.context = context;
     }
 
+    void swapData(List<FullOrder> newList) {
+        submitList(newList);
+    }
+
     @NonNull
     @Override
     public OrderListRecyclerViewDisplayAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return ViewHolder.from(parent);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.order_list_display_view_item, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
@@ -50,7 +58,7 @@ public class OrderListRecyclerViewDisplayAdapter extends ListAdapter<FullOrder, 
         }
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView orderIDTextView, orderAmountTextView, orderTimeTextView;
 
@@ -59,14 +67,6 @@ public class OrderListRecyclerViewDisplayAdapter extends ListAdapter<FullOrder, 
             orderIDTextView = itemView.findViewById(R.id.orderIDTextView);
             orderAmountTextView = itemView.findViewById(R.id.orderAmountTextView);
             orderTimeTextView = itemView.findViewById(R.id.orderTimeTextView);
-        }
-
-        public static ViewHolder from(ViewGroup parent) {
-
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.order_list_display_view_item, parent, false);
-
-            return new ViewHolder(view);
         }
 
         void bind(final FullOrder item) {

@@ -90,7 +90,7 @@ public class OrderDetailActivity extends BaseActivity implements OrderDetailMvpV
             testTV.setText(String.format("%s %s", getString(R.string.order_id_is), updatedOrder.getOrderId()));
         }
         Log.i("OrderDetailActivity", "Called submitlist");
-        orderDisplayAdapter.submitList(updatedOrder.getOrderItems());
+        orderDisplayAdapter.swapData(updatedOrder.getOrderItems());
         hideLoading();
     }
 
