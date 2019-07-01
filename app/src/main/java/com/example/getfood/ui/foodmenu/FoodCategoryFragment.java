@@ -11,9 +11,9 @@ import android.widget.Toast;
 import com.example.getfood.R;
 import com.example.getfood.callback.FoodItemTouchListener;
 import com.example.getfood.ui.base.BaseFragment;
-import com.example.getfood.utils.AlertUtils;
 import com.example.getfood.utils.AppUtils;
-import com.example.getfood.utils.DialogAddToCart;
+import com.example.getfood.utils.alert.AlertUtils;
+import com.example.getfood.utils.alert.DialogAddToCart;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.fazemeright.canteen_app_models.models.CartItem;
 import com.fazemeright.canteen_app_models.models.FoodItem;
@@ -24,7 +24,7 @@ public class FoodCategoryFragment extends BaseFragment implements FoodCategoryMv
 
     private String CATEGORY = null;
     private ShimmerFrameLayout shimmerLayout;
-    private FoodMenuRecyclerViewDisplayAdapter mAdapter;
+    private FoodMenuDisplayAdapter mAdapter;
     private FoodCategoryPresenter<FoodCategoryFragment> presenter;
 
     public FoodCategoryFragment() {
@@ -48,7 +48,7 @@ public class FoodCategoryFragment extends BaseFragment implements FoodCategoryMv
         } else {
             Toast.makeText(getContext(), getString(R.string.args_empty), Toast.LENGTH_SHORT).show();
         }
-        mAdapter = new FoodMenuRecyclerViewDisplayAdapter(mContext, this);
+        mAdapter = new FoodMenuDisplayAdapter(mContext, this);
         foodRecyclerView.setAdapter(mAdapter);
 
         presenter.fetchFoodList(CATEGORY);

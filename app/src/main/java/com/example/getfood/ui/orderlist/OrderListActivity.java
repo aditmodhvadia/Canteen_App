@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class OrderListActivity extends BaseActivity implements OrderListMvpView {
 
-    private OrderListRecyclerViewDisplayAdapter orderListDisplayAdapter;
+    private OrderListDisplayAdapter orderListDisplayAdapter;
 
     @Override
     public void initViews() {
@@ -36,7 +36,7 @@ public class OrderListActivity extends BaseActivity implements OrderListMvpView 
         OrderListPresenter<OrderListActivity> presenter = new OrderListPresenter<>();
         presenter.onAttach(this);
 
-        orderListDisplayAdapter = new OrderListRecyclerViewDisplayAdapter(mContext);
+        orderListDisplayAdapter = new OrderListDisplayAdapter(mContext);
         ordersListRecyclerView.setAdapter(orderListDisplayAdapter);
 
         //        fetch all the order IDs of the user first

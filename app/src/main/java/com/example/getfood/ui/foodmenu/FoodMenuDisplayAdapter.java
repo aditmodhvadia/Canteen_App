@@ -18,12 +18,12 @@ import com.fazemeright.canteen_app_models.models.FoodItem;
 
 import java.util.ArrayList;
 
-public class FoodMenuRecyclerViewDisplayAdapter extends ListAdapter<FoodItem, FoodMenuRecyclerViewDisplayAdapter.ViewHolder> {
+public class FoodMenuDisplayAdapter extends ListAdapter<FoodItem, FoodMenuDisplayAdapter.ViewHolder> {
 
     private Context context;
     private FoodItemTouchListener itemTouchListener;
 
-    FoodMenuRecyclerViewDisplayAdapter(Context context, FoodItemTouchListener itemTouchListener) {
+    FoodMenuDisplayAdapter(Context context, FoodItemTouchListener itemTouchListener) {
         super(new FoodMenuDiffCallBack());
         this.context = context;
         this.itemTouchListener = itemTouchListener;
@@ -31,7 +31,7 @@ public class FoodMenuRecyclerViewDisplayAdapter extends ListAdapter<FoodItem, Fo
 
     @NonNull
     @Override
-    public FoodMenuRecyclerViewDisplayAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public FoodMenuDisplayAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.food_menu_display_view_item, parent, false);
@@ -41,7 +41,7 @@ public class FoodMenuRecyclerViewDisplayAdapter extends ListAdapter<FoodItem, Fo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final FoodMenuRecyclerViewDisplayAdapter.ViewHolder holder, int pos) {
+    public void onBindViewHolder(@NonNull final FoodMenuDisplayAdapter.ViewHolder holder, int pos) {
 
         holder.bind(getItem(holder.getAdapterPosition()));
     }

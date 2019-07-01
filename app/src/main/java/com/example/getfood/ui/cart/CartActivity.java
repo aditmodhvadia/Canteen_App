@@ -34,10 +34,10 @@ import com.example.getfood.callback.CartItemTouchListener;
 import com.example.getfood.callback.SwipeToDeleteCallback;
 import com.example.getfood.ui.base.BaseActivity;
 import com.example.getfood.ui.orderdetail.OrderDetailActivity;
-import com.example.getfood.utils.AlertUtils;
 import com.example.getfood.utils.AppUtils;
-import com.example.getfood.utils.DialogConfirmation;
-import com.example.getfood.utils.DialogSimple;
+import com.example.getfood.utils.alert.AlertUtils;
+import com.example.getfood.utils.alert.DialogConfirmation;
+import com.example.getfood.utils.alert.DialogSimple;
 import com.fazemeright.canteen_app_models.models.CartItem;
 import com.fazemeright.canteen_app_models.models.FullOrder;
 import com.paytm.pgsdk.PaytmOrder;
@@ -61,7 +61,7 @@ public class CartActivity extends BaseActivity implements CartMvpView, View.OnCl
     private TextView totalPriceTV;
     private RecyclerView cartRecyclerView;
     private Button orderButton;
-    private CartRecyclerViewDisplayAdapter adapter;
+    private CartDisplayAdapter adapter;
     private Button firstBreakButton, secondBreakButton, lastBreakButton, nowButton;
     private String orderTime = null;
     private AlertDialog chooseTimeDialog;
@@ -96,7 +96,7 @@ public class CartActivity extends BaseActivity implements CartMvpView, View.OnCl
         presenter = new CartPresenter<>();
         presenter.onAttach(this);
 
-        adapter = new CartRecyclerViewDisplayAdapter(this, this);
+        adapter = new CartDisplayAdapter(this, this);
         adapter.swapData(presenter.getCartItems());
         cartRecyclerView.setAdapter(adapter);
         updateCartTotal();

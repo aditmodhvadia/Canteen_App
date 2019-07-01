@@ -1,4 +1,4 @@
-package com.example.getfood.utils;
+package com.example.getfood.utils.alert;
 
 import android.content.Context;
 import android.support.design.widget.Snackbar;

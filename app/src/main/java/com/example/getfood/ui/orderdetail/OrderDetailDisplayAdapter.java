@@ -16,11 +16,11 @@ import com.fazemeright.canteen_app_models.models.CartItem;
 
 import java.util.List;
 
-public class OrderDetailRecyclerViewDisplayAdapter extends ListAdapter<CartItem, OrderDetailRecyclerViewDisplayAdapter.ViewHolder> {
+public class OrderDetailDisplayAdapter extends ListAdapter<CartItem, OrderDetailDisplayAdapter.ViewHolder> {
 
     private OnOrderItemClickListener onOrderItemClickListener;
 
-    OrderDetailRecyclerViewDisplayAdapter(OnOrderItemClickListener onOrderItemClickListener) {
+    OrderDetailDisplayAdapter(OnOrderItemClickListener onOrderItemClickListener) {
         super(new OrderDetailDiffCallBack());
         this.onOrderItemClickListener = onOrderItemClickListener;
     }
@@ -31,7 +31,7 @@ public class OrderDetailRecyclerViewDisplayAdapter extends ListAdapter<CartItem,
 
     @NonNull
     @Override
-    public OrderDetailRecyclerViewDisplayAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public OrderDetailDisplayAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.order_display_layout, parent, false);
         return new ViewHolder(view);
@@ -39,7 +39,7 @@ public class OrderDetailRecyclerViewDisplayAdapter extends ListAdapter<CartItem,
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final OrderDetailRecyclerViewDisplayAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final OrderDetailDisplayAdapter.ViewHolder holder, int position) {
 
         CartItem item = getItem(position);
 

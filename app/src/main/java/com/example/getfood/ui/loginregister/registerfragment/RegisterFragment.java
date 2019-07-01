@@ -10,8 +10,8 @@ import android.widget.Toast;
 import com.example.getfood.R;
 import com.example.getfood.ui.base.BaseFragment;
 import com.example.getfood.ui.terms.TermsActivity;
-import com.example.getfood.utils.AlertUtils;
-import com.example.getfood.utils.DialogSimple;
+import com.example.getfood.utils.alert.AlertUtils;
+import com.example.getfood.utils.alert.DialogSimple;
 
 
 public class RegisterFragment extends BaseFragment implements RegisterMvpView, View.OnClickListener {

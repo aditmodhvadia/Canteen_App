@@ -17,11 +17,11 @@ import com.fazemeright.canteen_app_models.models.FullOrder;
 
 import java.util.List;
 
-public class OrderListRecyclerViewDisplayAdapter extends ListAdapter<FullOrder, OrderListRecyclerViewDisplayAdapter.ViewHolder> {
+public class OrderListDisplayAdapter extends ListAdapter<FullOrder, OrderListDisplayAdapter.ViewHolder> {
 
     private Context context;
 
-    OrderListRecyclerViewDisplayAdapter(Context context) {
+    OrderListDisplayAdapter(Context context) {
         super(new OrderListDiffCallBack());
         this.context = context;
     }
@@ -32,14 +32,14 @@ public class OrderListRecyclerViewDisplayAdapter extends ListAdapter<FullOrder, 
 
     @NonNull
     @Override
-    public OrderListRecyclerViewDisplayAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public OrderListDisplayAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.order_list_display_view_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final OrderListRecyclerViewDisplayAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final OrderListDisplayAdapter.ViewHolder holder, int position) {
         FullOrder item = getItem(position);
 
         holder.bind(item);

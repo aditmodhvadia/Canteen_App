@@ -11,8 +11,8 @@ import com.example.getfood.R;
 import com.example.getfood.ui.base.BaseActivity;
 import com.example.getfood.ui.foodmenu.FoodMenuDisplayActivity;
 import com.example.getfood.ui.loginregister.LoginActivity;
-import com.example.getfood.utils.AlertUtils;
-import com.example.getfood.utils.DialogConfirmation;
+import com.example.getfood.utils.alert.AlertUtils;
+import com.example.getfood.utils.alert.DialogConfirmation;
 
 public class SplashActivity extends BaseActivity implements SplashMvpView {
 

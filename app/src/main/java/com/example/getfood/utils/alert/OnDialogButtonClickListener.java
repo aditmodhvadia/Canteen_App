@@ -1,4 +1,4 @@
-package com.example.getfood.utils;
+package com.example.getfood.utils.alert;
 
 public interface OnDialogButtonClickListener {
 

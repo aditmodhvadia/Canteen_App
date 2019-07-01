@@ -12,16 +12,15 @@ import android.widget.Toast;
 
 import com.example.getfood.R;
 import com.example.getfood.ui.base.BaseActivity;
-import com.example.getfood.utils.AlertUtils;
 import com.example.getfood.utils.AppUtils;
-import com.example.getfood.utils.DialogSimple;
+import com.example.getfood.utils.alert.AlertUtils;
+import com.example.getfood.utils.alert.DialogSimple;
 import com.fazemeright.canteen_app_models.models.FullOrder;
 
-public class OrderDetailActivity extends BaseActivity implements OrderDetailMvpView, OrderDetailRecyclerViewDisplayAdapter.OnOrderItemClickListener {
+public class OrderDetailActivity extends BaseActivity implements OrderDetailMvpView, OrderDetailDisplayAdapter.OnOrderItemClickListener {
 
-    private TextView testTV, test;
-    private RecyclerView orderRecyclerView;
-    private OrderDetailRecyclerViewDisplayAdapter orderDisplayAdapter;
+    private TextView testTV;
+    private OrderDetailDisplayAdapter orderDisplayAdapter;
     private Intent orderData;
     private OrderDetailPresenter<OrderDetailActivity> presenter;
     private FullOrder fullOrder;
@@ -29,10 +28,9 @@ public class OrderDetailActivity extends BaseActivity implements OrderDetailMvpV
     @Override
     public void initViews() {
         testTV = findViewById(R.id.testTV);
-        orderRecyclerView = findViewById(R.id.orderDetailRecyclerView);
+        RecyclerView orderRecyclerView = findViewById(R.id.orderDetailRecyclerView);
         orderRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         orderRecyclerView.addItemDecoration(new DividerItemDecoration(orderRecyclerView.getContext(), LinearLayoutManager.VERTICAL));
-        test = findViewById(R.id.test);
 
         presenter = new OrderDetailPresenter<>();
         presenter.onAttach(this);
@@ -58,8 +56,8 @@ public class OrderDetailActivity extends BaseActivity implements OrderDetailMvpV
 //        Get data from Intent
         fullOrder = (FullOrder) getIntent().getSerializableExtra("TestOrderData");
 
-//        orderDisplayAdapter = new OrderDetailRecyclerViewDisplayAdapter(fullOrder, mContext, this);
-        orderDisplayAdapter = new OrderDetailRecyclerViewDisplayAdapter(this);
+//        orderDisplayAdapter = new OrderDetailDisplayAdapter(fullOrder, mContext, this);
+        orderDisplayAdapter = new OrderDetailDisplayAdapter(this);
 
         orderRecyclerView.setAdapter(orderDisplayAdapter);
 //        Log.d("##DebugData", fullOrder.toString());

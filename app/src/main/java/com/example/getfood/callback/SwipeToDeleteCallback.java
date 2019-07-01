@@ -11,14 +11,14 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
 import com.example.getfood.R;
-import com.example.getfood.ui.cart.CartRecyclerViewDisplayAdapter;
+import com.example.getfood.ui.cart.CartDisplayAdapter;
 
 public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
     private final ColorDrawable background;
-    private CartRecyclerViewDisplayAdapter mAdapter;
+    private CartDisplayAdapter mAdapter;
     private Drawable icon;
 
-    public SwipeToDeleteCallback(CartRecyclerViewDisplayAdapter mAdapter) {
+    public SwipeToDeleteCallback(CartDisplayAdapter mAdapter) {
         super(0, ItemTouchHelper.LEFT);
         this.mAdapter = mAdapter;
         icon = ContextCompat.getDrawable(mAdapter.getContext(),

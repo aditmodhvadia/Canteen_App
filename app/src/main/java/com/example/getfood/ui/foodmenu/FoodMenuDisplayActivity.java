@@ -29,8 +29,8 @@ import com.example.getfood.ui.loginregister.LoginActivity;
 import com.example.getfood.ui.map.MapsActivity;
 import com.example.getfood.ui.orderlist.OrderListActivity;
 import com.example.getfood.ui.terms.TermsActivity;
-import com.example.getfood.utils.AlertUtils;
-import com.example.getfood.utils.DialogConfirmation;
+import com.example.getfood.utils.alert.AlertUtils;
+import com.example.getfood.utils.alert.DialogConfirmation;
 
 public class FoodMenuDisplayActivity extends BaseActivity implements FoodMenuDisplayActivityMvpView {
 

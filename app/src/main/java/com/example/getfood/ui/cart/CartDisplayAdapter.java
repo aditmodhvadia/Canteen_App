@@ -21,14 +21,14 @@ import com.fazemeright.canteen_app_models.models.CartItem;
 import java.util.List;
 import java.util.Locale;
 
-public class CartRecyclerViewDisplayAdapter extends ListAdapter<CartItem, CartRecyclerViewDisplayAdapter.ViewHolder> {
+public class CartDisplayAdapter extends ListAdapter<CartItem, CartDisplayAdapter.ViewHolder> {
 
     private CartItemTouchListener cartItemTouchListener;
     private Context context;
     private CartItem removedItem;
     private int mRecentlyDeletedItemPosition;
 
-    CartRecyclerViewDisplayAdapter(Context context, CartItemTouchListener cartItemTouchListener) {
+    CartDisplayAdapter(Context context, CartItemTouchListener cartItemTouchListener) {
         super(new CartDiffCallBack());
         this.context = context;
         this.cartItemTouchListener = cartItemTouchListener;
@@ -36,7 +36,7 @@ public class CartRecyclerViewDisplayAdapter extends ListAdapter<CartItem, CartRe
 
     @NonNull
     @Override
-    public CartRecyclerViewDisplayAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CartDisplayAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cart_display_view_item, parent, false);
@@ -46,7 +46,7 @@ public class CartRecyclerViewDisplayAdapter extends ListAdapter<CartItem, CartRe
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CartRecyclerViewDisplayAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CartDisplayAdapter.ViewHolder holder, int position) {
 
         holder.bind(getItem(position));
     }
