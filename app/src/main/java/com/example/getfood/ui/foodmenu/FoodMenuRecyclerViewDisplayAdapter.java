@@ -2,6 +2,8 @@ package com.example.getfood.ui.foodmenu;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.recyclerview.extensions.ListAdapter;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,16 +17,14 @@ import com.example.getfood.utils.AppUtils;
 import com.fazemeright.canteen_app_models.models.FoodItem;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class FoodMenuRecyclerViewDisplayAdapter extends RecyclerView.Adapter<FoodMenuRecyclerViewDisplayAdapter.ViewHolder> {
+public class FoodMenuRecyclerViewDisplayAdapter extends ListAdapter<FoodItem, FoodMenuRecyclerViewDisplayAdapter.ViewHolder> {
 
-    private List<FoodItem> foodItemList;
     private Context context;
     private FoodItemTouchListener itemTouchListener;
 
-    public FoodMenuRecyclerViewDisplayAdapter(List<FoodItem> foodItemList, Context context, FoodItemTouchListener itemTouchListener) {
-        this.foodItemList = foodItemList;
+    FoodMenuRecyclerViewDisplayAdapter(Context context, FoodItemTouchListener itemTouchListener) {
+        super(new FoodMenuDiffCallBack());
         this.context = context;
         this.itemTouchListener = itemTouchListener;
     }
@@ -43,41 +43,26 @@ public class FoodMenuRecyclerViewDisplayAdapter extends RecyclerView.Adapter<Foo
     @Override
     public void onBindViewHolder(@NonNull final FoodMenuRecyclerViewDisplayAdapter.ViewHolder holder, int pos) {
 
+        holder.bind(getItem(holder.getAdapterPosition()));
+    }
 
-        holder.itemNameTextView.setText(foodItemList.get(holder.getAdapterPosition()).getItemName());
-        holder.itemPriceTextView.setText(String.format("%s %s", context.getString(R.string.rupee_symbol), foodItemList.get(holder.getAdapterPosition()).getItemPrice()));
-        if (foodItemList.get(holder.getAdapterPosition()).getItemRating() != -1) {
-            holder.itemRatingTextView.setText(String.valueOf(foodItemList.get(holder.getAdapterPosition()).getItemRating()));
-            holder.itemRatingTextView.setTextColor(AppUtils.getColorForRating(context, String.valueOf(foodItemList.get(holder.getAdapterPosition()).getItemRating())));
 
-        } else {
-            holder.itemRatingTextView.setVisibility(View.INVISIBLE);
-            holder.ivRatingStar.setVisibility(View.INVISIBLE);
+    void swapData(ArrayList<FoodItem> newList) {
+        submitList(newList);
+    }
+
+    static class FoodMenuDiffCallBack extends DiffUtil.ItemCallback<FoodItem> {
+
+        @Override
+        public boolean areItemsTheSame(@NonNull FoodItem foodItem, @NonNull FoodItem t1) {
+            return foodItem.getItemName().equals(t1.getItemName());
         }
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                itemTouchListener.onItemClicked(holder.getAdapterPosition(), foodItemList.get(holder.getAdapterPosition()));
-            }
-        });
-
+        @Override
+        public boolean areContentsTheSame(@NonNull FoodItem foodItem, @NonNull FoodItem t1) {
+            return foodItem.equals(t1);
+        }
     }
-
-    @Override
-    public int getItemCount() {
-        return foodItemList.size();
-    }
-
-    public Context getContext() {
-        return context;
-    }
-
-    void updateFoodItems(ArrayList<FoodItem> foodItems) {
-        this.foodItemList = foodItems;
-        notifyDataSetChanged();
-    }
-
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -90,6 +75,27 @@ public class FoodMenuRecyclerViewDisplayAdapter extends RecyclerView.Adapter<Foo
             itemPriceTextView = itemView.findViewById(R.id.itemPriceTextView);
             itemRatingTextView = itemView.findViewById(R.id.itemRatingTextView);
             ivRatingStar = itemView.findViewById(R.id.ivRatingStar);
+        }
+
+        void bind(final FoodItem item) {
+            itemNameTextView.setText(item.getItemName());
+            itemPriceTextView.setText(String.format("%s %s", context.getString(R.string.rupee_symbol),
+                    item.getItemPrice()));
+            if (item.getItemRating() != -1) {
+                itemRatingTextView.setText(String.valueOf(item.getItemRating()));
+                itemRatingTextView.setTextColor(AppUtils.getColorForRating(context, String.valueOf(item.getItemRating())));
+
+            } else {
+                itemRatingTextView.setVisibility(View.INVISIBLE);
+                ivRatingStar.setVisibility(View.INVISIBLE);
+            }
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemTouchListener.onItemClicked(getAdapterPosition(), item);
+                }
+            });
         }
     }
 }

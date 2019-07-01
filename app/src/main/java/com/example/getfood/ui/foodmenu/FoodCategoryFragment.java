@@ -2,8 +2,6 @@ package com.example.getfood.ui.foodmenu;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,14 +19,11 @@ import com.fazemeright.canteen_app_models.models.CartItem;
 import com.fazemeright.canteen_app_models.models.FoodItem;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class FoodCategoryFragment extends BaseFragment implements FoodCategoryMvpView, FoodItemTouchListener {
 
-    private List<FoodItem> foodItem;
     private String CATEGORY = null;
     private ShimmerFrameLayout shimmerLayout;
-    private RecyclerView foodRecyclerView;
     private FoodMenuRecyclerViewDisplayAdapter mAdapter;
     private FoodCategoryPresenter<FoodCategoryFragment> presenter;
 
@@ -39,16 +34,13 @@ public class FoodCategoryFragment extends BaseFragment implements FoodCategoryMv
     @Override
     public void initViews(View view) {
         shimmerLayout = view.findViewById(R.id.shimmerLayout);
-        foodRecyclerView = view.findViewById(R.id.foodDisplayRecyclerView);
+        RecyclerView foodRecyclerView = view.findViewById(R.id.foodDisplayRecyclerView);
         foodRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         foodRecyclerView.addItemDecoration(new DividerItemDecoration(foodRecyclerView.getContext(), LinearLayoutManager.VERTICAL));
 
         presenter = new FoodCategoryPresenter<>();
         presenter.onAttach(this);
 
-        foodItem = new ArrayList<>();
-
-//        Log.d("##DebugData", AppUtils.getInstance(getContext()).generateString());
         Bundle args = this.getArguments();
 
         if (args != null) {
@@ -56,8 +48,9 @@ public class FoodCategoryFragment extends BaseFragment implements FoodCategoryMv
         } else {
             Toast.makeText(getContext(), getString(R.string.args_empty), Toast.LENGTH_SHORT).show();
         }
-        mAdapter = new FoodMenuRecyclerViewDisplayAdapter(foodItem, mContext, this);
+        mAdapter = new FoodMenuRecyclerViewDisplayAdapter(mContext, this);
         foodRecyclerView.setAdapter(mAdapter);
+
         presenter.fetchFoodList(CATEGORY);
     }
 
@@ -67,8 +60,7 @@ public class FoodCategoryFragment extends BaseFragment implements FoodCategoryMv
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mAdapter.updateFoodItems(foodItems);
-//                TODO: Update arraylist and nnotifydatasetchandged()
+                mAdapter.swapData(foodItems);
                 if (shimmerLayout.isShimmerStarted()) {
                     shimmerLayout.stopShimmer();
                     shimmerLayout.setVisibility(View.GONE);
@@ -85,11 +77,6 @@ public class FoodCategoryFragment extends BaseFragment implements FoodCategoryMv
     @Override
     public void setListeners(View view) {
 
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
