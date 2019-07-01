@@ -58,13 +58,12 @@ import java.util.Map;
 public class CartActivity extends BaseActivity implements CartMvpView, View.OnClickListener, CartItemTouchListener, PaytmPaymentTransactionCallback {
 
     public static int total;
-    static TextView totalPriceTV;
-    RecyclerView cartRecyclerView;
-    RecyclerView.Adapter cartRecyclerDisplayAdapter;
-    Button orderButton;
-    //    choose time views
-    Button firstBreakButton, secondBreakButton, lastBreakButton, nowButton;
-    String orderTime = null;
+    private TextView totalPriceTV;
+    private RecyclerView cartRecyclerView;
+    private Button orderButton;
+    private CartRecyclerViewDisplayAdapter adapter;
+    private Button firstBreakButton, secondBreakButton, lastBreakButton, nowButton;
+    private String orderTime = null;
     private AlertDialog chooseTimeDialog;
     private TextView tvCurrentDate;
     private CartPresenter<CartActivity> presenter;
@@ -97,9 +96,9 @@ public class CartActivity extends BaseActivity implements CartMvpView, View.OnCl
         presenter = new CartPresenter<>();
         presenter.onAttach(this);
 
-        CartRecyclerViewDisplayAdapter adapter = new CartRecyclerViewDisplayAdapter(presenter.getCartItems(), this, this);
-        cartRecyclerDisplayAdapter = adapter;
-        cartRecyclerView.setAdapter(cartRecyclerDisplayAdapter);
+        adapter = new CartRecyclerViewDisplayAdapter(this, this);
+        adapter.swapData(presenter.getCartItems());
+        cartRecyclerView.setAdapter(adapter);
         updateCartTotal();
 
         ItemTouchHelper itemTouchHelper = new
@@ -328,7 +327,7 @@ public class CartActivity extends BaseActivity implements CartMvpView, View.OnCl
     public void onIncreaseClicked(int adapterPosition) {
         presenter.increaseCartQuantity(adapterPosition);
         updateCartTotal();
-        cartRecyclerDisplayAdapter.notifyItemChanged(adapterPosition);
+        adapter.itemChanged(adapterPosition);
         Toast.makeText(mContext, getString(R.string.adjust_cart), Toast.LENGTH_SHORT).show();
     }
 
@@ -337,21 +336,24 @@ public class CartActivity extends BaseActivity implements CartMvpView, View.OnCl
         presenter.decreaseCartItemQuantity(adapterPosition);
         updateCartTotal();
         Toast.makeText(mContext, getString(R.string.adjust_cart), Toast.LENGTH_SHORT).show();
-        cartRecyclerDisplayAdapter.notifyItemChanged(adapterPosition);
+        adapter.itemChanged(adapterPosition);
     }
 
     @Override
     public void onItemRemoved(int adapterPosition) {
         presenter.removeCartItem(adapterPosition);
         updateCartTotal();
-        cartRecyclerDisplayAdapter.notifyItemRemoved(adapterPosition);
+        adapter.itemRemoved(adapterPosition);
+        if (adapter.getCartItemsCount() == 0) {
+            finish();
+        }
     }
 
     @Override
     public void onItemRemoveUndo(CartItem removedItem, int mRecentlyDeletedItemPosition) {
         presenter.undoCartItemRemove(removedItem, mRecentlyDeletedItemPosition);
         updateCartTotal();
-        cartRecyclerDisplayAdapter.notifyItemInserted(mRecentlyDeletedItemPosition);
+        adapter.itemInserted(mRecentlyDeletedItemPosition);
     }
 
     @Override

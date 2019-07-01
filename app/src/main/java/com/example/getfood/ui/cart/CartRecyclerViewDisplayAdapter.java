@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.recyclerview.extensions.ListAdapter;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,19 +18,18 @@ import com.example.getfood.callback.CartItemTouchListener;
 import com.example.getfood.utils.AppUtils;
 import com.fazemeright.canteen_app_models.models.CartItem;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
-public class CartRecyclerViewDisplayAdapter extends RecyclerView.Adapter<CartRecyclerViewDisplayAdapter.ViewHolder> {
+public class CartRecyclerViewDisplayAdapter extends ListAdapter<CartItem, CartRecyclerViewDisplayAdapter.ViewHolder> {
 
-    private ArrayList<CartItem> cartItems;
     private CartItemTouchListener cartItemTouchListener;
     private Context context;
     private CartItem removedItem;
     private int mRecentlyDeletedItemPosition;
 
-    public CartRecyclerViewDisplayAdapter(ArrayList<CartItem> cartItems, Context context, CartItemTouchListener cartItemTouchListener) {
-        this.cartItems = cartItems;
+    CartRecyclerViewDisplayAdapter(Context context, CartItemTouchListener cartItemTouchListener) {
+        super(new CartDiffCallBack());
         this.context = context;
         this.cartItemTouchListener = cartItemTouchListener;
     }
@@ -45,16 +46,95 @@ public class CartRecyclerViewDisplayAdapter extends RecyclerView.Adapter<CartRec
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final CartRecyclerViewDisplayAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CartRecyclerViewDisplayAdapter.ViewHolder holder, int position) {
 
-        holder.itemNameTextView.setText(cartItems.get(position).getItemName());
-        holder.itemPriceTextView.setText(String.format(Locale.ENGLISH, "%s%d", context.getString(R.string.rupee_symbol),
-                Integer.parseInt(cartItems.get(position).getItemPrice())));
-        holder.itemQuantityTextView.setText(String.valueOf(cartItems.get(position).getItemQuantity()));
+        holder.bind(getItem(position));
+    }
 
-        holder.increaseButton.setOnClickListener(new View.OnClickListener() {
+    void swapData(List<CartItem> newList) {
+        submitList(newList);
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void deleteItem(int position) {
+        mRecentlyDeletedItemPosition = position;
+        removedItem = getItem(mRecentlyDeletedItemPosition);
+
+        cartItemTouchListener.onItemRemoved(position);
+        showUndoSnackbar();
+    }
+
+    private void showUndoSnackbar() {
+        Snackbar snackbar = AppUtils.getSnackBar(context, context.getString(R.string.item_remove));
+        snackbar.setActionTextColor(ContextCompat.getColor(context, R.color.snackbar_yellow));
+        snackbar.setAction(R.string.undo, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                undoDelete();
+            }
+        });
+        snackbar.show();
+    }
+
+    private void undoDelete() {
+        cartItemTouchListener.onItemRemoveUndo(removedItem, mRecentlyDeletedItemPosition);
+    }
+
+    int getCartItemsCount() {
+        return getItemCount();
+    }
+
+    void itemInserted(int position) {
+        notifyItemInserted(position);
+    }
+
+    void itemRemoved(int position) {
+        notifyItemRemoved(position);
+    }
+
+    void itemChanged(int position) {
+        notifyItemChanged(position);
+    }
+
+    static class CartDiffCallBack extends DiffUtil.ItemCallback<CartItem> {
+
+        @Override
+        public boolean areItemsTheSame(@NonNull CartItem cartItem, @NonNull CartItem t1) {
+            return cartItem.getItemName().equals(t1.getItemName());
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull CartItem cartItem, @NonNull CartItem t1) {
+            return cartItem.equals(t1);
+        }
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
+
+        TextView itemQuantityTextView, itemNameTextView, itemPriceTextView;
+        ImageButton increaseButton, decreaseButton;
+
+        ViewHolder(View itemView) {
+            super(itemView);
+            itemNameTextView = itemView.findViewById(R.id.itemNameTextView);
+            itemPriceTextView = itemView.findViewById(R.id.itemPriceTextView);
+            itemQuantityTextView = itemView.findViewById(R.id.itemQuantityTextView);
+            increaseButton = itemView.findViewById(R.id.increaseButton);
+            decreaseButton = itemView.findViewById(R.id.decreaseButton);
+        }
+
+        void bind(final CartItem item) {
+            itemNameTextView.setText(item.getItemName());
+            itemPriceTextView.setText(String.format(Locale.ENGLISH, "%s%d", context.getString(R.string.rupee_symbol),
+                    Integer.parseInt(item.getItemPrice())));
+            itemQuantityTextView.setText(String.valueOf(item.getItemQuantity()));
+
+            increaseButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                 /*int position = holder.getAdapterPosition();
                 int value = FoodMenuDisplayActivity.cartItems.get(position).getItemQuantity();
                 if (value < 10) {
@@ -63,13 +143,13 @@ public class CartRecyclerViewDisplayAdapter extends RecyclerView.Adapter<CartRec
                     notifyItemChanged(position);
                     Toast.makeText(context, context.getString(R.string.adjust_cart), Toast.LENGTH_SHORT).show();
                 }*/
-                cartItemTouchListener.onIncreaseClicked(holder.getAdapterPosition());
-            }
-        });
+                    cartItemTouchListener.onIncreaseClicked(getAdapterPosition());
+                }
+            });
 
-        holder.decreaseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            decreaseButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                 /*int position = holder.getAdapterPosition();
 
                 if (position != RecyclerView.NO_POSITION) {
@@ -94,63 +174,13 @@ public class CartRecyclerViewDisplayAdapter extends RecyclerView.Adapter<CartRec
 
                     }
                 }*/
-                if (cartItems.get(holder.getAdapterPosition()).getItemQuantity() == 1) {
-                    cartItemTouchListener.onItemRemoved(holder.getAdapterPosition());
-                } else {
-                    cartItemTouchListener.onDecreaseClicked(holder.getAdapterPosition());
+                    if (item.getItemQuantity() == 1) {
+                        cartItemTouchListener.onItemRemoved(getAdapterPosition());
+                    } else {
+                        cartItemTouchListener.onDecreaseClicked(getAdapterPosition());
+                    }
                 }
-            }
-        });
-
-
-    }
-
-    @Override
-    public int getItemCount() {
-        return cartItems.size();
-    }
-
-    public Context getContext() {
-        return context;
-    }
-
-    public void deleteItem(int position) {
-        mRecentlyDeletedItemPosition = position;
-        removedItem = cartItems.get(mRecentlyDeletedItemPosition);
-
-        cartItemTouchListener.onItemRemoved(position);
-        showUndoSnackbar();
-    }
-
-    private void showUndoSnackbar() {
-        Snackbar snackbar = AppUtils.getSnackBar(context, context.getString(R.string.item_remove));
-        snackbar.setActionTextColor(ContextCompat.getColor(context, R.color.snackbar_yellow));
-        snackbar.setAction(R.string.undo, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                undoDelete();
-            }
-        });
-        snackbar.show();
-    }
-
-    private void undoDelete() {
-        cartItemTouchListener.onItemRemoveUndo(removedItem, mRecentlyDeletedItemPosition);
-    }
-
-
-    class ViewHolder extends RecyclerView.ViewHolder {
-
-        TextView itemQuantityTextView, itemNameTextView, itemPriceTextView;
-        ImageButton increaseButton, decreaseButton;
-
-        ViewHolder(View itemView) {
-            super(itemView);
-            itemNameTextView = itemView.findViewById(R.id.itemNameTextView);
-            itemPriceTextView = itemView.findViewById(R.id.itemPriceTextView);
-            itemQuantityTextView = itemView.findViewById(R.id.itemQuantityTextView);
-            increaseButton = itemView.findViewById(R.id.increaseButton);
-            decreaseButton = itemView.findViewById(R.id.decreaseButton);
+            });
         }
     }
 }
