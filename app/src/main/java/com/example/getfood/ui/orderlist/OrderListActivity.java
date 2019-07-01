@@ -15,14 +15,12 @@ import java.util.ArrayList;
 
 public class OrderListActivity extends BaseActivity implements OrderListMvpView {
 
-    private RecyclerView ordersListRecyclerView;
-    private OrderListRecyclerViewDisplayAdapter orderListDisplayAdapter;
-    private OrderListPresenter<OrderListActivity> presenter;
+    private OrderListDisplayAdapter orderListDisplayAdapter;
 
     @Override
     public void initViews() {
         showLoading();
-        ordersListRecyclerView = findViewById(R.id.ordersListRecyclerView);
+        RecyclerView ordersListRecyclerView = findViewById(R.id.ordersListRecyclerView);
         ordersListRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         ordersListRecyclerView.addItemDecoration(new DividerItemDecoration(ordersListRecyclerView.getContext(), LinearLayoutManager.VERTICAL));
 
@@ -35,8 +33,11 @@ public class OrderListActivity extends BaseActivity implements OrderListMvpView 
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        presenter = new OrderListPresenter<>();
+        OrderListPresenter<OrderListActivity> presenter = new OrderListPresenter<>();
         presenter.onAttach(this);
+
+        orderListDisplayAdapter = new OrderListDisplayAdapter(mContext);
+        ordersListRecyclerView.setAdapter(orderListDisplayAdapter);
 
         //        fetch all the order IDs of the user first
         presenter.fetchOrderList();
@@ -67,9 +68,8 @@ public class OrderListActivity extends BaseActivity implements OrderListMvpView 
     }
 
     @Override
-    public void bindListAdapter(final ArrayList<FullOrder> orderListItems) {
-        orderListDisplayAdapter = new OrderListRecyclerViewDisplayAdapter(orderListItems, mContext);
-        ordersListRecyclerView.setAdapter(orderListDisplayAdapter);
+    public void bindListAdapter(ArrayList<FullOrder> orderListItems) {
+        orderListDisplayAdapter.swapData(orderListItems);
         hideLoading();
     }
 
