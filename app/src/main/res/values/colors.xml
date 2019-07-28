@@ -11,4 +11,8 @@
     <color name="white">#fff</color>
     <color name="black">#000</color>
     <color name="snackbar_yellow">#FFC107</color>
+    <color name="grey">#d3d3d3</color>
+    <color name="colorTermsCondition">#372fb4</color>
+    <color name="colorRatingStarTint">#bdc3c7</color>
+    <color name="colorPriceCart">#62ce80</color>
 </resources>

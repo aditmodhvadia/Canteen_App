@@ -1,45 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
-    android:background="#fff"
+    android:layout_margin="@dimen/spacing_tiny"
+    android:background="@android:color/white"
     android:elevation="15dp"
-    app:cardCornerRadius="8dp">
+    app:cardCornerRadius="@dimen/spacing_small">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#fff">
+        android:background="@android:color/white">
 
         <TextView
             android:id="@+id/itemNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_normal"
             android:layout_marginEnd="5dp"
-            android:text="Name"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="#000"
+            android:textColor="@android:color/black"
             app:layout_constraintEnd_toStartOf="@+id/itemPriceTextView"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_max="@+id/decreaseButton" />
+            app:layout_constraintWidth_max="@+id/decreaseButton"
+            tools:text="Item Name" />
 
         <TextView
             android:id="@+id/itemQuantityTextView"
             android:layout_width="36dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="@dimen/spacing_tiny"
             android:layout_marginBottom="20dp"
             android:text="0"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="#000"
+            android:textColor="@android:color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/decreaseButton" />
 
@@ -48,26 +49,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
-            android:text="Price"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:layout_marginBottom="@dimen/spacing_small"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="#62ce80"
+            android:textColor="@color/colorPriceCart"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/itemNameTextView"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="Price" />
 
         <ImageButton
             android:id="@+id/increaseButton"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="36dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="@dimen/spacing_tiny"
             android:layout_marginTop="40dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="@dimen/spacing_small"
             android:padding="5dp"
             android:scaleType="center"
             android:src="@drawable/ic_add"
@@ -82,8 +83,8 @@
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="36dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginBottom="@dimen/spacing_small"
             android:padding="5dp"
             android:scaleType="center"
             android:src="@drawable/ic_remove"
@@ -95,8 +96,8 @@
             android:id="@+id/imageView"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:layout_marginBottom="@dimen/spacing_normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/veggreensymbol" />

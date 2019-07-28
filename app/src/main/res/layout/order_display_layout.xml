@@ -4,34 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
+    android:layout_margin="@dimen/spacing_tiny"
     android:paddingBottom="10dp">
 
     <TextView
         android:id="@+id/orderItemNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:layout_marginBottom="@dimen/spacing_normal"
         android:maxWidth="86dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="TextView" />
+        tools:text="Item Name" />
 
     <TextView
         android:id="@+id/orderItemQuantityTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:layout_marginEnd="@dimen/spacing_normal"
+        android:layout_marginBottom="@dimen/spacing_normal"
         android:textColor="#09de09"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="TextView" />
+        tools:text="Item Quantity" />
 
     <TextView
         android:id="@+id/orderItemStatusTextView"
@@ -41,15 +41,15 @@
         android:layout_marginEnd="64dp"
         app:layout_constraintEnd_toStartOf="@+id/orderItemQuantityTextView"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="TextView" />
+        tools:text="Item Status" />
 
     <RatingBar
         android:id="@+id/ratingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:layout_marginBottom="@dimen/spacing_small"
         android:isIndicator="false"
         android:numStars="5"
         android:rating="3.5"
@@ -64,9 +64,9 @@
             android:id="@+id/ivRatingStar"
             android:layout_width="16sp"
             android:layout_height="16sp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginBottom="@dimen/spacing_small"
             android:tint="#bdc3c7"
             android:visibility="invisible"
             app:layout_constraintStart_toStartOf="parent"
@@ -78,7 +78,7 @@
             android:id="@+id/itemRatingTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="@dimen/spacing_small"
             android:textColor="#2dda20"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/ivRatingStar"

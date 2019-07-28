@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:elevation="8dp"
-    app:cardCornerRadius="4dp"
-    android:layout_height="wrap_content">
+    app:cardCornerRadius="@dimen/spacing_tiny">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -14,36 +15,38 @@
             android:id="@+id/orderIDTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="TextView"
-            android:textColor="#000"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_normal"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toStartOf="@+id/orderTimeTextView"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Order ID" />
 
         <TextView
             android:id="@+id/orderAmountTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="TextView"
-            android:textColor="#000"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginBottom="@dimen/spacing_normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/orderIDTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/orderIDTextView"
+            tools:text="Amount" />
 
         <TextView
             android:id="@+id/orderTimeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:text="TextView"
-            android:textColor="#000"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginEnd="@dimen/spacing_normal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/orderIDTextView"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Time to Deliver" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

@@ -13,7 +13,7 @@
         android:layout_gravity="center"
         android:layout_marginBottom="10dp"
         android:padding="16dp"
-        android:text="Dummy Text"
+        android:text="@string/dummy_text"
         android:textSize="19sp" />
 
     <Button
@@ -24,9 +24,9 @@
         android:layout_marginBottom="10dp"
         android:background="@drawable/button_test"
         android:padding="10dp"
-        android:shadowColor="#000"
+        android:shadowColor="@android:color/black"
         android:text="10:50 AM"
-        android:textColor="#fff"
+        android:textColor="@android:color/white"
         android:textSize="18sp"
         android:translationZ="5dp" />
 
@@ -38,9 +38,9 @@
         android:layout_margin="10dp"
         android:background="@drawable/button_test"
         android:padding="10dp"
-        android:shadowColor="#000"
+        android:shadowColor="@android:color/black"
         android:text="01:15 PM"
-        android:textColor="#fff"
+        android:textColor="@android:color/white"
         android:textSize="18sp"
         android:translationZ="5dp" />
 
@@ -52,9 +52,9 @@
         android:layout_margin="20dp"
         android:background="@drawable/button_test"
         android:padding="10dp"
-        android:shadowColor="#000"
+        android:shadowColor="@android:color/black"
         android:text="04:15 PM"
-        android:textColor="#fff"
+        android:textColor="@android:color/white"
         android:textSize="18sp"
         android:translationZ="5dp" />
 
@@ -66,9 +66,9 @@
         android:layout_margin="10dp"
         android:background="@drawable/button_test"
         android:padding="10dp"
-        android:shadowColor="#000"
-        android:text="Get it Now"
-        android:textColor="#fff"
+        android:shadowColor="@android:color/black"
+        android:text="@string/get_it_now"
+        android:textColor="@android:color/white"
         android:textSize="18sp"
         android:translationZ="5dp" />
 </LinearLayout>

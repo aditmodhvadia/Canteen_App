@@ -17,11 +17,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="@dimen/spacing_large"
             android:layout_marginTop="90dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginEnd="@dimen/spacing_large"
             android:hint="@string/email_id"
-            android:textColorHint="#fff">
+            android:textColorHint="@android:color/white">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/userLoginEmailEditText"
@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:inputType="textEmailAddress"
-                android:textColor="#fff" />
+                android:textColor="@android:color/white" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -37,13 +37,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginStart="@dimen/spacing_large"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:layout_marginEnd="@dimen/spacing_large"
             android:hint="@string/password"
-            android:textColorHint="#fff"
+            android:textColorHint="@android:color/white"
             app:passwordToggleEnabled="true"
-            app:passwordToggleTint="#d3d3d3">
+            app:passwordToggleTint="@color/grey">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/userLoginPasswordEditText"
@@ -51,8 +51,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:inputType="textPassword"
-                android:textColor="#fff"
-                android:textColorHint="#d3d3d3" />
+                android:textColor="@android:color/white"
+                android:textColorHint="@color/grey" />
         </android.support.design.widget.TextInputLayout>
         <!--android:background="#60f9cbc8"-->
 
@@ -64,7 +64,7 @@
             android:layout_marginTop="20dp"
             android:background="@color/colorPrimaryDark"
             android:text="@string/login"
-            android:textColor="#fff" />
+            android:textColor="@android:color/white" />
 
         <TextView
             android:id="@+id/forgotPasswordTextView"
@@ -74,9 +74,7 @@
             android:layout_marginTop="5dp"
             android:clickable="false"
             android:text="@string/forgot_password"
-            android:textColor="@color/colorAccent" />
-
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
-
 </ScrollView>

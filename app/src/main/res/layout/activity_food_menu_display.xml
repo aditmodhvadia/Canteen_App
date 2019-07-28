@@ -34,7 +34,7 @@
 
                     <android.support.v7.widget.Toolbar
                         android:id="@+id/toolbar"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@color/colorPrimary"
@@ -56,19 +56,19 @@
                         android:id="@+id/tabItem"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Chinese" />
+                        android:text="@string/chinese" />
 
                     <android.support.design.widget.TabItem
                         android:id="@+id/tabItem2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="South Indian" />
+                        android:text="@string/south_indian" />
 
                     <android.support.design.widget.TabItem
                         android:id="@+id/tabItem3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Pizza and Sandwiches" />
+                        android:text="@string/pizza_and_sandwiches" />
 
 
                 </android.support.design.widget.TabLayout>

@@ -139,5 +139,13 @@
     <string name="check_email">Check your registered email</string>
     <string name="common_err_msg">Some error occurred, try again later</string>
     <string name="accept_terms_and_condition">You need to accet the terms and conditions first</string>
+    <string name="i_accept_the">I accept the</string>
+    <string name="terms_and_conditions">Terms and Conditions</string>
+    <string name="dummy_text">Dummy Text</string>
+    <string name="get_it_now">Get it Now</string>
+    <string name="_1">1</string>
+    <string name="pizza_and_sandwiches">Pizza and Sandwiches</string>
+    <string name="cart">Cart</string>
+    <string name="place_order">Place Order</string>
 
 </resources>
