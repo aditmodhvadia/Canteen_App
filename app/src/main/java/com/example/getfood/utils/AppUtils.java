@@ -32,7 +32,7 @@ public class AppUtils {
      * @param context
      * @return Instance of AppUtils class
      */
-    public static AppUtils getInstance(Context context) {
+    public static synchronized AppUtils getInstance(Context context) {
         if (mInstance == null) {
             mInstance = new AppUtils();
         }
@@ -112,10 +112,7 @@ public class AppUtils {
     }
 
     public static boolean isEmailValid(String userEmail) {
-        if (TextUtils.isEmpty(userEmail)) {
-            return false;
-        }
-        if (!Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
+        if (TextUtils.isEmpty(userEmail) || !Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
             return false;
         }
         return userEmail.split("@")[1].equals("nirmauni.ac.in");

@@ -11,7 +11,7 @@ public class DataManager {
     private static ArrayList<CartItem> cartItems;
     private static DataManager dataManager;
 
-    public static DataManager getInstance() {
+    public static synchronized DataManager getInstance() {
         if (dataManager == null) {
             dataManager = new DataManager();
             cartItems = new ArrayList<>();
@@ -43,8 +43,8 @@ public class DataManager {
         return total;
     }
 
-    public void increaseCartItemQuantity(int adapterPosition) {
-        cartItems.get(adapterPosition).increaseQuantity();
+    public void increaseCartItemQuantity(int position) {
+        cartItems.get(position).increaseQuantity();
     }
 
     public void sortCartItems() {

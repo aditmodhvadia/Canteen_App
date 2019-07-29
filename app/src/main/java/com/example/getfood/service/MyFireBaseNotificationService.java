@@ -23,7 +23,6 @@ public class MyFireBaseNotificationService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         // ...
-
 //        createNotification()
         // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
@@ -91,7 +90,6 @@ public class MyFireBaseNotificationService extends FirebaseMessagingService {
     private void newSendNotification(RemoteMessage remoteMessage) {
 
         AppUtils.createNotificationChannel(getApplicationContext());
-
         Intent configureIntent = new Intent(getApplicationContext(), OrderListActivity.class);
 //        configureIntent.putExtra("data", remoteMessage.getData().get("testkey"));
         configureIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

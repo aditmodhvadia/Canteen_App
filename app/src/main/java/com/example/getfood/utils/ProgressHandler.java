@@ -19,11 +19,13 @@ public class ProgressHandler {
         progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         progressDialog.setCancelable(false);
         if (progressDialog != null) {
-            progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            if (progressDialog.getWindow() != null) {
+                progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            }
+            progressDialog.setContentView(R.layout.dialog_progress);
+            progressDialog.setCancelable(false);
+            progressDialog.show();
         }
-        progressDialog.setContentView(R.layout.dialog_progress);
-        progressDialog.setCancelable(false);
-        progressDialog.show();
     }
 
     public static void hideProgress() {
