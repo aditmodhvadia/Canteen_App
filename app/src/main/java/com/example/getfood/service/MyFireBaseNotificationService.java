@@ -6,13 +6,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
+
 import androidx.core.app.NotificationCompat;
+
 import android.util.Log;
 
+import com.example.firebase_api_library.api.FireBaseApiManager;
+import com.example.firebase_api_library.listeners.OnTaskCompleteListener;
+import com.example.firebase_api_library.utils.AppUtils;
+import com.example.getfood.R;
 import com.example.getfood.ui.orderlist.OrderListActivity;
-import com.fazemeright.firebase_api__library.api.FireBaseApiManager;
-import com.fazemeright.firebase_api__library.listeners.OnTaskCompleteListener;
-import com.fazemeright.firebase_api__library.utils.AppUtils;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -102,7 +105,7 @@ public class MyFireBaseNotificationService extends FirebaseMessagingService {
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this);
-        notificationBuilder.setSmallIcon(com.fazemeright.firebase_api__library.R.drawable.btn_clear)
+        notificationBuilder.setSmallIcon(R.drawable.mykanteenicon)  // TODO: Replace with btn_clear
                 .setContentTitle(remoteMessage.getNotification().getTitle())
                 .setContentText(remoteMessage.getNotification().getBody())
                 .setAutoCancel(true)

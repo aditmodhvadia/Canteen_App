@@ -2,6 +2,8 @@ package com.example.getfood.ui.cart;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
+
+import com.example.canteen_app_models.models.CartItem;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ListAdapter;
@@ -16,7 +18,6 @@ import android.widget.TextView;
 import com.example.getfood.R;
 import com.example.getfood.callback.CartItemTouchListener;
 import com.example.getfood.utils.AppUtils;
-import com.fazemeright.canteen_app_models.models.CartItem;
 
 import java.util.List;
 import java.util.Locale;

@@ -1,6 +1,6 @@
 package com.example.getfood.data;
 
-import com.fazemeright.canteen_app_models.models.CartItem;
+import com.example.canteen_app_models.models.CartItem;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,7 +1,7 @@
 package com.example.getfood.ui.foodmenu;
 
+import com.example.firebase_api_library.listeners.OnTaskCompleteListener;
 import com.example.getfood.ui.base.BasePresenter;
-import com.fazemeright.firebase_api__library.listeners.OnTaskCompleteListener;
 
 public class FoodMenuDisplayActivityPresenter<V extends FoodMenuDisplayActivityMvpView> extends BasePresenter<V> implements FoodMenuDisplayActivityMvpPresenter<V> {
 

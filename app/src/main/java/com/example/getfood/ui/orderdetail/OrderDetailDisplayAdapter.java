@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.example.canteen_app_models.models.CartItem;
 import com.example.getfood.R;
-import com.fazemeright.canteen_app_models.models.CartItem;
 
 import java.util.List;
 

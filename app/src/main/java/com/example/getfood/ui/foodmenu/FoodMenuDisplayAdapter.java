@@ -11,10 +11,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.canteen_app_models.models.FoodItem;
 import com.example.getfood.R;
 import com.example.getfood.callback.FoodItemTouchListener;
 import com.example.getfood.utils.AppUtils;
-import com.fazemeright.canteen_app_models.models.FoodItem;
 
 import java.util.ArrayList;
 

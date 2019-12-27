@@ -1,11 +1,11 @@
 package com.example.getfood.ui.cart;
 
+import com.example.canteen_app_models.models.CartItem;
+import com.example.canteen_app_models.models.FullOrder;
+import com.example.firebase_api_library.listeners.DBValueEventListener;
+import com.example.firebase_api_library.listeners.OnTaskCompleteListener;
 import com.example.getfood.ui.base.BasePresenter;
 import com.example.getfood.utils.AppUtils;
-import com.fazemeright.canteen_app_models.models.CartItem;
-import com.fazemeright.canteen_app_models.models.FullOrder;
-import com.fazemeright.firebase_api__library.listeners.DBValueEventListener;
-import com.fazemeright.firebase_api__library.listeners.OnTaskCompleteListener;
 
 import java.util.ArrayList;
 
