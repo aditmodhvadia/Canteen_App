@@ -14,6 +14,8 @@ import com.example.getfood.ui.loginregister.LoginActivity;
 import com.example.getfood.utils.alert.AlertUtils;
 import com.example.getfood.utils.alert.DialogConfirmation;
 
+import timber.log.Timber;
+
 public class SplashActivity extends BaseActivity implements SplashMvpView {
 
     private SplashPresenter<SplashActivity> presenter;
@@ -22,11 +24,9 @@ public class SplashActivity extends BaseActivity implements SplashMvpView {
     public void initViews() {
         presenter = new SplashPresenter<>();
         presenter.onAttach(this);
-        TextView tvVersionName = findViewById(R.id.tvVersionName);
 
         String versionName = presenter.getVersionName();
-
-        tvVersionName.setText(versionName);
+        ((TextView) findViewById(R.id.tvVersionName)).setText(versionName);
 
         presenter.determineIfUpdateNeeded(versionName);
     }
@@ -42,6 +42,7 @@ public class SplashActivity extends BaseActivity implements SplashMvpView {
                 getString(R.string.update), "Exit", new DialogConfirmation.ConfirmationDialogListener() {
                     @Override
                     public void onPositiveButtonClicked() {
+//                        show source to update the app
                         String url = getString(R.string.release_url);
                         try {
                             Intent i = new Intent(getString(R.string.main_action));
@@ -60,7 +61,8 @@ public class SplashActivity extends BaseActivity implements SplashMvpView {
 
                     @Override
                     public void onNegativeButtonClicked() {
-                        finish();
+//                        exit from the app
+                        finishAffinity();
                     }
                 });
     }
@@ -68,7 +70,7 @@ public class SplashActivity extends BaseActivity implements SplashMvpView {
     @Override
     public void userIsSignedIn() {
         startActivity(new Intent(SplashActivity.this, FoodMenuDisplayActivity.class));
-        Log.d("vcheck", "everything green");
+        Timber.d("everything green");
         finish();
     }
 
