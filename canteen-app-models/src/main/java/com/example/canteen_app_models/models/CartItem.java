@@ -8,16 +8,12 @@ public class CartItem extends FoodItem implements Serializable {
 
     private Integer itemQuantity;
     private String itemStatus;
-//    private FoodItem foodItem;
+//    TODO: separate user item rating from normal item rating and store them separately
 
     public CartItem(FoodItem foodItem, String itemStatus, Integer cartItemQuantity) {
         super(foodItem.getItemName(), foodItem.getItemPrice(), -1, foodItem.getItemCategory());
         this.itemQuantity = cartItemQuantity;
         this.itemStatus = itemStatus;
-//        this.foodItem = foodItem;
-//        setItemCategory(foodItem.getItemCategory());
-//        setItemName(foodItem.getItemName());
-//        setItemPrice(foodItem.getItemPrice());
     }
 
     public CartItem() {
@@ -26,10 +22,6 @@ public class CartItem extends FoodItem implements Serializable {
     public String getItemStatus() {
         return itemStatus;
     }
-
-    /*public FoodItem getFoodItem() {
-        return foodItem;
-    }*/
 
     public Integer getItemQuantity() {
         return itemQuantity;

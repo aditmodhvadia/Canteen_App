@@ -1,18 +1,9 @@
 package com.example.getfood.ui.cart;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +12,13 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -77,19 +75,19 @@ public class CartActivity extends BaseActivity implements CartMvpView, View.OnCl
     @Override
     public void initViews() {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(R.string.my_cart);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             Drawable upArrow = getResources().getDrawable(R.drawable.ic_down);
             getSupportActionBar().setHomeAsUpIndicator(upArrow);
         }
+
         cartRecyclerView = findViewById(R.id.cartRecyclerView);
         cartRecyclerView.setHasFixedSize(true);
         cartRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         cartRecyclerView.addItemDecoration(new DividerItemDecoration(cartRecyclerView.getContext(), LinearLayoutManager.VERTICAL));
-
         totalPriceTV = findViewById(R.id.totalPriceTV);
         orderButton = findViewById(R.id.orderButton);
 
@@ -247,9 +245,6 @@ public class CartActivity extends BaseActivity implements CartMvpView, View.OnCl
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.orderButton:
-                chooseTime();
-                break;
             case R.id.firstBreakButton:
                 orderTime = firstBreakButton.getText().toString();
                 placeOrder();
@@ -269,6 +264,7 @@ public class CartActivity extends BaseActivity implements CartMvpView, View.OnCl
                 orderTime = dateFormat.format(date);
                 placeOrder();
                 break;
+            case R.id.orderButton:
             default:
                 chooseTime();
                 break;
@@ -283,13 +279,8 @@ public class CartActivity extends BaseActivity implements CartMvpView, View.OnCl
 //        TODO: generate unique Order ID and redirect user to Order Activity, before that accept the payment.
 
 //        check for network connectivity and proceed with order
-        ConnectivityManager cm =
-                (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting();
-        if (isConnected) {
+        if (isNetworkConnected()) {
             generateOrder();
         } else {
             hideLoading();
@@ -298,10 +289,8 @@ public class CartActivity extends BaseActivity implements CartMvpView, View.OnCl
     }
 
     private void generateOrder() {
-
 //        TODO: make object of FullOrder with all the fields
         presenter.sortCartItems();
-
 
         final String orderId = presenter.getNewOrderKey();
 
@@ -324,27 +313,28 @@ public class CartActivity extends BaseActivity implements CartMvpView, View.OnCl
     }
 
     @Override
-    public void onIncreaseClicked(int adapterPosition) {
-        presenter.increaseCartQuantity(adapterPosition);
+    public void onIncreaseClicked(int position) {
+        presenter.increaseCartQuantity(position);
         updateCartTotal();
-        adapter.itemChanged(adapterPosition);
+        adapter.itemChanged(position);
         Toast.makeText(mContext, getString(R.string.adjust_cart), Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onDecreaseClicked(int adapterPosition) {
-        presenter.decreaseCartItemQuantity(adapterPosition);
+    public void onDecreaseClicked(int position) {
+        presenter.decreaseCartItemQuantity(position);
         updateCartTotal();
         Toast.makeText(mContext, getString(R.string.adjust_cart), Toast.LENGTH_SHORT).show();
-        adapter.itemChanged(adapterPosition);
+        adapter.itemChanged(position);
     }
 
     @Override
-    public void onItemRemoved(int adapterPosition) {
-        presenter.removeCartItem(adapterPosition);
+    public void onItemRemoved(int position) {
+        presenter.removeCartItem(position);
         updateCartTotal();
-        adapter.itemRemoved(adapterPosition);
+        adapter.itemRemoved(position);
         if (adapter.getCartItemsCount() == 0) {
+            presenter.clearCartItems();
             finish();
         }
     }

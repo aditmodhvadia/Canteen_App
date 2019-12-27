@@ -69,7 +69,7 @@ public class CartPresenter<V extends CartMvpView> extends BasePresenter<V> imple
 
     @Override
     public void decreaseCartItemQuantity(int adapterPosition) {
-        dataManager.getCartItems().get(adapterPosition).decreaseQuantity();
+        dataManager.decreaseCartItemQuantity(adapterPosition);
     }
 
     @Override
@@ -84,17 +84,17 @@ public class CartPresenter<V extends CartMvpView> extends BasePresenter<V> imple
 
     @Override
     public void undoCartItemRemove(CartItem removedItem, int position) {
-        dataManager.getCartItems().add(position, removedItem);
+        dataManager.addItemToCart(removedItem, position);
     }
 
     @Override
-    public void removeCartItem(int adapterPosition) {
-        dataManager.getCartItems().remove(adapterPosition);
+    public void removeCartItem(int position) {
+        dataManager.removeItemFromCart(position);
     }
 
     @Override
     public void clearCartItems() {
-        dataManager.getCartItems().clear();
+        dataManager.clearCart();
     }
 
     @Override

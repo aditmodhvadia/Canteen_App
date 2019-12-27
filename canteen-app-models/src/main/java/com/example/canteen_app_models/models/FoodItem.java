@@ -9,8 +9,8 @@ import java.util.HashMap;
 
 public class FoodItem implements Serializable {
 
-    protected String itemName, itemPrice, itemCategory;
-    protected long itemRating;
+    private String itemName, itemPrice, itemCategory;
+    private long itemRating;
 
     public FoodItem(String itemName, String itemPrice, long itemRating, String itemCategory) {
         this.itemName = itemName;
