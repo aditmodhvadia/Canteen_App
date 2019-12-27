@@ -80,7 +80,7 @@ public class FoodMenuDisplayActivity extends BaseActivity implements FoodMenuDis
             actionbar.setDisplayHomeAsUpEnabled(true);
             actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
         } else {
-            makeText("Action Bar null");
+            makeShortText("Action Bar null");
         }
 
         findViewById(R.id.floatingActionButton).setOnClickListener(new View.OnClickListener() {
@@ -191,7 +191,7 @@ public class FoodMenuDisplayActivity extends BaseActivity implements FoodMenuDis
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
             case R.id.menuHelp:
-                makeText(getString(R.string.help_pressed));
+                makeShortText(getString(R.string.help_pressed));
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -248,7 +248,7 @@ public class FoodMenuDisplayActivity extends BaseActivity implements FoodMenuDis
 
     @Override
     public void cantOpenCart() {
-        makeText(getString(R.string.cart_empty));
+        makeShortText(getString(R.string.cart_empty));
     }
 
     public void showSnackBar(View parent, String msg) {
@@ -257,7 +257,7 @@ public class FoodMenuDisplayActivity extends BaseActivity implements FoodMenuDis
         snackbar.show();
     }
 
-    public void makeText(String msg) {
+    public void makeShortText(String msg) {
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 

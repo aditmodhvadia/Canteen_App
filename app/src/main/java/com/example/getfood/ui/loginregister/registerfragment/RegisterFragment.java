@@ -31,9 +31,10 @@ public class RegisterFragment extends BaseFragment implements RegisterMvpView, V
 
     @Override
     public void initViews(View view) {
-        getActivity().setTitle(R.string.register);
-
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        if (getActivity() != null) {
+            getActivity().setTitle(R.string.register);
+            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        }
 
         presenter = new RegisterPresenter<>();
         presenter.onAttach(this);
@@ -66,7 +67,6 @@ public class RegisterFragment extends BaseFragment implements RegisterMvpView, V
 
                     presenter.performRegistration(userEmailEditText.getText().toString().trim(),
                             password, confirmPassword);
-//                presenter.performRegistration("adit.modhvadia@gmail.com", "12345678", "12345678");
                 } else {
                     AlertUtils.showAlertBox(mContext, getString(R.string.warning),
                             getString(R.string.accept_terms_and_condition), getString(R.string.ok), new DialogSimple.AlertDialogListener() {

@@ -142,7 +142,7 @@ public class CartDisplayAdapter extends ListAdapter<CartItem, CartDisplayAdapter
                     FoodMenuDisplayActivity.cartItems.get(position).increaseQuantity();
                     CartActivity.calcTotal();
                     notifyItemChanged(position);
-                    Toast.makeText(context, context.getString(R.string.adjust_cart), Toast.LENGTH_SHORT).show();
+                    Toast.makeShortText(context, context.getString(R.string.adjust_cart), Toast.LENGTH_SHORT).show();
                 }*/
                     cartItemTouchListener.onIncreaseClicked(getAdapterPosition());
                 }
@@ -161,17 +161,17 @@ public class CartDisplayAdapter extends ListAdapter<CartItem, CartDisplayAdapter
                         FoodMenuDisplayActivity.cartItems.get(position).decreaseQuantity();
                         notifyItemChanged(position);
                         CartActivity.calcTotal();
-                        Toast.makeText(context, context.getString(R.string.adjust_cart), Toast.LENGTH_SHORT).show();
+                        Toast.makeShortText(context, context.getString(R.string.adjust_cart), Toast.LENGTH_SHORT).show();
                     } else if (value == 1) {
 
                         FoodMenuDisplayActivity.cartItems.remove(position);
                         if (FoodMenuDisplayActivity.cartItems.size() == 0) {
-                            Toast.makeText(context, context.getString(R.string.cart_empty), Toast.LENGTH_SHORT).show();
+                            Toast.makeShortText(context, context.getString(R.string.cart_empty), Toast.LENGTH_SHORT).show();
                             CartActivity.activity.finish();
                         }
                         notifyItemRemoved(position);
                         CartActivity.calcTotal();
-                        Toast.makeText(context, context.getString(R.string.adjust_cart), Toast.LENGTH_SHORT).show();
+                        Toast.makeShortText(context, context.getString(R.string.adjust_cart), Toast.LENGTH_SHORT).show();
 
                     }
                 }*/

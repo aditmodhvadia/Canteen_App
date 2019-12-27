@@ -133,7 +133,7 @@ public class CartActivity extends BaseActivity implements CartMvpView, View.OnCl
                         @Override
                         public void onPositiveButtonClicked() {
                             clearCart();
-                            makeText(getString(R.string.cart_cleared));
+                            makeShortText(getString(R.string.cart_cleared));
                             onBackPressed();
                         }
 
@@ -168,7 +168,7 @@ public class CartActivity extends BaseActivity implements CartMvpView, View.OnCl
 //        check if it is a sunday, then ordering is closed TODO: confirm with docs for the value of Sunday in Calendar
         currTime.set(Calendar.DAY_OF_WEEK, currTime.get(Calendar.DAY_OF_WEEK) - 1);
 //        if (currTime.get(Calendar.DAY_OF_WEEK) == 7) {
-//            makeText("Cannot order on Sunday, Order Tomorrow");
+//            makeShortText("Cannot order on Sunday, Order Tomorrow");
 //            return;
 //        }
         int hour = currTime.get(Calendar.HOUR_OF_DAY);
@@ -177,7 +177,7 @@ public class CartActivity extends BaseActivity implements CartMvpView, View.OnCl
         mins = 15;
         if (hour <= 8 && mins <= 20) {
             Log.d("Debug", "Before Ordering time");
-            makeText("Cannot place order now, Order after 08:20 AM");
+            makeShortText("Cannot place order now, Order after 08:20 AM");
             return;
         } else if (hour <= 8 && mins <= 45) {
             Log.d("Debug", "Between 8:20 and 8:45");
@@ -205,7 +205,7 @@ public class CartActivity extends BaseActivity implements CartMvpView, View.OnCl
             lastBreakButton.setBackgroundResource(R.drawable.button_disabled);
 
         } else {
-            makeText("Cannot place order now, Order tomorrow");
+            makeShortText("Cannot place order now, Order tomorrow");
             return;
         }
         chooseTimeBuilder.setView(chooseTimeView);
@@ -284,7 +284,7 @@ public class CartActivity extends BaseActivity implements CartMvpView, View.OnCl
             generateOrder();
         } else {
             hideLoading();
-            makeText(getString(R.string.no_internet));
+            makeShortText(getString(R.string.no_internet));
         }
     }
 
@@ -391,7 +391,7 @@ public class CartActivity extends BaseActivity implements CartMvpView, View.OnCl
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-//                            makeText(response.getString("CHECKSUMHASH"));
+//                            makeShortText(response.getString("CHECKSUMHASH"));
                             Log.d("response", "Our server Checksum was " + response.getString(getString(R.string.checksum)));
 //                            call paytm activity with the checksum received
                             initializePaytmPayment(response.getString(getString(R.string.checksum)), null);
@@ -403,7 +403,7 @@ public class CartActivity extends BaseActivity implements CartMvpView, View.OnCl
                 }, new com.android.volley.Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        makeText("Did not work");
+                        makeShortText("Did not work");
 //                        Log.d("newerror", error.networkResponse.toString());
                     }
                 });
@@ -452,7 +452,7 @@ public class CartActivity extends BaseActivity implements CartMvpView, View.OnCl
     @Override
     public void onTransactionResponse(Bundle bundle) {
 
-//        Toast.makeText(this, bundle.toString(), Toast.LENGTH_LONG).show();
+//        Toast.makeShortText(this, bundle.toString(), Toast.LENGTH_LONG).show();
         Log.d("PayTM", bundle.toString());
         Log.d("response", "Checksum from Paytm server was " + bundle.getString(getString(R.string.checksum)));
 
@@ -494,7 +494,7 @@ public class CartActivity extends BaseActivity implements CartMvpView, View.OnCl
         Log.d("PayTM", bundle.toString());
     }
 
-    public void makeText(String msg) {
+    public void makeShortText(String msg) {
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 }

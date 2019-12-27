@@ -2,7 +2,9 @@ package com.example.getfood.ui.loginregister.loginfragment;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+
 import androidx.annotation.NonNull;
+
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -21,13 +23,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
+import timber.log.Timber;
+
 
 public class LoginFragment extends BaseFragment implements LoginMvpView, View.OnClickListener {
 
-    Button userLoginButton;
-    EditText userLoginEmailEditText, userLoginPasswordEditText;
-    TextView forgotPasswordTextView;
-    ProgressDialog progressDialog;
+    private Button userLoginButton;
+    private EditText userLoginEmailEditText, userLoginPasswordEditText;
+    private TextView forgotPasswordTextView;
     private LoginPresenter<LoginFragment> presenter;
 
     public LoginFragment() {
@@ -49,8 +52,6 @@ public class LoginFragment extends BaseFragment implements LoginMvpView, View.On
         presenter = new LoginPresenter<>();
         presenter.onAttach(this);
 
-        progressDialog = new ProgressDialog(getContext());
-        progressDialog.setCanceledOnTouchOutside(false);
         userLoginEmailEditText = view.findViewById(R.id.userLoginEmailEditText);
         userLoginPasswordEditText = view.findViewById(R.id.userLoginPasswordEditText);
         userLoginButton = view.findViewById(R.id.userLoginButton);
@@ -101,7 +102,7 @@ public class LoginFragment extends BaseFragment implements LoginMvpView, View.On
                     @Override
                     public void onComplete(@NonNull Task<InstanceIdResult> task) {
                         if (!task.isSuccessful()) {
-                            Log.d("##FCM", "getInstanceId failed", task.getException());
+                            Timber.d(task.getException());
 //                            TODO: redirect user to app from here as well
                             return;
                         }
@@ -109,7 +110,7 @@ public class LoginFragment extends BaseFragment implements LoginMvpView, View.On
                         String token = task.getResult().getToken();
                         presenter.updateToken(token);
                         // Log and toast
-                        Log.d("##FCM", token);
+                        Timber.d(token);
                     }
                 });
 

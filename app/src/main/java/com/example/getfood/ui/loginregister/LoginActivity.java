@@ -1,16 +1,15 @@
 package com.example.getfood.ui.loginregister;
 
 import android.content.Intent;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
-import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.getfood.R;
 import com.example.getfood.ui.base.BaseActivity;
@@ -21,13 +20,16 @@ import com.example.getfood.utils.alert.AlertUtils;
 import com.example.getfood.utils.alert.DialogSimple;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
+import timber.log.Timber;
+
 public class LoginActivity extends BaseActivity implements LoginActivityMvpView {
 
-    int exitCount;
-    long currTime, prevTime;
+    private int exitCount;
+    private long currTime, prevTime;
     LoginActivityPresenter<LoginActivity> presenter;
 
     @Override
@@ -66,18 +68,18 @@ public class LoginActivity extends BaseActivity implements LoginActivityMvpView 
                                 @Override
                                 public void onComplete(@NonNull Task<InstanceIdResult> task) {
                                     if (!task.isSuccessful()) {
-                                        Log.d("##FCM", "getInstanceId failed", task.getException());
+                                        Timber.d(task.getException(), "getInstanceId failed");
                                         return;
                                     }
                                     // Get new Instance ID token
                                     String token = task.getResult().getToken();
                                     presenter.updateToken(token);
                                     // Log and toast
-                                    Log.d("##FCM", token);
+                                    Timber.d(token);
                                 }
                             });
                 } else {
-                    Log.d("##DebugData", "User not signed in");
+                    Timber.d("User not signed in");
                 }
             }
         });
@@ -123,13 +125,13 @@ public class LoginActivity extends BaseActivity implements LoginActivityMvpView 
     public void onBackPressed() {
         exitCount++;
         if (exitCount == 1) {
-            makeText("Press back once more to exit");
+            makeShortText("Press back once more to exit");
             prevTime = System.currentTimeMillis();
         }
         if (exitCount == 2) {
             currTime = System.currentTimeMillis();
             if (currTime - prevTime > 2000) {
-                makeText("Press back once more to exit");
+                makeShortText("Press back once more to exit");
                 prevTime = System.currentTimeMillis();
                 exitCount = 1;
             } else {
@@ -137,10 +139,6 @@ public class LoginActivity extends BaseActivity implements LoginActivityMvpView 
                 finish();
             }
         }
-    }
-
-    public void makeText(String msg) {
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -155,16 +153,10 @@ public class LoginActivity extends BaseActivity implements LoginActivityMvpView 
 
         @Override
         public Fragment getItem(int position) {
-            switch (position) {
-                case 0:
-                    return new LoginFragment();
-
-                case 1:
-                    return new RegisterFragment();
-
-                default:
-                    return new LoginFragment();
+            if (position == 1) {
+                return new RegisterFragment();
             }
+            return new LoginFragment();
         }
 
         @Override
