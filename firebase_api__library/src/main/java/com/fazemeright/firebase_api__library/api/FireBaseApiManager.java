@@ -3,8 +3,8 @@ package com.fazemeright.firebase_api__library.api;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringDef;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringDef;
 import android.util.Log;
 
 import com.fazemeright.canteen_app_models.helpers.FoodMenuDetails;

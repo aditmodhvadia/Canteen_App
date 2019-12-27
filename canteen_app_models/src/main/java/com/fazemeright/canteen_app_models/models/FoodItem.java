@@ -1,6 +1,6 @@
 package com.fazemeright.canteen_app_models.models;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.fazemeright.canteen_app_models.helpers.FoodMenuDetails;
 

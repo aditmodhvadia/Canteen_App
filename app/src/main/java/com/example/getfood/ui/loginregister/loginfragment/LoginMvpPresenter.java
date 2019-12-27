@@ -1,6 +1,6 @@
 package com.example.getfood.ui.loginregister.loginfragment;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.example.getfood.ui.base.BaseMvpPresenter;
 
