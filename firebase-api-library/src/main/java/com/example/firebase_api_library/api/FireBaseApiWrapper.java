@@ -3,8 +3,12 @@ package com.example.firebase_api_library.api;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+
 import androidx.annotation.NonNull;
 
+import com.example.firebase_api_library.api.interfaces.FireBaseDynamicLinkInterface;
+import com.example.firebase_api_library.api.interfaces.FireBaseRealTimeDatabaseInterface;
+import com.example.firebase_api_library.api.interfaces.FireBaseUserInterface;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -21,11 +25,10 @@ import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 /**
  * Keep this as a Singleton Class
  */
-class FireBaseApiWrapper implements FireBaseApiWrapperInterface {
+class FireBaseApiWrapper implements FireBaseDynamicLinkInterface, FireBaseRealTimeDatabaseInterface, FireBaseUserInterface {
 
     private static FireBaseApiWrapper apiWrapper;
     private static DatabaseReference mDatabase;
-//    todo: create a boolean for logging and enable it for dev/debug build flavors or changeable
 
     /**
      * Call to initialize various variables
