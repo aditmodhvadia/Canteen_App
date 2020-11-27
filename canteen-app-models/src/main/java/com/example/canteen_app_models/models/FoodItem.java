@@ -6,6 +6,7 @@ import com.example.canteen_app_models.helpers.FoodMenuDetails;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class FoodItem implements Serializable {
 
@@ -61,6 +62,21 @@ public class FoodItem implements Serializable {
                 + " Item Category: " + itemCategory + " Item Price: " + itemPrice
                 + " Item Rating: " + itemRating);
         return "\n Item Data : " + itemData;
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FoodItem foodItem = (FoodItem) o;
+        return itemRating == foodItem.itemRating &&
+                itemName.equals(foodItem.itemName) &&
+                Objects.equals(itemPrice, foodItem.itemPrice) &&
+                Objects.equals(itemCategory, foodItem.itemCategory);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(itemName, itemPrice, itemCategory, itemRating);
     }
 }

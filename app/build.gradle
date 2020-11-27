@@ -4,7 +4,7 @@ android {
     compileSdkVersion 30
     defaultConfig {
         applicationId "com.example.getfood"
-        minSdkVersion 23
+        minSdkVersion 26
         targetSdkVersion 30
         versionCode 4
         versionName "beta-2-0-2"
@@ -22,10 +22,7 @@ android {
     productFlavors {
         mock {
             dimension "mock"
-            applicationIdSuffix = ".mock"
-        }
-        prod {
-            // No special config
+//            applicationIdSuffix = ".mock"
         }
     }
 }
@@ -56,6 +53,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:21.0.0'
 
     implementation project(':firebase-api-library')
+    api project(':canteen-app-models')
 }
 
 apply plugin: 'com.google.gms.google-services'

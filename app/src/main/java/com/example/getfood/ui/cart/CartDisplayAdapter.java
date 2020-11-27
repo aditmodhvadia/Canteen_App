@@ -1,11 +1,6 @@
 package com.example.getfood.ui.cart;
 
 import android.content.Context;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.recyclerview.extensions.ListAdapter;
-import android.support.v7.util.DiffUtil;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +8,16 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.canteen_app_models.models.CartItem;
 import com.example.getfood.R;
 import com.example.getfood.callback.CartItemTouchListener;
 import com.example.getfood.utils.AppUtils;
-import com.fazemeright.canteen_app_models.models.CartItem;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 import java.util.Locale;

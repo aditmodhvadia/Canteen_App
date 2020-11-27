@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * It is the complete order fetched directly from the FireBase Real-time database
@@ -75,5 +76,24 @@ public class FullOrder implements Serializable {
                 + "\n Order Items Size: " + orderItems.size() + " Order Status: " + orderStatus
                 + "\n Item Data : " + itemData.toString();
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FullOrder fullOrder = (FullOrder) o;
+        return Objects.equals(orderItems, fullOrder.orderItems) &&
+                Objects.equals(orderAmount, fullOrder.orderAmount) &&
+                Objects.equals(timeToDeliver, fullOrder.timeToDeliver) &&
+                Objects.equals(rollNo, fullOrder.rollNo) &&
+                Objects.equals(orderId, fullOrder.orderId) &&
+                Objects.equals(orderStatus, fullOrder.orderStatus) &&
+                Objects.equals(displayID, fullOrder.displayID);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(orderItems, orderAmount, timeToDeliver, rollNo, orderId, orderStatus, displayID);
     }
 }

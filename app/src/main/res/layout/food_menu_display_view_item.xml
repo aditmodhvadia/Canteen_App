@@ -54,9 +54,9 @@
         android:layout_marginStart="@dimen/spacing_normal"
         android:layout_marginTop="@dimen/spacing_small"
         android:layout_marginBottom="@dimen/spacing_normal"
-        android:tint="@color/colorRatingStarTint"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/itemNameTextView"
-        app:srcCompat="@drawable/ic_rating" />
+        app:srcCompat="@drawable/ic_rating"
+        app:tint="@color/colorRatingStarTint" />
 </androidx.constraintlayout.widget.ConstraintLayout>

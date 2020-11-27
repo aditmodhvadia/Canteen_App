@@ -28,10 +28,10 @@
         android:layout_marginTop="@dimen/spacing_normal"
         android:layout_marginEnd="@dimen/spacing_large"
         android:layout_weight="1"
+        android:background="#dddddd"
         android:text="22325452"
         android:textColor="#dddddd"
         android:textStyle="bold"
-        android:background="#dddddd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/itemNameTextView"
         app:layout_constraintTop_toTopOf="parent" />
@@ -58,9 +58,9 @@
         android:layout_height="16sp"
         android:layout_marginStart="@dimen/spacing_normal"
         android:layout_marginTop="@dimen/spacing_small"
-        android:tint="#dddddd"
         android:background="#dddddd"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/itemNameTextView"
-        app:srcCompat="@drawable/ic_rating" />
+        app:srcCompat="@drawable/ic_rating"
+        app:tint="#dddddd" />
 </androidx.constraintlayout.widget.ConstraintLayout>
