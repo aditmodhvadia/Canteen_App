@@ -1,8 +1,8 @@
 package com.example.getfood.ui.orderdetail;
 
+import com.example.canteen_app_models.models.FullOrder;
+import com.example.firebase_api_library.listeners.DBValueEventListener;
 import com.example.getfood.ui.base.BasePresenter;
-import com.fazemeright.canteen_app_models.models.FullOrder;
-import com.fazemeright.firebase_api__library.listeners.DBValueEventListener;
 
 public class OrderDetailPresenter<V extends OrderDetailMvpView> extends BasePresenter<V> implements OrderDetailMvpPresenter<V> {
 

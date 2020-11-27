@@ -1,9 +1,9 @@
 package com.example.getfood.ui.orderlist;
 
+import com.example.canteen_app_models.models.FullOrder;
+import com.example.firebase_api_library.listeners.DBValueEventListener;
 import com.example.getfood.ui.base.BasePresenter;
 import com.example.getfood.utils.AppUtils;
-import com.fazemeright.canteen_app_models.models.FullOrder;
-import com.fazemeright.firebase_api__library.listeners.DBValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;

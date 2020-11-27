@@ -2,8 +2,8 @@ package com.example.getfood.ui.orderdetail;
 
 import android.content.Context;
 
+import com.example.canteen_app_models.models.FullOrder;
 import com.example.getfood.ui.base.BaseView;
-import com.fazemeright.canteen_app_models.models.FullOrder;
 
 public interface OrderDetailMvpView extends BaseView {
 

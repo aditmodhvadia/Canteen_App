@@ -1,6 +1,6 @@
 package com.example.getfood.ui.map;
 
-import android.support.v4.app.FragmentActivity;
+import androidx.fragment.app.FragmentActivity;
 import android.os.Bundle;
 
 import com.example.getfood.R;

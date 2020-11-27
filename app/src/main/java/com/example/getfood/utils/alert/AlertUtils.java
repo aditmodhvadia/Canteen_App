@@ -1,13 +1,14 @@
 package com.example.getfood.utils.alert;
 
 import android.content.Context;
-import android.support.design.widget.Snackbar;
+
+import com.example.canteen_app_models.models.FoodItem;
+import com.google.android.material.snackbar.Snackbar;
+
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.getfood.R;
-import com.fazemeright.canteen_app_models.models.FoodItem;
-
 
 /**
  * To show dialog, toast, snack-bar or any other alert

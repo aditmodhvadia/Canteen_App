@@ -2,20 +2,20 @@ package com.example.getfood.ui.orderdetail;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.canteen_app_models.models.FullOrder;
 import com.example.getfood.R;
 import com.example.getfood.ui.base.BaseActivity;
 import com.example.getfood.utils.AppUtils;
 import com.example.getfood.utils.alert.AlertUtils;
 import com.example.getfood.utils.alert.DialogSimple;
-import com.fazemeright.canteen_app_models.models.FullOrder;
 
 public class OrderDetailActivity extends BaseActivity implements OrderDetailMvpView, OrderDetailDisplayAdapter.OnOrderItemClickListener {
 

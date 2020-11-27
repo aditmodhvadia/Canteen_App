@@ -2,12 +2,14 @@ package com.example.getfood.ui.foodmenu;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.canteen_app_models.models.CartItem;
+import com.example.canteen_app_models.models.FoodItem;
 import com.example.getfood.R;
 import com.example.getfood.callback.FoodItemTouchListener;
 import com.example.getfood.ui.base.BaseFragment;
@@ -15,8 +17,6 @@ import com.example.getfood.utils.AppUtils;
 import com.example.getfood.utils.alert.AlertUtils;
 import com.example.getfood.utils.alert.DialogAddToCart;
 import com.facebook.shimmer.ShimmerFrameLayout;
-import com.fazemeright.canteen_app_models.models.CartItem;
-import com.fazemeright.canteen_app_models.models.FoodItem;
 
 import java.util.ArrayList;
 

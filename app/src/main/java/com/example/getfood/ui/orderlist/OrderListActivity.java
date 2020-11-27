@@ -1,15 +1,15 @@
 package com.example.getfood.ui.orderlist;
 
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.canteen_app_models.models.FullOrder;
 import com.example.getfood.R;
 import com.example.getfood.ui.base.BaseActivity;
-import com.fazemeright.canteen_app_models.models.FullOrder;
 
 import java.util.ArrayList;
 

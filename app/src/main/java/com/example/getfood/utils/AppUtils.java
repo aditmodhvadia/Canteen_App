@@ -5,15 +5,18 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
+
+import androidx.annotation.NonNull;
+
+import com.example.canteen_app_models.models.CartItem;
+import com.example.canteen_app_models.models.FoodItem;
+import com.google.android.material.snackbar.Snackbar;
+
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
 
 import com.example.getfood.R;
-import com.fazemeright.canteen_app_models.models.CartItem;
-import com.fazemeright.canteen_app_models.models.FoodItem;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

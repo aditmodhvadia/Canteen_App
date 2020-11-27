@@ -1,9 +1,9 @@
 package com.example.getfood.ui.foodmenu;
 
+import com.example.canteen_app_models.models.CartItem;
+import com.example.canteen_app_models.models.FoodItem;
+import com.example.firebase_api_library.listeners.DBValueEventListener;
 import com.example.getfood.ui.base.BasePresenter;
-import com.fazemeright.canteen_app_models.models.CartItem;
-import com.fazemeright.canteen_app_models.models.FoodItem;
-import com.fazemeright.firebase_api__library.listeners.DBValueEventListener;
 
 import java.util.ArrayList;
 

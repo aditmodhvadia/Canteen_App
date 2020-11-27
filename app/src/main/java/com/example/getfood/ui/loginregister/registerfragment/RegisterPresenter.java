@@ -1,11 +1,11 @@
 package com.example.getfood.ui.loginregister.registerfragment;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
+import com.example.firebase_api_library.listeners.OnTaskCompleteListener;
 import com.example.getfood.ui.base.BasePresenter;
 import com.example.getfood.utils.AppUtils;
-import com.fazemeright.firebase_api__library.listeners.OnTaskCompleteListener;
 
 public class RegisterPresenter<V extends RegisterMvpView> extends BasePresenter<V> implements RegisterMvpPresenter<V> {
 

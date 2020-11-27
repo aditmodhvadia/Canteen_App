@@ -2,11 +2,13 @@ package com.example.getfood.ui.splash;
 
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
+
 import android.util.Log;
 
+import com.example.firebase_api_library.listeners.DBValueEventListener;
 import com.example.getfood.ui.base.BasePresenter;
-import com.fazemeright.firebase_api__library.listeners.DBValueEventListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
