@@ -1,19 +1,8 @@
-package com.example.canteen_app_models.helpers;
+package com.example.canteen_app_models.helpers
 
-import androidx.annotation.StringDef;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
-public class FoodMenuDetails {
+object FoodMenuDetails {
     // Declare the constants
-    public static final String AVAILABLE = "Available";
-    public static final String PRICE = "Price";
-    public static final String RATING = "Rating";
-
-    @Retention(RetentionPolicy.SOURCE)
-    @StringDef({AVAILABLE, PRICE, RATING})
-    // Create an interface for validating String types
-    public @interface FilterColorDef {
-    }
+    const val AVAILABLE = "Available"
+    const val PRICE = "Price"
+    const val RATING = "Rating"
 }
