@@ -1,8 +1,6 @@
-package com.example.firebase_api_library.listeners;
+package com.example.firebase_api_library.listeners
 
-public interface DBValueEventListener<T> {
-
-    void onDataChange(T data);
-
-    void onCancelled(Error error);
+interface DBValueEventListener<T> {
+    fun onDataChange(data: T)
+    fun onCancelled(error: Error?)
 }

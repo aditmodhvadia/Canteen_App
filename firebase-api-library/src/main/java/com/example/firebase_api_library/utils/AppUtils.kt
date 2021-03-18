@@ -1,42 +1,38 @@
-package com.example.firebase_api_library.utils;
+package com.example.firebase_api_library.utils
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.Context;
-import android.os.Build;
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.os.Build
 
-public class AppUtils {
-    public static AppUtils appUtils;
-
-    public static AppUtils getInstance() {
-        if (appUtils == null) {
-            appUtils = new AppUtils();
+object AppUtils {
+    var appUtils: AppUtils? = null
+    val instance: AppUtils?
+        get() {
+            if (appUtils == null) {
+                appUtils = AppUtils()
+            }
+            return appUtils
         }
-        return appUtils;
+
+    fun getRollNoFromEmail(currentUserEmail: String?): String? {
+        return currentUserEmail?.substring(0, currentUserEmail.indexOf("@"))
     }
 
-
-    public static String getRollNoFromEmail(String currentUserEmail) {
-        if (currentUserEmail == null) {
-            return null;
-        } else {
-            return currentUserEmail.substring(0, currentUserEmail.indexOf("@"));
-        }
-    }
-
-    public static void createNotificationChannel(Context context) {
+    @JvmStatic
+    fun createNotificationChannel(context: Context) {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "Order Updates";
-            String description = "Whenever Order is updated";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel("order-update", name, importance);
-            channel.setDescription(description);
+            val name: CharSequence = "Order Updates"
+            val description = "Whenever Order is updated"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel("order-update", name, importance)
+            channel.description = description
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
-            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
+            val notificationManager = context.getSystemService(NotificationManager::class.java)
+            notificationManager.createNotificationChannel(channel)
         }
     }
 }

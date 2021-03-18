@@ -1,6 +1,5 @@
-package com.example.firebase_api_library.listeners;
+package com.example.firebase_api_library.listeners
 
-public interface OnDynamicLinkStatusListener {
-
-    void onDynamicLinkFound(String link);
+interface OnDynamicLinkStatusListener {
+    fun onDynamicLinkFound(link: String?)
 }
