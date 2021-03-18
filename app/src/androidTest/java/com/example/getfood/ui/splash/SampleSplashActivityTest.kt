@@ -1,43 +1,32 @@
-package com.example.getfood.ui.splash;
+package com.example.getfood.ui.splash
 
-import android.widget.TextView;
+import android.widget.TextView
+import androidx.test.rule.ActivityTestRule
+import com.example.getfood.R
+import org.junit.After
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
 
-import androidx.test.rule.ActivityTestRule;
-
-import com.example.getfood.R;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-
-public class SampleSplashActivityTest {
-
+class SampleSplashActivityTest {
     @Rule
-    public ActivityTestRule<SplashActivity> mActivityTest = new ActivityTestRule<>(SplashActivity.class);
-
-    private SplashActivity splashActivity = null;
-
+    var mActivityTest = ActivityTestRule(SplashActivity::class.java)
+    private var splashActivity: SplashActivity? = null
     @Before
-    public void setUp() throws Exception {
-
-        splashActivity = mActivityTest.getActivity();
-
+    @Throws(Exception::class)
+    fun setUp() {
+        splashActivity = mActivityTest.activity
     }
 
     @Test
-    public void sampleTestLaunch() throws Exception {
-
-        TextView tvVersionName = splashActivity.findViewById(R.id.tvVersionName);
-
-
-        assert tvVersionName != null;
+    @Throws(Exception::class)
+    fun sampleTestLaunch() {
+        val tvVersionName = splashActivity!!.findViewById<TextView>(R.id.tvVersionName)!!
     }
 
     @After
-    public void tearDown() throws Exception {
-
-        splashActivity = null;
-
+    @Throws(Exception::class)
+    fun tearDown() {
+        splashActivity = null
     }
 }
