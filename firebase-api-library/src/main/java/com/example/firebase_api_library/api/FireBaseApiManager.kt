@@ -143,7 +143,7 @@ class FireBaseApiManager {
     }
 
     fun sendEmailVerification(onTaskCompleteListener: OnTaskCompleteListener) {
-        val url = "http://getfood.page.link/verify/?email=$currentUserEmail"
+        val url = "http://getfood.page.link/verify/?email=$userEmail"
         val dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
                 .setLink(Uri.parse(url))
                 .setDomainUriPrefix("https://getfood.page.link") // Open links with this app on Android
@@ -192,7 +192,7 @@ class FireBaseApiManager {
         }) { e -> Log.d("##DebugData", e.message!!) }
     }
 
-    val currentUserEmail: String?
+    val userEmail: String?
         get() = apiWrapper?.currentUserEmail
 
     fun sendPasswordResetEmail(userEmail: String?, onTaskCompleteListener: OnTaskCompleteListener) {
@@ -261,11 +261,11 @@ class FireBaseApiManager {
     }
 
     val isUserLoggedIn: Boolean
-        get() = currentUserEmail != null
+        get() = userEmail != null
 
     fun updateToken(token: String?, onTaskCompleteListener: OnTaskCompleteListener) {
         val tokenReference = FirebaseDatabase.getInstance().reference.child(BaseUrl.USER_DATA)
-                .child(AppUtils.getRollNoFromEmail(currentUserEmail)!!).child(BaseUrl.TOKEN)
+                .child(AppUtils.getRollNoFromEmail(userEmail)!!).child(BaseUrl.TOKEN)
         apiWrapper!!.setValue(tokenReference, token) { task ->
             if (task.isSuccessful) {
                 Log.d("##FCM", "Token updated")
@@ -280,7 +280,7 @@ class FireBaseApiManager {
     fun setRatingValueForOrderItem(rating: Float, position: Int, orderId: String?) {
         val orderItem = FirebaseDatabase.getInstance().reference
                 .child(BaseUrl.USER_ORDER)
-                .child(AppUtils.getRollNoFromEmail(currentUserEmail)!!)
+                .child(AppUtils.getRollNoFromEmail(userEmail)!!)
                 .child(orderId!!)
                 .child("orderItems")
                 .child(position.toString())

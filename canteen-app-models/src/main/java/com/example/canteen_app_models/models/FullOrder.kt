@@ -1,13 +1,12 @@
 package com.example.canteen_app_models.models
 
 import java.io.Serializable
-import java.util.*
 
 /**
  * It is the complete order fetched directly from the FireBase Real-time database
  */
 data class FullOrder(
-        var orderItems: ArrayList<CartItem>? = null,
+        var orderItems: MutableList<CartItem>? = null,
         var orderAmount: String? = null,
         var timeToDeliver: String? = null,
         var rollNo: String? = null,

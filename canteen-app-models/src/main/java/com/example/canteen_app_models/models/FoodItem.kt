@@ -29,4 +29,26 @@ open class FoodItem(
             }
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as FoodItem
+
+        if (itemName != other.itemName) return false
+        if (itemPrice != other.itemPrice) return false
+        if (itemCategory != other.itemCategory) return false
+        if (itemRating != other.itemRating) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = itemName?.hashCode() ?: 0
+        result = 31 * result + (itemPrice?.hashCode() ?: 0)
+        result = 31 * result + (itemCategory?.hashCode() ?: 0)
+        result = 31 * result + itemRating.hashCode()
+        return result
+    }
 }

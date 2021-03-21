@@ -6,14 +6,6 @@ import android.content.Context
 import android.os.Build
 
 object AppUtils {
-    var appUtils: AppUtils? = null
-    val instance: AppUtils?
-        get() {
-            if (appUtils == null) {
-                appUtils = AppUtils()
-            }
-            return appUtils
-        }
 
     fun getRollNoFromEmail(currentUserEmail: String?): String? {
         return currentUserEmail?.substring(0, currentUserEmail.indexOf("@"))
